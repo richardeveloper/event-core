@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.kafka.CadastroUsuarioController">
+   <children>
+      <Label layoutX="23.0" layoutY="37.0" prefHeight="38.0" prefWidth="547.0" styleClass="title-page" text="CADASTRO DE USUARIO" />
+
+      <Label layoutX="28.0" layoutY="98.0" text="Nome" />
+      <TextField fx:id="nomeTextField" alignment="CENTER" layoutX="25.0" layoutY="131.0" prefHeight="24.0" prefWidth="247.0" promptText="Fulano de Tal" />
+
+      <Label layoutX="313.0" layoutY="98.0" text="CPF" />
+      <TextField fx:id="cpfTextField" alignment="CENTER" layoutX="313.0" layoutY="131.0" prefHeight="24.0" prefWidth="257.0" promptText="123.456.789-00" />
+
+      <Label layoutX="27.0" layoutY="176.0" text="E-mail" />
+      <TextField fx:id="emailTextField" alignment="CENTER" layoutX="25.0" layoutY="213.0" prefHeight="24.0" prefWidth="247.0" promptText="fulano@email.com" />
+
+      <Label layoutX="313.0" layoutY="176.0" text="Telefone" />
+      <TextField fx:id="telefoneTextField" alignment="CENTER" layoutX="313.0" layoutY="213.0" prefHeight="24.0" prefWidth="257.0" promptText="(99) 12345-6789" />
+
+      <Label layoutX="25.0" layoutY="260.0" text="Tipo de Usuario" />
+      <ComboBox fx:id="cargoComboBox" layoutX="25.0" layoutY="293.0" prefHeight="24.0" prefWidth="547.0" promptText="Selecione o tipo" />
+
+      <Button fx:id="saveUsuario" layoutX="233.0" layoutY="351.0" mnemonicParsing="false" onAction="#saveUsuario" text="Cadastrar usuario" />
+
+
+   </children>
+</AnchorPane>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="580.0" prefWidth="960.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.kafka.ConsultaUsuariosController">
+   <children>
+      <Label layoutX="25.0" layoutY="36.0" prefHeight="38.0" prefWidth="912.0" styleClass="title-page" text="USUARIOS" />
+      <TableView fx:id="usuariosTableView" layoutX="28.0" layoutY="100.0" prefHeight="450.0" prefWidth="906.0" />
+   </children>
+</AnchorPane>

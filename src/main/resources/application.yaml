@@ -1,0 +1,23 @@
+# SPRING CONFIGS
+spring:
+  application:
+    name: event-core
+  # DATABASE CONFIGS
+  datasource:
+    url: jdbc:postgresql://localhost:5432/event_core
+    username: postgres
+    password: richardeveloper
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+# DOCUMENTATION CONFIGS
+springdoc:
+  swagger-ui:
+    path: /swagger-ui
+  api-docs:
+    path: /api-docs
+# OTHER CONFIGS
+server:
+  port: 8080
