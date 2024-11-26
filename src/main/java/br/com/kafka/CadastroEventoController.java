@@ -14,6 +14,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.ResourceBundle;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -49,27 +51,34 @@ public class CadastroEventoController implements Initializable {
       Arrays.stream(PrioridadeEventoEnum.values()).map(PrioridadeEventoEnum::getDescricao).toArray(String[]::new)
     ));
 
-    dataTextField.textProperty().addListener((observableValue, oldValue, newValue) -> {
-      String value = MaskUtils.applyMaskDate(newValue);
+    dataTextField.textProperty().addListener(new ChangeListener<String>() {
+      @Override
+      public void changed(ObservableValue<? extends String> observableValue, String oldValue, String newValue) {
+        String value = MaskUtils.applyMaskDate(newValue);
 
-      if (!value.equals(newValue)) {
-        dataTextField.setText(value);
-        dataTextField.selectPositionCaret(value.length());
+        if (!newValue.equals(value)) {
+          dataTextField.setText(value);
+          dataTextField.selectPositionCaret(value.length());
+        }
       }
     });
 
-    duracaoTextField.textProperty().addListener((observableValue, oldValue, newValue) -> {
-      String value = MaskUtils.applyMaskTime(newValue);
+    duracaoTextField.textProperty().addListener(new ChangeListener<String>() {
+      @Override
+      public void changed(ObservableValue<? extends String> observableValue, String oldValue, String newValue) {
+        String value = MaskUtils.applyMaskTime(newValue);
 
-      if (!value.equals(newValue)) {
-        duracaoTextField.setText(value);
-        duracaoTextField.selectPositionCaret(value.length());
+        if (!newValue.equals(value)) {
+          duracaoTextField.setText(value);
+          duracaoTextField.selectPositionCaret(value.length());
+        }
       }
     });
+
   }
 
   @FXML
-  protected void saveEvento(ActionEvent event) {
+  protected void salvarEvento(ActionEvent event) {
 
     if (nomeTextField.getText().isBlank()) {
       AlertUtils.showValidateAlert("O campo nome deve ser preenchido.");
@@ -126,10 +135,10 @@ public class CadastroEventoController implements Initializable {
     evento.setStatus(StatusEventoEnum.AGENDADO);
 
     try {
-      eventoService.save(evento);
+      eventoService.salvarEvento(evento);
     }
     catch (ServiceException e) {
-      AlertUtils.showErrorAlert(e.getMessage());
+      AlertUtils.showValidateAlert(e.getMessage());
       return;
     }
     catch (Exception e) {
@@ -138,8 +147,16 @@ public class CadastroEventoController implements Initializable {
       return;
     }
 
+    limparFormulario();
 
     AlertUtils.showSuccessAlert("Evento cadastrado com sucesso.");
+  }
+
+  private void limparFormulario() {
+    nomeTextField.clear();
+    dataTextField.clear();
+    duracaoTextField.clear();
+    prioridadeComboBox.getSelectionModel().clearSelection();
   }
 
 }

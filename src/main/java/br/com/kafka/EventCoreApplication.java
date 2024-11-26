@@ -27,7 +27,7 @@ public class EventCoreApplication extends Application {
   public void start(Stage stage) throws IOException {
     FXMLLoader fxmlLoader = new FXMLLoader(EventCoreApplication.class.getResource("/home-view.fxml"));
     fxmlLoader.setControllerFactory(applicationContext::getBean);
-    Scene scene = new Scene(fxmlLoader.load(), 1240, 680);
+    Scene scene = new Scene(fxmlLoader.load(), 1520, 780);
     stage.setTitle("Event Core Application");
     stage.setScene(scene);
     stage.show();

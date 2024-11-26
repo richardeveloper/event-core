@@ -5,8 +5,9 @@ import lombok.Getter;
 @Getter
 public enum PrioridadeEventoEnum {
 
-  OPCIONAL("Opcional"),
-  OBRIGATORIO("Obrigatório");
+  ABERTO("Aberto ao público"),
+  OBRIGATORIO_ALUNOS("Obrigatório para alunos"),
+  OBRIGATORIO_PROFESSORES("Obrigatório para professores");
 
   private String descricao;
 

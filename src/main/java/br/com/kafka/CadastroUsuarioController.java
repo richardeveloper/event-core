@@ -17,9 +17,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 public class CadastroUsuarioController implements Initializable {
 
@@ -73,7 +75,7 @@ public class CadastroUsuarioController implements Initializable {
   }
 
   @FXML
-  protected void saveUsuario(ActionEvent event) {
+  protected void salvarUsuario(ActionEvent event) {
 
     if (nomeTextField.getText().isBlank()) {
       AlertUtils.showValidateAlert("O campo nome deve ser preenchido.");
@@ -122,20 +124,29 @@ public class CadastroUsuarioController implements Initializable {
     usuario.setTipoUsuario(TipoUsuarioEnum.parse(cargoComboBox.getSelectionModel().getSelectedItem()));
 
     try {
-      usuarioService.save(usuario);
+      usuarioService.salvarUsuario(usuario);
     }
     catch (ServiceException e) {
-      AlertUtils.showErrorAlert(e.getMessage());
+      AlertUtils.showValidateAlert(e.getMessage());
       return;
     }
     catch (Exception e) {
-      e.printStackTrace();
+      log.error(e.getMessage(), e);
       AlertUtils.showErrorAlert("Ocorreu um erro durante o processamento.");
       return;
     }
 
+    limparFormulario();
 
     AlertUtils.showSuccessAlert("Usuário cadastrado com sucesso.");
+  }
+
+  private void limparFormulario() {
+    nomeTextField.clear();
+    cpfTextField.clear();
+    emailTextField.clear();
+    telefoneTextField.clear();
+    cargoComboBox.getSelectionModel().clearSelection();
   }
 
 }

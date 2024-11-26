@@ -3,23 +3,23 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="406.0" prefWidth="600.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.kafka.CadastroEventoController">
+<AnchorPane prefHeight="527.0" prefWidth="719.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.kafka.CadastroEventoController">
    <children>
-      <Label layoutX="25.0" layoutY="28.0" prefHeight="38.0" prefWidth="547.0" styleClass="title-page" text="CADASTRO DE EVENTO" />
+      <Label layoutX="25.0" layoutY="28.0" prefHeight="38.0" prefWidth="667.0" styleClass="title-page" text="CADASTRO DE EVENTO" />
 
-      <Label layoutX="28.0" layoutY="98.0" text="Nome do Evento" />
-      <TextField fx:id="nomeTextField" alignment="CENTER" layoutX="25.0" layoutY="131.0" prefHeight="24.0" prefWidth="547.0" promptText="Nome do evento" />
+      <Label layoutX="66.0" layoutY="100.0" text="Nome do Evento" />
+      <TextField fx:id="nomeTextField" alignment="CENTER" layoutX="66.0" layoutY="131.0" prefHeight="24.0" prefWidth="583.0" promptText="Nome do evento" />
 
-      <Label layoutX="25.0" layoutY="174.0" text="Data do evento" />
-      <TextField fx:id="dataTextField" alignment="CENTER" layoutX="25.0" layoutY="210.0" prefHeight="24.0" prefWidth="247.0" promptText="25/11/2024 13:30" />
+      <Label layoutX="66.0" layoutY="182.0" text="Data do evento" />
+      <TextField fx:id="dataTextField" alignment="CENTER" layoutX="66.0" layoutY="210.0" prefHeight="24.0" prefWidth="272.0" promptText="25/11/2024 13:30" />
 
-      <Label layoutX="307.0" layoutY="174.0" text="Duracao do evento" />
-      <TextField fx:id="duracaoTextField" alignment="CENTER" layoutX="307.0" layoutY="210.0" prefHeight="24.0" prefWidth="265.0" promptText="01:30" />
+      <Label layoutX="438.0" layoutY="182.0" text="Duracao do evento" />
+      <TextField fx:id="duracaoTextField" alignment="CENTER" layoutX="438.0" layoutY="210.0" prefHeight="24.0" prefWidth="211.0" promptText="01:30" />
 
-      <Label layoutX="25.0" layoutY="256.0" text="Prioridade" />
-      <ComboBox fx:id="prioridadeComboBox" layoutX="25.0" layoutY="286.0" prefHeight="24.0" prefWidth="547.0" promptText="Selecione a prioridade" />
+      <Label layoutX="66.0" layoutY="274.0" text="Prioridade" />
+      <ComboBox fx:id="prioridadeComboBox" layoutX="66.0" layoutY="300.0" prefHeight="24.0" prefWidth="583.0" promptText="Selecione a prioridade" />
 
-      <Button fx:id="saveEvento" layoutX="233.0" layoutY="350.0" mnemonicParsing="false" onAction="#saveEvento" text="Cadastrar evento" />
+      <Button fx:id="saveEvento" layoutX="294.0" layoutY="379.0" mnemonicParsing="false" onAction="#salvarEvento" text="Cadastrar evento" />
 
 
    </children>

@@ -5,9 +5,9 @@ import lombok.Getter;
 @Getter
 public enum StatusEventoEnum {
 
-  AGENDADO("Agendado"),
-  CANCELADO("Cancelado"),
-  FINALIZADO("Finalizado");
+  AGENDADO("AGENDADO"),
+  CANCELADO("CANCELADO"),
+  FINALIZADO("FINALIZADO");
 
   private String descricao;
 
@@ -21,7 +21,7 @@ public enum StatusEventoEnum {
     }
 
     for (StatusEventoEnum tipoUsuarioEnum : StatusEventoEnum.values()) {
-      if (tipoUsuarioEnum.getDescricao().equals(descricao)) {
+      if (tipoUsuarioEnum.getDescricao().equalsIgnoreCase(descricao)) {
         return tipoUsuarioEnum;
       }
     }

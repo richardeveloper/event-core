@@ -10,7 +10,6 @@ import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -42,6 +41,7 @@ public class ConsultaUsuariosController implements Initializable {
     TableColumn<Usuario, Long> colunaId = createIdColumn();
     TableColumn<Usuario, String> colunaNome = createNameColumn();
     TableColumn<Usuario, String> colunaCpf = createCpfColumn();
+    TableColumn<Usuario, String> colunaTipoUsuario = createTipoUsuarioColumn();
     TableColumn<Usuario, String> colunaEmail = createEmailColumn();
     TableColumn<Usuario, String> colunaTelefone = createPhoneColumn();
     TableColumn<Usuario, Object> colunaOpcao = createOptionColumn();
@@ -49,6 +49,7 @@ public class ConsultaUsuariosController implements Initializable {
     this.usuariosTableView.getColumns().add(colunaId);
     this.usuariosTableView.getColumns().add(colunaNome);
     this.usuariosTableView.getColumns().add(colunaCpf);
+    this.usuariosTableView.getColumns().add(colunaTipoUsuario);
     this.usuariosTableView.getColumns().add(colunaEmail);
     this.usuariosTableView.getColumns().add(colunaTelefone);
     this.usuariosTableView.getColumns().add(colunaOpcao);
@@ -58,7 +59,7 @@ public class ConsultaUsuariosController implements Initializable {
     TableColumn<Usuario, Long> colunaId = new TableColumn<>("ID");
     colunaId.setCellValueFactory(data -> new SimpleLongProperty(data.getValue().getId()).asObject());
     colunaId.setStyle("-fx-alignment: CENTER;");
-    colunaId.setPrefWidth(63.0);
+    colunaId.setPrefWidth(60.0);
 
     return colunaId;
   }
@@ -67,7 +68,7 @@ public class ConsultaUsuariosController implements Initializable {
     TableColumn<Usuario, String> colunaNome = new TableColumn<>("Nome");
     colunaNome.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getNome()));
     colunaNome.setStyle("-fx-alignment: CENTER;");
-    colunaNome.setPrefWidth(180.0);
+    colunaNome.setPrefWidth(200.0);
 
     return colunaNome;
   }
@@ -76,9 +77,18 @@ public class ConsultaUsuariosController implements Initializable {
     TableColumn<Usuario, String> colunaCpf = new TableColumn<>("CPF");
     colunaCpf.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getCpf()));
     colunaCpf.setStyle("-fx-alignment: CENTER;");
-    colunaCpf.setPrefWidth(180.0);
+    colunaCpf.setPrefWidth(150.0);
 
     return colunaCpf;
+  }
+
+  private TableColumn<Usuario, String> createTipoUsuarioColumn() {
+    TableColumn<Usuario, String> colunaTipoUsuario = new TableColumn<>("Tipo de Usuario");
+    colunaTipoUsuario.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getTipoUsuario().getDescricao()));
+    colunaTipoUsuario.setStyle("-fx-alignment: CENTER;");
+    colunaTipoUsuario.setPrefWidth(180.0);
+
+    return colunaTipoUsuario;
   }
 
   private TableColumn<Usuario, String> createEmailColumn() {
@@ -93,7 +103,7 @@ public class ConsultaUsuariosController implements Initializable {
     TableColumn<Usuario, String> colunaTelefone = new TableColumn<>("Telefone");
     colunaTelefone.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getTelefone()));
     colunaTelefone.setStyle("-fx-alignment: CENTER;");
-    colunaTelefone.setPrefWidth(135.0);
+    colunaTelefone.setPrefWidth(130.0);
     return colunaTelefone;
   }
 
@@ -117,11 +127,11 @@ public class ConsultaUsuariosController implements Initializable {
             Usuario usuario = getTableRow().getItem();
 
             if (usuario != null) {
-              Alert alert = AlertUtils.createDeleteAlert(usuario.getNome());
+              Alert alert = AlertUtils.createDeleteUserAlert(usuario.getNome());
 
               alert.showAndWait().ifPresent(response -> {
                 if (response == ButtonType.OK) {
-                  usuarioService.delete(usuario.getId());
+                  usuarioService.apagarUsuario(usuario.getId());
                   fillTableView();
                 }
               });
@@ -133,14 +143,14 @@ public class ConsultaUsuariosController implements Initializable {
       }
     });
 
-    colunaOpcao.setPrefWidth(63.0);
+    colunaOpcao.setPrefWidth(90.0);
     colunaOpcao.setStyle("-fx-alignment: CENTER;");
 
     return colunaOpcao;
   }
 
   private void fillTableView() {
-    List<Usuario> usuarios = usuarioService.findAll();
+    List<Usuario> usuarios = usuarioService.buscarTodosUsuarios();
     ObservableList<Usuario> observableList = FXCollections.observableArrayList(usuarios);
     this.usuariosTableView.getItems().setAll(observableList);
   }
