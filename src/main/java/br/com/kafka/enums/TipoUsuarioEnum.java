@@ -9,7 +9,7 @@ public enum TipoUsuarioEnum {
   PROFESSOR("Professor"),
   VISITANTE("Visitante");
 
-  private String descricao;
+  private final String descricao;
 
   TipoUsuarioEnum(String descricao) {
     this.descricao = descricao;

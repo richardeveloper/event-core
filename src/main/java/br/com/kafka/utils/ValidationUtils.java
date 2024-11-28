@@ -71,7 +71,9 @@ public class ValidationUtils {
   }
 
   public static void validarDuracao(LocalTime duracao) {
-
+    if (duracao == null) {
+      throw new ServiceException("O campo duracao deve ser preenchido.");
+    }
   }
 
   public static void validarCampo(Object valorCampo, String nomeCampo) {

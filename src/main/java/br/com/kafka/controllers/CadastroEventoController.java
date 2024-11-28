@@ -1,4 +1,4 @@
-package br.com.kafka;
+package br.com.kafka.controllers;
 
 import br.com.kafka.entities.Evento;
 import br.com.kafka.enums.PrioridadeEventoEnum;
@@ -20,8 +20,12 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -42,6 +46,9 @@ public class CadastroEventoController implements Initializable {
   @FXML
   private ComboBox<String> prioridadeComboBox;
 
+  @FXML
+  private Button saveButton;
+
   @Autowired
   private EventoService eventoService;
 
@@ -51,29 +58,37 @@ public class CadastroEventoController implements Initializable {
       Arrays.stream(PrioridadeEventoEnum.values()).map(PrioridadeEventoEnum::getDescricao).toArray(String[]::new)
     ));
 
-    dataTextField.textProperty().addListener(new ChangeListener<String>() {
-      @Override
-      public void changed(ObservableValue<? extends String> observableValue, String oldValue, String newValue) {
-        String value = MaskUtils.applyMaskDate(newValue);
+    dataTextField.textProperty().addListener(
+      (observableValue, oldValue, newValue) -> {
+      String value = MaskUtils.applyMaskDate(newValue);
 
-        if (!newValue.equals(value)) {
-          dataTextField.setText(value);
-          dataTextField.selectPositionCaret(value.length());
-        }
+      if (!newValue.equals(value)) {
+        dataTextField.setText(value);
+        dataTextField.selectPositionCaret(value.length());
       }
     });
 
-    duracaoTextField.textProperty().addListener(new ChangeListener<String>() {
-      @Override
-      public void changed(ObservableValue<? extends String> observableValue, String oldValue, String newValue) {
-        String value = MaskUtils.applyMaskTime(newValue);
+    duracaoTextField.textProperty().addListener(
+      (observableValue, oldValue, newValue) -> {
+      String value = MaskUtils.applyMaskTime(newValue);
 
-        if (!newValue.equals(value)) {
-          duracaoTextField.setText(value);
-          duracaoTextField.selectPositionCaret(value.length());
-        }
+      if (!newValue.equals(value)) {
+        duracaoTextField.setText(value);
+        duracaoTextField.selectPositionCaret(value.length());
       }
     });
+
+    saveButton.getStyleClass().add("edit-button");
+
+    Image image = new Image(getClass().getResource("/icons/save.png").toExternalForm());
+
+    ImageView icon = new ImageView(image);
+    icon.setFitHeight(25);
+    icon.setFitWidth(25);
+
+    saveButton.setGraphic(icon);
+    saveButton.setGraphicTextGap(7.5);
+    saveButton.setContentDisplay(ContentDisplay.RIGHT);
 
   }
 
@@ -138,7 +153,7 @@ public class CadastroEventoController implements Initializable {
       eventoService.salvarEvento(evento);
     }
     catch (ServiceException e) {
-      AlertUtils.showValidateAlert(e.getMessage());
+      AlertUtils.showWarningAlert(e.getMessage());
       return;
     }
     catch (Exception e) {

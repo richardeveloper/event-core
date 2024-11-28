@@ -12,10 +12,14 @@ import org.springframework.context.ConfigurableApplicationContext;
 @SpringBootApplication
 public class EventCoreApplication extends Application {
 
-  private ConfigurableApplicationContext applicationContext;
+  private static final String TITLE = "Event Core Application";
+  private static final double WIDTH_SCREEN = 1720.0;
+  private static final double HEIGHT_SCREEN = 860.0;
+
+  private static ConfigurableApplicationContext applicationContext;
 
   public static void main(String[] args) {
-    launch();
+    launch(args);
   }
 
   @Override
@@ -25,10 +29,11 @@ public class EventCoreApplication extends Application {
 
   @Override
   public void start(Stage stage) throws IOException {
-    FXMLLoader fxmlLoader = new FXMLLoader(EventCoreApplication.class.getResource("/home-view.fxml"));
+    FXMLLoader fxmlLoader = new FXMLLoader(EventCoreApplication.class.getResource("/pages/home-view.fxml"));
     fxmlLoader.setControllerFactory(applicationContext::getBean);
-    Scene scene = new Scene(fxmlLoader.load(), 1520, 780);
-    stage.setTitle("Event Core Application");
+
+    Scene scene = new Scene(fxmlLoader.load(), WIDTH_SCREEN, HEIGHT_SCREEN);
+    stage.setTitle(TITLE);
     stage.setScene(scene);
     stage.show();
   }

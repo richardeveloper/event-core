@@ -108,6 +108,16 @@ public class MaskUtils {
     return newValue;
   }
 
+  public static String applyInfoUserMask(String matricula, String nome) {
+    return matricula.concat(" - ").concat(nome);
+  }
+
+  public static String removeInfoUserMask(String campoMatricula) {
+    campoMatricula = campoMatricula.replace(" - ", "-");
+    int index = campoMatricula.indexOf("-");
+    return campoMatricula.substring(index + 1);
+  }
+
   public static String removeMask(String value) {
     return replace(value);
   }

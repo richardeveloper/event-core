@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="740.0" prefWidth="1369.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.kafka.controllers.ConsultaUsuariosController">
+   <children>
+      <Label layoutX="25.0" layoutY="36.0" prefHeight="38.0" prefWidth="1243.0" styleClass="title-page" text="USUÁRIOS" />
+      <ScrollPane hbarPolicy="NEVER" layoutX="23.0" layoutY="108.0" prefHeight="609.0" prefWidth="1325.0">
+         <FlowPane fx:id="cardsContent" alignment="CENTER" columnHalignment="CENTER" hgap="10.0" prefHeight="617.0" prefWidth="1250.0" vgap="10.0" />
+      </ScrollPane>
+   </children>
+</AnchorPane>

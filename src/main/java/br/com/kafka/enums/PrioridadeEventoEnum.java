@@ -9,7 +9,7 @@ public enum PrioridadeEventoEnum {
   OBRIGATORIO_ALUNOS("Obrigatório para alunos"),
   OBRIGATORIO_PROFESSORES("Obrigatório para professores");
 
-  private String descricao;
+  private final String descricao;
 
   PrioridadeEventoEnum(String descricao) {
     this.descricao = descricao;

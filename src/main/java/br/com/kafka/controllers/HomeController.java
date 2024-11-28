@@ -1,6 +1,7 @@
-package br.com.kafka;
+package br.com.kafka.controllers;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -62,23 +63,14 @@ public class HomeController implements Initializable {
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
-    Image calendar = new Image(getClass().getResource("/icons/subscribe.png").toExternalForm());
-    inscricoesIcon.setImage(calendar);
-
-    Image user = new Image(getClass().getResource("/icons/user.png").toExternalForm());
-    usuariosIcon.setImage(user);
-
-    Image event = new Image(getClass().getResource("/icons/event.png").toExternalForm());
-    eventosIcon.setImage(event);
-
-    Image logs = new Image(getClass().getResource("/icons/dashboard.png").toExternalForm());
-    logsIcons.setImage(logs);
+    setupIcons();
   }
 
   @FXML
   protected void redirectProximosEventosPage() {
     try {
-      FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/proximos-eventos-view.fxml"));
+      FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
+        "/pages/proximos-eventos-view.fxml"));
       fxmlLoader.setControllerFactory(applicationContext::getBean);
 
       AnchorPane novoContent = fxmlLoader.load();;
@@ -96,7 +88,8 @@ public class HomeController implements Initializable {
   @FXML
   protected void redirectRealizarInscricaoPage() {
     try {
-      FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/realiza-inscricao-view.fxml"));
+      FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
+        "/pages/realiza-inscricao-view.fxml"));
       fxmlLoader.setControllerFactory(applicationContext::getBean);
 
       AnchorPane novoContent = fxmlLoader.load();
@@ -114,7 +107,7 @@ public class HomeController implements Initializable {
   @FXML
   protected void redirectConsultarInscricoesPage() {
     try {
-      FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/consulta-inscricoes-view.fxml"));
+      FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/pages/consulta-inscricoes-view.fxml"));
       fxmlLoader.setControllerFactory(applicationContext::getBean);
 
       AnchorPane novoContent = fxmlLoader.load();
@@ -132,7 +125,7 @@ public class HomeController implements Initializable {
   @FXML
   protected void redirectCadastroUsuarioPage() {
     try {
-      FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/cadastro-usuario-view.fxml"));
+      FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/pages/cadastro-usuario-view.fxml"));
       fxmlLoader.setControllerFactory(applicationContext::getBean);
 
       AnchorPane novoContent = fxmlLoader.load();
@@ -150,7 +143,7 @@ public class HomeController implements Initializable {
   @FXML
   protected void redirectConsultaUsuariosPage() {
     try {
-      FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/consulta-usuarios-view.fxml"));
+      FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/pages/consulta-usuarios-view.fxml"));
       fxmlLoader.setControllerFactory(applicationContext::getBean);
 
       AnchorPane novoContent = fxmlLoader.load();
@@ -168,7 +161,7 @@ public class HomeController implements Initializable {
   @FXML
   protected void redirectCadastroEventoPage() {
     try {
-      FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/cadastro-evento-view.fxml"));
+      FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/pages/cadastro-evento-view.fxml"));
       fxmlLoader.setControllerFactory(applicationContext::getBean);
 
       AnchorPane novoContent = fxmlLoader.load();
@@ -186,7 +179,7 @@ public class HomeController implements Initializable {
   @FXML
   protected void redirectConsultaEventosPage() {
     try {
-      FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/consulta-eventos-view.fxml"));
+      FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/pages/consulta-eventos-view.fxml"));
       fxmlLoader.setControllerFactory(applicationContext::getBean);
 
       AnchorPane novoContent = fxmlLoader.load();
@@ -201,16 +194,33 @@ public class HomeController implements Initializable {
     }
   }
 
+  private void setupIcons() {
+    Image calendar = new Image(getClass().getResource("/icons/subscribe.png").toExternalForm());
+    inscricoesIcon.setImage(calendar);
+
+    Image user = new Image(getClass().getResource("/icons/user.png").toExternalForm());
+    usuariosIcon.setImage(user);
+
+    Image event = new Image(getClass().getResource("/icons/event.png").toExternalForm());
+    eventosIcon.setImage(event);
+
+    Image logs = new Image(getClass().getResource("/icons/dashboard.png").toExternalForm());
+    logsIcons.setImage(logs);
+  }
+
   private void disableAllButtons() {
-    proximosEventos.getStyleClass().remove("menu-sub-item-on");
-    proximosEventos.getStyleClass().remove("menu-sub-item-on");
-    realizaInscricao.getStyleClass().remove("menu-sub-item-on");
-    consultaInscricoes.getStyleClass().remove("menu-sub-item-on");
-    cadastroUsuario.getStyleClass().remove("menu-sub-item-on");
-    consultaUsuarios.getStyleClass().remove("menu-sub-item-on");
-    cadastroEvento.getStyleClass().remove("menu-sub-item-on");
-    consultaEventos.getStyleClass().remove("menu-sub-item-on");
-    notificacoesEnviadas.getStyleClass().remove("menu-sub-item-on");
+    List<Button> itemsMenu = List.of(
+      proximosEventos,
+      realizaInscricao,
+      consultaInscricoes,
+      cadastroUsuario,
+      consultaUsuarios,
+      cadastroEvento,
+      consultaEventos,
+      notificacoesEnviadas
+    );
+
+    itemsMenu.forEach(item -> item.getStyleClass().remove("menu-sub-item-on"));
   }
 
 }

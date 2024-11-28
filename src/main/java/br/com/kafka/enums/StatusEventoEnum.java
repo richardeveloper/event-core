@@ -9,7 +9,7 @@ public enum StatusEventoEnum {
   CANCELADO("CANCELADO"),
   FINALIZADO("FINALIZADO");
 
-  private String descricao;
+  private final String descricao;
 
   StatusEventoEnum(String descricao) {
     this.descricao = descricao;

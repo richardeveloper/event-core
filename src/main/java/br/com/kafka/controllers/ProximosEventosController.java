@@ -1,9 +1,10 @@
-package br.com.kafka;
+package br.com.kafka.controllers;
 
 import br.com.kafka.entities.Evento;
 import br.com.kafka.enums.StatusEventoEnum;
 import br.com.kafka.exceptions.ServiceException;
 import br.com.kafka.services.EventoService;
+import br.com.kafka.services.EventosUsuarioService;
 import br.com.kafka.utils.AlertUtils;
 import br.com.kafka.utils.MaskUtils;
 import java.net.URL;
@@ -20,9 +21,12 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -39,6 +43,9 @@ public class ProximosEventosController implements Initializable {
 
   @Autowired
   private EventoService eventoService;
+
+  @Autowired
+  private EventosUsuarioService eventosUsuarioService;
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -57,8 +64,6 @@ public class ProximosEventosController implements Initializable {
   private VBox createCard(Evento evento) {
     VBox card = new VBox();
     card.setSpacing(10);
-    card.setPrefWidth(440);
-    card.setPrefHeight(320);
 
     card.getStyleClass().add("card");
 
@@ -67,7 +72,7 @@ public class ProximosEventosController implements Initializable {
     HBox nomeRow = new HBox(nomeLabel);
     nomeRow.setAlignment(Pos.CENTER);
 
-    Label dataLabel = new Label("Data");
+    Label dataLabel = new Label("Data do evento");
 
     TextField dataTextField = new TextField();
     dataTextField.setText(evento.getData().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
@@ -75,11 +80,12 @@ public class ProximosEventosController implements Initializable {
     dataTextField.setAlignment(Pos.CENTER);
 
     Button dataButton = new Button("Editar");
+    dataButton.getStyleClass().add("edit-button");
     dataButton.setOnAction(event -> createDateDialog(evento, dataTextField));
     HBox dataRow = new HBox(10, dataTextField, dataButton);
     HBox.setHgrow(dataTextField, Priority.ALWAYS);
 
-    Label duracaoLabel = new Label("Duração");
+    Label duracaoLabel = new Label("Duração do evento");
 
     TextField duracaoTextField = new TextField();
     duracaoTextField.setText(evento.getDuracao().toString());
@@ -87,13 +93,16 @@ public class ProximosEventosController implements Initializable {
     duracaoTextField.setAlignment(Pos.CENTER);
 
     Button duracaoButton = new Button("Editar");
+    duracaoButton.getStyleClass().add("edit-button");
     duracaoButton.setOnAction(event -> createDuracaoDialog(evento, duracaoTextField));
+
     HBox duracaoRow = new HBox(10, duracaoTextField, duracaoButton);
     HBox.setHgrow(duracaoTextField, Priority.ALWAYS);
 
     Label participantesLabel = new Label("Participantes");
+
     TextField participantesTextField = new TextField();
-    participantesTextField.setText(String.valueOf(evento.getQuantidadeParticipantes()));
+    participantesTextField.setText(String.valueOf(eventosUsuarioService.buscarParticipantesEvento(evento.getId())));
     participantesTextField.setEditable(false);
     participantesTextField.setAlignment(Pos.CENTER);
 
@@ -104,14 +113,32 @@ public class ProximosEventosController implements Initializable {
     statusTextField.setEditable(false);
     statusTextField.setAlignment(Pos.CENTER);
 
-    Button statusButton = new Button("Cancelar");
-    statusButton.setDisable(true);
+    Label prioridadeLabel = new Label("Prioridade do evento");
+
+    TextField prioridadeTextField = new TextField();
+    prioridadeTextField.setText(evento.getPrioridade().getDescricao());
+    prioridadeTextField.setEditable(false);
+    prioridadeTextField.setAlignment(Pos.CENTER);
+
+    Button cancelButton = new Button("Cancelar evento");
+    cancelButton.getStyleClass().add("edit-button");
+    cancelButton.setDisable(true);
+
+    Image image = new Image(getClass().getResource("/icons/close.png").toExternalForm());
+
+    ImageView icon = new ImageView(image);
+    icon.setFitHeight(25);
+    icon.setFitWidth(25);
+
+    cancelButton.setGraphic(icon);
+    cancelButton.setGraphicTextGap(7.5);
+    cancelButton.setContentDisplay(ContentDisplay.RIGHT);
 
     StatusEventoEnum status = StatusEventoEnum.parse(statusTextField.getText());
 
     if (status.equals(StatusEventoEnum.AGENDADO)) {
-      statusButton.setDisable(false);
-      statusButton.setOnAction(event -> actionCancelEvent(evento));
+      cancelButton.setDisable(false);
+      cancelButton.setOnAction(event -> actionCancelEvent(evento));
     }
 
     switch (status) {
@@ -135,9 +162,8 @@ public class ProximosEventosController implements Initializable {
     HBox participantesRow = new HBox(10);
     participantesRow.getChildren().addAll(colunaParticipantes, colunaStatus);
 
-    HBox statusRow = new HBox(statusButton);
-    statusButton.setMaxWidth(Double.MAX_VALUE);
-    HBox.setHgrow(statusButton, Priority.ALWAYS);
+    HBox cancelRow = new HBox(10, cancelButton);
+    cancelRow.setAlignment(Pos.CENTER_RIGHT);
 
     Region space1 = new Region();
     space1.setPrefWidth(10);
@@ -153,8 +179,10 @@ public class ProximosEventosController implements Initializable {
       duracaoLabel,
       duracaoRow,
       participantesRow,
+      prioridadeLabel,
+      prioridadeTextField,
       space2,
-      statusRow
+      cancelRow
     );
 
     return card;
@@ -166,6 +194,7 @@ public class ProximosEventosController implements Initializable {
     dialog.setHeaderText("Digite a nova data do evento");
     dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
     dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
+    dialog.getDialogPane().getStylesheets().add(getClass().getResource("/pages/Style.css").toExternalForm());
 
     Label dataAtualLabel = new Label("Data atual");
 
@@ -215,7 +244,7 @@ public class ProximosEventosController implements Initializable {
       eventoService.editarEvento(evento.getId(), evento);
     }
     catch (ServiceException e) {
-      AlertUtils.showValidateAlert(e.getMessage());
+      AlertUtils.showWarningAlert(e.getMessage());
       dialog.close();
     }
     catch (Exception e) {
@@ -223,10 +252,10 @@ public class ProximosEventosController implements Initializable {
       dialog.close();
     }
 
-    AlertUtils.showSuccessAlert("Evento atualizado com sucesso. Uma notificação será enviada aos participantes.");
-
     cardsContent.getChildren().clear();
     fillPage();
+
+    AlertUtils.showSuccessAlert("Evento atualizado com sucesso. \nOs usuários inscritos serão notificados.");
 
     dialog.close();
   }
@@ -237,6 +266,7 @@ public class ProximosEventosController implements Initializable {
     dialog.setHeaderText("Digite a nova duração do evento");
     dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
     dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
+    dialog.getDialogPane().getStylesheets().add(getClass().getResource("/pages/Style.css").toExternalForm());
 
     Label duracaoAtualLabel = new Label("Duração atual");
 
@@ -272,34 +302,6 @@ public class ProximosEventosController implements Initializable {
     dialog.show();
   }
 
-  private void actionCancelEvent(Evento evento) {
-    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-    alert.setTitle("Confirmação");
-    alert.setHeaderText("Cancelar evento");
-    alert.setContentText("Deseja mesmo cancelar o evento %s ?".formatted(evento.getNome()));
-
-    alert.showAndWait().ifPresent(response -> {
-      if (response == ButtonType.OK) {
-        try {
-          eventoService.cancelarEvento(evento.getId());
-        }
-        catch (ServiceException e) {
-          AlertUtils.showValidateAlert(e.getMessage());
-          return;
-        }
-        catch (Exception e) {
-          AlertUtils.showErrorAlert("Ocorreu um erro durante o processamento.");
-          return;
-        }
-
-        AlertUtils.showSuccessAlert("Evento cancelado com sucesso. Uma notificação será enviada aos participantes.");
-
-        cardsContent.getChildren().clear();
-        fillPage();
-      }
-    });
-  }
-
   private void actionEditDuration(Evento evento, TextField novaDuracaoTextField, Dialog<Void> dialog) {
     String novaDuracao = novaDuracaoTextField.getText();
 
@@ -314,7 +316,7 @@ public class ProximosEventosController implements Initializable {
       eventoService.editarEvento(evento.getId(), evento);
     }
     catch (ServiceException e) {
-      AlertUtils.showValidateAlert(e.getMessage());
+      AlertUtils.showWarningAlert(e.getMessage());
       dialog.close();
     }
     catch (Exception e) {
@@ -322,12 +324,40 @@ public class ProximosEventosController implements Initializable {
       dialog.close();
     }
 
-    AlertUtils.showSuccessAlert("Evento atualizado com sucesso. Uma notificação será enviada aos participantes.");
-
     cardsContent.getChildren().clear();
     fillPage();
 
+    AlertUtils.showSuccessAlert("Evento atualizado com sucesso. \nOs usuários inscritos serão notificados.");
+
     dialog.close();
+  }
+
+  private void actionCancelEvent(Evento evento) {
+    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+    alert.setTitle("Confirmação");
+    alert.setHeaderText("Cancelar evento");
+    alert.setContentText("Deseja mesmo cancelar o evento %s ?".formatted(evento.getNome()));
+
+    alert.showAndWait().ifPresent(response -> {
+      if (response == ButtonType.OK) {
+        try {
+          eventoService.cancelarEvento(evento.getId());
+        }
+        catch (ServiceException e) {
+          AlertUtils.showWarningAlert(e.getMessage());
+          return;
+        }
+        catch (Exception e) {
+          AlertUtils.showErrorAlert("Ocorreu um erro durante o processamento.");
+          return;
+        }
+
+        cardsContent.getChildren().clear();
+        fillPage();
+
+        AlertUtils.showSuccessAlert("Evento cancelado com sucesso. \nOs usuários inscritos serão notificados.");
+      }
+    });
   }
 
 }

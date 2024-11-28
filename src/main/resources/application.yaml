@@ -12,12 +12,6 @@ spring:
     hibernate:
       ddl-auto: create-drop
     show-sql: true
-# DOCUMENTATION CONFIGS
-springdoc:
-  swagger-ui:
-    path: /swagger-ui
-  api-docs:
-    path: /api-docs
 # OTHER CONFIGS
 server:
   port: 8080

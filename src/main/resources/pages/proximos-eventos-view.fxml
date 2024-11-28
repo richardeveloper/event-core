@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="741.0" prefWidth="1380.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.kafka.controllers.ProximosEventosController">
+   <children>
+      <Label layoutX="14.0" layoutY="39.0" prefHeight="38.0" prefWidth="1353.0" styleClass="title-page" text="PRÓXIMOS EVENTOS" />
+      <ScrollPane hbarPolicy="NEVER" layoutX="13.0" layoutY="98.0" prefHeight="628.0" prefWidth="1353.0">
+         <FlowPane fx:id="cardsContent" alignment="CENTER" columnHalignment="CENTER" hgap="10.0" prefHeight="559.0" prefWidth="1330.0" vgap="10.0" />
+      </ScrollPane>
+   </children>
+</AnchorPane>
