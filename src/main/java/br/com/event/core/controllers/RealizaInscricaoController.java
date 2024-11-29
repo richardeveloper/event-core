@@ -3,6 +3,7 @@ package br.com.event.core.controllers;
 import br.com.event.core.entities.Evento;
 import br.com.event.core.entities.EventosUsuario;
 import br.com.event.core.entities.Usuario;
+import br.com.event.core.exceptions.ServiceException;
 import br.com.event.core.services.EventoService;
 import br.com.event.core.services.EventosUsuarioService;
 import br.com.event.core.services.UsuarioService;
@@ -12,6 +13,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -69,59 +71,17 @@ public class RealizaInscricaoController implements Initializable {
     eventos = eventoService.buscarEventosAgendados();
     usuarios = usuarioService.buscarTodosUsuarios();
 
-    List<String> nomesEventos = eventos.stream().map(Evento::getNome).toList();
+    List<String> nomesEventos = eventos.stream()
+      .map(MaskUtils::applyInfoEventMask)
+      .toList();
+
     eventosComboBox.setItems(FXCollections.observableArrayList(nomesEventos));
-
-    eventosComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
-      observableUsuariosInscritos = FXCollections.observableArrayList();
-      observableUsuariosSemInscricao = FXCollections.observableArrayList();
-
-      Optional<Evento> eventoEncontrado = eventos.stream()
-        .filter(e -> e.getNome().equalsIgnoreCase(newValue))
-        .findAny();
-
-      if (eventoEncontrado.isPresent()) {
-        Evento e = eventoEncontrado.get();
-
-        List<EventosUsuario> eventosUsuarios = eventosUsuarioService.buscarTodosEventosPorEventoId(e.getId());
-
-        List<String> participantes = eventosUsuarios.stream()
-          .map(EventosUsuario::getUsuario)
-          .toList()
-          .stream()
-          .map(usuario -> MaskUtils.applyInfoUserMask(usuario.getMatricula(), usuario.getNome()))
-          .toList();
-
-        observableUsuariosInscritos.setAll(participantes);
-
-        List<String> nomesParticipantes = usuarios.stream()
-          .filter(usuario -> !participantes.contains(MaskUtils.applyInfoUserMask(usuario.getMatricula(), usuario.getNome())))
-          .toList()
-          .stream()
-          .map(usuario -> MaskUtils.applyInfoUserMask(usuario.getMatricula(), usuario.getNome()))
-          .toList();
-
-        observableUsuariosSemInscricao.addAll(nomesParticipantes);
-
-        usuariosInscritos.setItems(observableUsuariosInscritos);
-        usuariosSemInscricao.setItems(observableUsuariosSemInscricao);
-      }
-    });
+    eventosComboBox.valueProperty().addListener(this::eventosComboBoxAction);
 
     usuariosSemInscricao.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     usuariosInscritos.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-    saveButton.getStyleClass().add("edit-button");
-
-    Image image = new Image(getClass().getResource("/icons/save.png").toExternalForm());
-
-    ImageView icon = new ImageView(image);
-    icon.setFitHeight(25);
-    icon.setFitWidth(25);
-
-    saveButton.setGraphic(icon);
-    saveButton.setGraphicTextGap(7.5);
-    saveButton.setContentDisplay(ContentDisplay.RIGHT);
+    configSaveButton();
   }
 
   @FXML
@@ -144,7 +104,6 @@ public class RealizaInscricaoController implements Initializable {
 
   @FXML
   protected void finalizarInscricoes(ActionEvent event) {
-
     if (eventosComboBox.getSelectionModel().getSelectedItem() == null) {
       AlertUtils.showValidateAlert("É necessário selecionar um evento para inscrever os usuários.");
       return;
@@ -153,7 +112,7 @@ public class RealizaInscricaoController implements Initializable {
     String selectedItem = eventosComboBox.getSelectionModel().getSelectedItem();
 
     Optional<Evento> eventoEncontrado = eventos.stream()
-      .filter(e -> e.getNome().equalsIgnoreCase(selectedItem))
+      .filter(e -> e.getNome().equalsIgnoreCase(MaskUtils.removeInfoEventMask(selectedItem)))
       .findAny();
 
     if (eventoEncontrado.isPresent()) {
@@ -164,7 +123,19 @@ public class RealizaInscricaoController implements Initializable {
       for (String item : inscritos) {
         item = MaskUtils.removeInfoUserMask(item);
         Usuario usuario = usuarioService.buscarUsuarioPorNome(item);
-        eventosUsuarioService.realizarInscricao(usuario.getId(), evento.getId());
+
+        try {
+          eventosUsuarioService.realizarInscricao(usuario.getId(), evento.getId());
+        }
+        catch (ServiceException e) {
+          AlertUtils.showWarningAlert(e.getMessage());
+          return;
+        }
+        catch (Exception e) {
+          log.error(e.getMessage(), e);
+          AlertUtils.showErrorAlert("Ocorreu um erro durante o processamento.");
+          return;
+        }
       }
 
       List<String> naoInscritos = usuariosSemInscricao.getItems().stream().toList();
@@ -172,7 +143,19 @@ public class RealizaInscricaoController implements Initializable {
       for (String item : naoInscritos) {
         item = MaskUtils.removeInfoUserMask(item);
         Usuario usuario = usuarioService.buscarUsuarioPorNome(item);
-        eventosUsuarioService.cancelarInscricao(usuario.getId(), evento.getId());
+
+        try {
+          eventosUsuarioService.cancelarInscricao(usuario.getId(), evento.getId());
+        }
+        catch (ServiceException e) {
+          AlertUtils.showWarningAlert(e.getMessage());
+          return;
+        }
+        catch (Exception e) {
+          log.error(e.getMessage(), e);
+          AlertUtils.showErrorAlert("Ocorreu um erro durante o processamento.");
+          return;
+        }
       }
 
       usuariosSemInscricao.getItems().clear();
@@ -185,4 +168,54 @@ public class RealizaInscricaoController implements Initializable {
     }
   }
 
+  private void eventosComboBoxAction(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+    observableUsuariosInscritos = FXCollections.observableArrayList();
+    observableUsuariosSemInscricao = FXCollections.observableArrayList();
+
+    Optional<Evento> eventoEncontrado = eventos.stream()
+      .filter(e -> e.getNome().equalsIgnoreCase(MaskUtils.removeInfoEventMask(newValue)))
+      .findAny();
+
+    if (eventoEncontrado.isPresent()) {
+      Evento e = eventoEncontrado.get();
+
+      List<EventosUsuario> eventosUsuarios = eventosUsuarioService.buscarTodosEventosPorEventoId(
+        e.getId());
+
+      List<String> participantes = eventosUsuarios.stream()
+        .map(EventosUsuario::getUsuario)
+        .toList()
+        .stream()
+        .map(MaskUtils::applyInfoUserMask)
+        .toList();
+
+      observableUsuariosInscritos.setAll(participantes);
+
+      List<String> nomesParticipantes = usuarios.stream()
+        .filter(usuario -> !participantes.contains(MaskUtils.applyInfoUserMask(usuario)))
+        .toList()
+        .stream()
+        .map(MaskUtils::applyInfoUserMask)
+        .toList();
+
+      observableUsuariosSemInscricao.addAll(nomesParticipantes);
+
+      usuariosInscritos.setItems(observableUsuariosInscritos);
+      usuariosSemInscricao.setItems(observableUsuariosSemInscricao);
+    }
+  }
+
+  private void configSaveButton() {
+    saveButton.getStyleClass().add("edit-button");
+
+    Image image = new Image(getClass().getResource("/icons/save.png").toExternalForm());
+
+    ImageView icon = new ImageView(image);
+    icon.setFitHeight(25);
+    icon.setFitWidth(25);
+
+    saveButton.setGraphic(icon);
+    saveButton.setGraphicTextGap(7.5);
+    saveButton.setContentDisplay(ContentDisplay.RIGHT);
+  }
 }

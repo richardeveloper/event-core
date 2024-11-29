@@ -2,6 +2,9 @@ package br.com.event.core.utils;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Dialog;
+import javafx.stage.Screen;
+import javafx.stage.Stage;
 
 public class AlertUtils {
 
@@ -10,6 +13,7 @@ public class AlertUtils {
     alert.setTitle("Aviso");
     alert.setHeaderText("Campo inválido");
     alert.setContentText(message);
+    alert.setOnShown(event -> positionAlert(alert));
 
     alert.showAndWait();
   }
@@ -19,6 +23,7 @@ public class AlertUtils {
     alert.setTitle("Aviso");
     alert.setHeaderText("Dados inconsistentes encontrados");
     alert.setContentText(message);
+    alert.setOnShown(event -> positionAlert(alert));
 
     alert.showAndWait();
   }
@@ -28,6 +33,7 @@ public class AlertUtils {
     alert.setTitle("Sucesso");
     alert.setHeaderText("Operação finalizada");
     alert.setContentText(message);
+    alert.setOnShown(event -> positionAlert(alert));
 
     alert.showAndWait();
   }
@@ -37,6 +43,7 @@ public class AlertUtils {
     alert.setTitle("Erro");
     alert.setHeaderText("Não foi possível completar a solicitação");
     alert.setContentText(message);
+    alert.setOnShown(event -> positionAlert(alert));
 
     alert.showAndWait();
   }
@@ -46,6 +53,7 @@ public class AlertUtils {
     alert.setTitle("Confirmação");
     alert.setHeaderText("Excluir usuário");
     alert.setContentText(String.format("Deseja realmente apagar o usuário %s ?", name));
+    alert.setOnShown(event -> positionAlert(alert));
 
     return alert;
   }
@@ -55,6 +63,7 @@ public class AlertUtils {
     alert.setTitle("Confirmação");
     alert.setHeaderText("Excluir evento");
     alert.setContentText(String.format("Deseja realmente apagar o evento %s ?", name));
+    alert.setOnShown(event -> positionAlert(alert));
 
     return alert;
   }
@@ -64,9 +73,21 @@ public class AlertUtils {
     alert.setTitle("Confirmação");
     alert.setHeaderText("Cancelar inscrição");
     alert.setContentText(String.format("Deseja realmente cancelar a inscrição no evento %s ?", name));
+    alert.setOnShown(event -> positionAlert(alert));
 
     return alert;
   }
 
+  public static void positionAlert(Alert alert) {
+    Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+    stage.setX(890);
+    stage.setY(430);
+  }
+
+  public static void positionDialog(Dialog<?> dialog) {
+    Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
+    stage.setX(950);
+    stage.setY(390);
+  }
 
 }

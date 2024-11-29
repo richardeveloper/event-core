@@ -1,5 +1,9 @@
 package br.com.event.core.utils;
 
+import br.com.event.core.entities.Evento;
+import br.com.event.core.entities.Usuario;
+import br.com.event.core.enums.TipoUsuarioEnum;
+
 public class MaskUtils {
 
   private static final String REGEX_DIFFERENT_NUMBERS = "\\D";
@@ -108,14 +112,35 @@ public class MaskUtils {
     return newValue;
   }
 
-  public static String applyInfoUserMask(String matricula, String nome) {
-    return matricula.concat(" - ").concat(nome);
+  public static String applyInfoUserMask(Usuario usuario) {
+    if (usuario.getTipoUsuario().equals(TipoUsuarioEnum.VISITANTE)) {
+      return "%s - %s".formatted(usuario.getTipoUsuario().getDescricao(), usuario.getNome());
+    }
+
+    return "[%s] %s - %s".formatted(usuario.getTipoUsuario().getDescricao(), usuario.getMatricula(), usuario.getNome());
   }
 
-  public static String removeInfoUserMask(String campoMatricula) {
-    campoMatricula = campoMatricula.replace(" - ", "-");
-    int index = campoMatricula.indexOf("-");
-    return campoMatricula.substring(index + 1);
+  public static String removeInfoUserMask(String infoUsuario) {
+    if (infoUsuario.contains("[") && infoUsuario.contains("]")) {
+      infoUsuario = infoUsuario.substring(infoUsuario.indexOf("]") + 1);
+    }
+
+    infoUsuario = infoUsuario.trim().replace(" - ", "-");
+    int index = infoUsuario.indexOf("-");
+    return infoUsuario.substring(index + 1);
+  }
+
+  public static String applyInfoEventMask(Evento evento) {
+    return "[%s] - %s".formatted(evento.getPrioridade().getDescricao(), evento.getNome());
+  }
+
+  public static String removeInfoEventMask(String infoEvento) {
+    if (infoEvento == null) {
+      return null;
+    }
+
+    infoEvento = infoEvento.substring(infoEvento.indexOf("]") + 1);
+    return infoEvento.replace(" - ", "");
   }
 
   public static String removeMask(String value) {

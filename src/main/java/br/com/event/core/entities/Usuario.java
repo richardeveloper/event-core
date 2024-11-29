@@ -42,5 +42,4 @@ public class Usuario {
   @Enumerated(EnumType.STRING)
   private TipoUsuarioEnum tipoUsuario;
 
-
 }

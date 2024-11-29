@@ -15,8 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -64,14 +62,13 @@ public class ConsultaInscricoesController implements Initializable {
     usuariosListView.setPlaceholder(new Label("Nenhum usuário encontrado"));
     cardsContent.getChildren().add(new Label("Selecione um usuário para listar suas inscrições"));
 
-    nomeTextField.textProperty().addListener(
-      (observableValue, oldValue, newValue) -> {
+    nomeTextField.textProperty().addListener((observableValue, oldValue, newValue) -> {
       if (newValue != null && !newValue.isEmpty()) {
         usuarios = usuarioService.buscarTodosUsuariosPorNome(newValue);
 
         List<String> nomesUsuarios = usuarios
           .stream()
-          .map(usuario -> MaskUtils.applyInfoUserMask(usuario.getMatricula(), usuario.getNome()))
+          .map(MaskUtils::applyInfoUserMask)
           .toList();
 
         if (!usuarios.isEmpty()) {
@@ -88,9 +85,8 @@ public class ConsultaInscricoesController implements Initializable {
       cardsContent.getChildren().add(new Label("Selecione um usuário para listar suas inscrições"));
     });
 
-    usuariosListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
-      @Override
-      public void changed(ObservableValue<? extends String> observableValue, String oldValue, String newValue) {
+    usuariosListView.getSelectionModel().selectedItemProperty().addListener(
+      (observableValue, oldValue, newValue) -> {
         if (newValue != null && !newValue.isEmpty()) {
           Optional<Usuario> usuarioEncontrado = usuarios.stream()
             .filter(usuario -> usuario.getNome().equalsIgnoreCase(MaskUtils.removeInfoUserMask(newValue)))
@@ -118,11 +114,14 @@ public class ConsultaInscricoesController implements Initializable {
             cardsContent.getChildren().add(new Label("Selecione um usuário para listar suas inscrições"));
           }
         }
-      }
-    });
+      });
   }
 
   private void fillContentCards(List<Evento> eventos) {
+    if (eventos.isEmpty()) {
+      cardsContent.getChildren().add(new Label("Nenhum evento foi encontrado"));
+    }
+
     for (Evento evento : eventos) {
       VBox card = createCard(evento);
       cardsContent.getChildren().add(card);
@@ -157,7 +156,7 @@ public class ConsultaInscricoesController implements Initializable {
 
     TextField prioridadeTextField = new TextField();
     prioridadeTextField.setText(evento.getPrioridade().getDescricao());
-    prioridadeTextField.setDisable(false);
+    prioridadeTextField.setEditable(false);
     prioridadeTextField.setAlignment(Pos.CENTER);
 
     Label statusLabel = new Label("Status");
@@ -166,7 +165,7 @@ public class ConsultaInscricoesController implements Initializable {
     statusTextField.setText(evento.getStatus().getDescricao());
     statusTextField.setEditable(false);
     statusTextField.setAlignment(Pos.CENTER);
-
+    statusTextField.setPrefColumnCount(evento.getStatus().getDescricao().length());
 
     StatusEventoEnum status = StatusEventoEnum.parse(statusTextField.getText());
 
@@ -210,8 +209,7 @@ public class ConsultaInscricoesController implements Initializable {
           Usuario usuario;
 
           try {
-             usuario = usuarioService.buscarUsuarioPorNome(nomeUsuario);
-
+            usuario = usuarioService.buscarUsuarioPorNome(nomeUsuario);
             eventosUsuarioService.cancelarInscricao(usuario.getId(), evento.getId());
           }
           catch (ServiceException e) {

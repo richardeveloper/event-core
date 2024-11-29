@@ -36,7 +36,7 @@
 }
 
 .scroll-bar:vertical {
-  -fx-pref-width: 15px;
+  -fx-pref-width: 20px;
 }
 
 .dialog-pane .button:default {
@@ -60,7 +60,7 @@
 }
 
 /*
-    MY STYLES
+    CUSTOM STYLES
 */
 .title-header {
   -fx-font-size: 32px;
@@ -113,7 +113,8 @@
 
 .card {
   -fx-background-color: white;
-  -fx-border-color: #393E46;
+  /*-fx-border-color: #393E46;*/
+  -fx-border-color: rgba(0, 0, 0, 0.40);
   -fx-border-width: 2px;
   -fx-border-radius: 5px;
   -fx-background-radius: 5px;
@@ -162,4 +163,12 @@
 
 .delete-button:hover {
   -fx-background-color: #c80133;
+}
+
+.fill-content {
+  -fx-background-color: white;
+  -fx-border-color: rgba(0, 0, 0, 0.20);
+  -fx-border-radius: 5px;
+  -fx-background-radius: 5px;
+  -fx-border-width: 2px;
 }

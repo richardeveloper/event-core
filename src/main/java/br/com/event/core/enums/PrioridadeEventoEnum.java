@@ -7,7 +7,9 @@ public enum PrioridadeEventoEnum {
 
   ABERTO("Aberto ao público"),
   OBRIGATORIO_ALUNOS("Obrigatório para alunos"),
-  OBRIGATORIO_PROFESSORES("Obrigatório para professores");
+  OBRIGATORIO_PROFESSORES("Obrigatório para professores"),
+  SOMENTE_ALUNOS("Somente para alunos"),
+  SOMENTE_PROFESSORES("Somente para professores");
 
   private final String descricao;
 

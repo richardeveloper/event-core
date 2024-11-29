@@ -11,12 +11,14 @@ import java.net.URL;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -37,6 +39,21 @@ public class ConsultaEventosController implements Initializable {
   @FXML
   private FlowPane cardsContent;
 
+  @FXML
+  private CheckBox filtroAgendadosCheckBox;
+
+  @FXML
+  private CheckBox filtroCanceladosCheckBox;
+
+  @FXML
+  private CheckBox filtroFinalizadosCheckBox;
+
+  @FXML
+  private CheckBox filtroTodosCheckBox;
+
+  @FXML
+  private ImageView filterIcon;
+
   @Autowired
   private EventoService eventoService;
 
@@ -46,15 +63,45 @@ public class ConsultaEventosController implements Initializable {
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
     fillContentCards();
+    configFilterIcon();
+
+    filtroAgendadosCheckBox.selectedProperty().addListener(this::filtroAgendadosAction);
+    filtroCanceladosCheckBox.selectedProperty().addListener(this::filtroCanceladosAction);
+    filtroFinalizadosCheckBox.selectedProperty().addListener(this::filtroFinalizadosAction);
+    filtroTodosCheckBox.selectedProperty().addListener(this::filtroTodosAction);
   }
 
   private void fillContentCards() {
     List<Evento> eventos = eventoService.buscarTodosEventos();
 
+    if (eventos.isEmpty()) {
+      cardsContent.getChildren().add(new Label("Nenhum evento foi encontrado"));
+    }
+
     for (Evento evento : eventos) {
       VBox card = createCard(evento);
       cardsContent.getChildren().add(card);
     }
+  }
+
+  private void fillContentCards(List<Evento> eventos) {
+    cardsContent.getChildren().clear();
+
+    if (eventos.isEmpty()) {
+      cardsContent.getChildren().add(new Label("Nenhum evento foi encontrado"));
+    }
+
+    for (Evento evento : eventos) {
+      VBox card = createCard(evento);
+      cardsContent.getChildren().add(card);
+    }
+  }
+
+  private void configFilterIcon() {
+    Image image = new Image(getClass().getResource("/icons/filter.png").toExternalForm());
+    filterIcon.setImage(image);
+    filterIcon.setFitWidth(20);
+    filterIcon.setFitHeight(20);
   }
 
   private VBox createCard(Evento evento) {
@@ -85,7 +132,7 @@ public class ConsultaEventosController implements Initializable {
 
     TextField prioridadeTextField = new TextField();
     prioridadeTextField.setText(evento.getPrioridade().getDescricao());
-    prioridadeTextField.setDisable(false);
+    prioridadeTextField.setEditable(false);
     prioridadeTextField.setAlignment(Pos.CENTER);
 
     Label participantesLabel = new Label("Participantes");
@@ -151,7 +198,23 @@ public class ConsultaEventosController implements Initializable {
           }
 
           cardsContent.getChildren().clear();
-          fillContentCards();
+
+          if (filtroAgendadosCheckBox.isSelected()) {
+            filtroAgendadosCheckBox.setSelected(false);
+            filtroAgendadosCheckBox.setSelected(true);
+          }
+          else if (filtroCanceladosCheckBox.isSelected()) {
+            filtroCanceladosCheckBox.setSelected(false);
+            filtroCanceladosCheckBox.setSelected(true);
+          }
+          else if (filtroFinalizadosCheckBox.isSelected()) {
+            filtroFinalizadosCheckBox.setSelected(false);
+            filtroFinalizadosCheckBox.setSelected(true);
+          }
+          else {
+            filtroTodosCheckBox.setSelected(false);
+            filtroTodosCheckBox.setSelected(true);
+          }
 
           AlertUtils.showSuccessAlert("Evento apagado com sucesso.");
         }
@@ -196,4 +259,59 @@ public class ConsultaEventosController implements Initializable {
     return row;
   }
 
+  private void filtroAgendadosAction(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+    if (newValue) {
+      filtroCanceladosCheckBox.setSelected(false);
+      filtroFinalizadosCheckBox.setSelected(false);
+      filtroTodosCheckBox.setSelected(false);
+
+      filtroAgendadosCheckBox.setSelected(true);
+
+      List<Evento> eventos = eventoService.buscarTodosEventosPorStatus(StatusEventoEnum.AGENDADO);
+
+      fillContentCards(eventos);
+    }
+  }
+
+  private void filtroCanceladosAction(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+    if (newValue) {
+      filtroAgendadosCheckBox.setSelected(false);
+      filtroFinalizadosCheckBox.setSelected(false);
+      filtroTodosCheckBox.setSelected(false);
+
+      filtroCanceladosCheckBox.setSelected(true);
+
+      List<Evento> eventos = eventoService.buscarTodosEventosPorStatus(StatusEventoEnum.CANCELADO);
+
+      fillContentCards(eventos);
+    }
+  }
+
+  private void filtroFinalizadosAction(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+    if (newValue) {
+      filtroAgendadosCheckBox.setSelected(false);
+      filtroCanceladosCheckBox.setSelected(false);
+      filtroTodosCheckBox.setSelected(false);
+
+      filtroFinalizadosCheckBox.setSelected(true);
+
+      List<Evento> eventos = eventoService.buscarTodosEventosPorStatus(StatusEventoEnum.FINALIZADO);
+
+      fillContentCards(eventos);
+    }
+  }
+
+  private void filtroTodosAction(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+    if (newValue) {
+      filtroAgendadosCheckBox.setSelected(false);
+      filtroCanceladosCheckBox.setSelected(false);
+      filtroFinalizadosCheckBox.setSelected(true);
+
+      filtroTodosCheckBox.setSelected(true);
+
+      List<Evento> eventos = eventoService.buscarTodosEventos();
+
+      fillContentCards(eventos);
+    }
+  }
 }

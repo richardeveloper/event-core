@@ -13,6 +13,12 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
   boolean existsByNome(String nome);
 
+  boolean existsByCpf(String cpf);
+
+  boolean existsByEmail(String email);
+
+  boolean existsByTelefone(String telefone);
+
   Optional<Usuario> findByNome(String nome);
 
   List<Usuario> findByTipoUsuario(TipoUsuarioEnum tipoUsuario);

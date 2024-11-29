@@ -64,16 +64,16 @@ public class HomeController implements Initializable {
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
     setupIcons();
+    redirectProximosEventosPage();
   }
 
   @FXML
   protected void redirectProximosEventosPage() {
     try {
-      FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
-        "/pages/proximos-eventos-view.fxml"));
+      FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/pages/proximos-eventos-view.fxml"));
       fxmlLoader.setControllerFactory(applicationContext::getBean);
 
-      AnchorPane novoContent = fxmlLoader.load();;
+      AnchorPane novoContent = fxmlLoader.load();
       disableAllButtons();
       proximosEventos.getStyleClass().add("menu-sub-item-on");
 
@@ -88,8 +88,7 @@ public class HomeController implements Initializable {
   @FXML
   protected void redirectRealizarInscricaoPage() {
     try {
-      FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
-        "/pages/realiza-inscricao-view.fxml"));
+      FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/pages/realiza-inscricao-view.fxml"));
       fxmlLoader.setControllerFactory(applicationContext::getBean);
 
       AnchorPane novoContent = fxmlLoader.load();

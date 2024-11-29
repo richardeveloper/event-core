@@ -1,6 +1,7 @@
 package br.com.event.core.controllers;
 
 import br.com.event.core.entities.Usuario;
+import br.com.event.core.enums.TipoUsuarioEnum;
 import br.com.event.core.exceptions.ServiceException;
 import br.com.event.core.services.UsuarioService;
 import br.com.event.core.utils.AlertUtils;
@@ -8,12 +9,14 @@ import br.com.event.core.utils.MaskUtils;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -24,7 +27,6 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -34,21 +36,66 @@ public class ConsultaUsuariosController implements Initializable {
   @FXML
   private FlowPane cardsContent;
 
+  @FXML
+  private CheckBox filtroAlunosCheckBox;
+
+  @FXML
+  private CheckBox filtroProfessoresCheckBox;
+
+  @FXML
+  private CheckBox filtroVisitantesCheckBox;
+
+  @FXML
+  private CheckBox filtroTodosCheckBox;
+
+  @FXML
+  private ImageView filterIcon;
+
   @Autowired
   private UsuarioService usuarioService;
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
     fillContentCards();
+    configFilterIcon();
+
+    filtroAlunosCheckBox.selectedProperty().addListener(this::filtroAlunosAction);
+    filtroProfessoresCheckBox.selectedProperty().addListener(this::filtroProfessoresAction);
+    filtroVisitantesCheckBox.selectedProperty().addListener(this::filtroVisitantesAction);
+    filtroTodosCheckBox.selectedProperty().addListener(this::filtroTodosAction);
   }
 
   private void fillContentCards() {
     List<Usuario> usuarios = usuarioService.buscarTodosUsuarios();
 
+    if (usuarios.isEmpty()) {
+      cardsContent.getChildren().add(new Label("Nenhum usuário foi encontrado"));
+    }
+
     for (Usuario usuario : usuarios) {
       VBox card = createCard(usuario);
       cardsContent.getChildren().add(card);
     }
+  }
+
+  private void fillContentCards(List<Usuario> usuarios) {
+    cardsContent.getChildren().clear();
+
+    if (usuarios.isEmpty()) {
+      cardsContent.getChildren().add(new Label("Nenhum usuário foi encontrado"));
+    }
+
+    for (Usuario usuario : usuarios) {
+      VBox card = createCard(usuario);
+      cardsContent.getChildren().add(card);
+    }
+  }
+
+  private void configFilterIcon() {
+    Image image = new Image(getClass().getResource("/icons/filter.png").toExternalForm());
+    filterIcon.setImage(image);
+    filterIcon.setFitWidth(20);
+    filterIcon.setFitHeight(20);
   }
 
   private VBox createCard(Usuario usuario) {
@@ -72,7 +119,7 @@ public class ConsultaUsuariosController implements Initializable {
     Label matriculaLabel = new Label("Matrícula");
 
     TextField matriculaTextField = new TextField();
-    matriculaTextField.setText(usuario.getMatricula());
+    matriculaTextField.setText(usuario.getMatricula() != null ? usuario.getMatricula() : "-");
     matriculaTextField.setEditable(false);
     matriculaTextField.setAlignment(Pos.CENTER);
 
@@ -129,7 +176,23 @@ public class ConsultaUsuariosController implements Initializable {
           }
 
           cardsContent.getChildren().clear();
-          fillContentCards();
+
+          if (filtroAlunosCheckBox.isSelected()) {
+            filtroAlunosCheckBox.setSelected(false);
+            filtroAlunosCheckBox.setSelected(true);
+          }
+          else if (filtroProfessoresCheckBox.isSelected()) {
+            filtroProfessoresCheckBox.setSelected(false);
+            filtroProfessoresCheckBox.setSelected(true);
+          }
+          else if (filtroVisitantesCheckBox.isSelected()) {
+            filtroVisitantesCheckBox.setSelected(false);
+            filtroVisitantesCheckBox.setSelected(true);
+          }
+          else {
+            filtroTodosCheckBox.setSelected(false);
+            filtroTodosCheckBox.setSelected(true);
+          }
 
           AlertUtils.showSuccessAlert("Usuário apagado com sucesso.");
         }
@@ -174,4 +237,62 @@ public class ConsultaUsuariosController implements Initializable {
     return new HBox(10, firstColumn, secondColumn);
   }
 
+  private void filtroAlunosAction(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+    if (newValue) {
+      filtroProfessoresCheckBox.setSelected(false);
+      filtroVisitantesCheckBox.setSelected(false);
+      filtroTodosCheckBox.setSelected(false);
+
+      filtroAlunosCheckBox.setSelected(true);
+
+      List<Usuario> usuarios = usuarioService.buscarTodosUsuariosPorTipoUsuario(
+        TipoUsuarioEnum.ALUNO);
+
+      fillContentCards(usuarios);
+    }
+  }
+
+  private void filtroProfessoresAction(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+    if (newValue) {
+      filtroAlunosCheckBox.setSelected(false);
+      filtroVisitantesCheckBox.setSelected(false);
+      filtroTodosCheckBox.setSelected(false);
+
+      filtroProfessoresCheckBox.setSelected(true);
+
+      List<Usuario> usuarios = usuarioService.buscarTodosUsuariosPorTipoUsuario(
+        TipoUsuarioEnum.PROFESSOR);
+
+      fillContentCards(usuarios);
+    }
+  }
+
+  private void filtroVisitantesAction(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+    if (newValue) {
+      filtroAlunosCheckBox.setSelected(false);
+      filtroProfessoresCheckBox.setSelected(false);
+      filtroTodosCheckBox.setSelected(false);
+
+      filtroVisitantesCheckBox.setSelected(true);
+
+      List<Usuario> usuarios = usuarioService.buscarTodosUsuariosPorTipoUsuario(
+        TipoUsuarioEnum.VISITANTE);
+
+      fillContentCards(usuarios);
+    }
+  }
+
+  private void filtroTodosAction(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+    if (newValue) {
+      filtroAlunosCheckBox.setSelected(false);
+      filtroProfessoresCheckBox.setSelected(false);
+      filtroVisitantesCheckBox.setSelected(false);
+
+      filtroTodosCheckBox.setSelected(true);
+
+      List<Usuario> usuarios = usuarioService.buscarTodosUsuarios();
+
+      fillContentCards(usuarios);
+    }
+  }
 }

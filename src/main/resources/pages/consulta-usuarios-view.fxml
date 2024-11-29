@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="740.0" prefWidth="1297.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.event.core.controllers.ConsultaUsuariosController">
-   <children>
-      <Label layoutX="25.0" layoutY="36.0" prefHeight="38.0" prefWidth="1250.0" styleClass="title-page" text="USUÁRIOS" />
-      <ScrollPane hbarPolicy="NEVER" layoutX="13.0" layoutY="98.0" prefHeight="628.0" prefWidth="1250.0">
-         <FlowPane fx:id="cardsContent" alignment="CENTER" columnHalignment="CENTER" prefHeight="608.0" prefWidth="1228.0" vgap="20.0" hgap="20.0" />
-      </ScrollPane>
-   </children>
+<AnchorPane prefHeight="701.0" prefWidth="1297.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.event.core.controllers.ConsultaUsuariosController">
+   <Label layoutX="25.0" layoutY="18.0" prefHeight="38.0" prefWidth="1250.0" styleClass="title-page" text="USUÁRIOS" />
+   <ScrollPane hbarPolicy="NEVER" layoutX="14.0" layoutY="266.0" prefHeight="367.0" prefWidth="1250.0">
+      <FlowPane fx:id="cardsContent" alignment="TOP_CENTER" columnHalignment="CENTER" hgap="20.0" prefHeight="565.0" prefWidth="1228.0" vgap="20.0" />
+   </ScrollPane>
+   <Pane layoutX="314.0" layoutY="84.0" prefHeight="125.0" prefWidth="669.0" styleClass="fill-content">
+      <CheckBox fx:id="filtroAlunosCheckBox" layoutX="54.0" layoutY="75.0" mnemonicParsing="false" text="Alunos" />
+      <CheckBox fx:id="filtroProfessoresCheckBox" layoutX="202.0" layoutY="75.0" mnemonicParsing="false" text="Professores" />
+      <CheckBox fx:id="filtroVisitantesCheckBox" layoutX="384.0" layoutY="75.0" mnemonicParsing="false" text="Visitantes" />
+      <CheckBox fx:id="filtroTodosCheckBox" layoutX="552.0" layoutY="75.0" mnemonicParsing="false" text="Todos" />
+      <Label layoutX="319.0" layoutY="22.0" style="-fx-font-weight: bold; -fx-font-size: 18;" text="Filtros" />
+      <ImageView fx:id="filterIcon" fitHeight="28.0" fitWidth="29.0" layoutX="287.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" />
+   </Pane>
 </AnchorPane>

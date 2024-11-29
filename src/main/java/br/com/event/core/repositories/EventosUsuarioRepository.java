@@ -18,4 +18,5 @@ public interface EventosUsuarioRepository extends JpaRepository<EventosUsuario, 
   List<EventosUsuario> findAllByUsuarioId(Long usuarioId);
 
   int countEventosUsuarioByEventoId(Long eventoId);
+
 }

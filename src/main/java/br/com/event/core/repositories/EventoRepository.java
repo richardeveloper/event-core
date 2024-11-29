@@ -1,6 +1,7 @@
 package br.com.event.core.repositories;
 
 import br.com.event.core.entities.Evento;
+import br.com.event.core.enums.PrioridadeEventoEnum;
 import br.com.event.core.enums.StatusEventoEnum;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,7 +15,8 @@ public interface EventoRepository extends JpaRepository<Evento, Long> {
 
   List<Evento> findAllByStatus(StatusEventoEnum status);
 
+  List<Evento> findAllByPrioridade(PrioridadeEventoEnum prioridadeEvento);
+
   @Query(value = "SELECT evento FROM Evento evento ORDER BY evento.data")
   List<Evento> findAllOrderByData();
-
 }

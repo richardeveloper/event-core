@@ -14,7 +14,7 @@ public class EventCoreApplication extends Application {
 
   private static final String TITLE = "Event Core Application";
   private static final double WIDTH_SCREEN = 1580.0;
-  private static final double HEIGHT_SCREEN = 860.0;
+  private static final double HEIGHT_SCREEN = 820.0;
 
   private static ConfigurableApplicationContext applicationContext;
 

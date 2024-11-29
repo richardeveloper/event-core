@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="741.0" prefWidth="1279.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.event.core.controllers.ConsultaEventosController">
-   <children>
-      <Label layoutX="23.0" layoutY="41.0" prefHeight="38.0" prefWidth="1250.0" styleClass="title-page" text="EVENTOS" />
-      <ScrollPane hbarPolicy="NEVER" layoutX="13.0" layoutY="98.0" prefHeight="628.0" prefWidth="1250.0">
-         <FlowPane fx:id="cardsContent" alignment="CENTER" columnHalignment="CENTER"  prefHeight="608.0" prefWidth="1228.0" vgap="20.0" hgap="20.0" />
-      </ScrollPane>
-   </children>
+<AnchorPane prefHeight="667.0" prefWidth="1279.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.event.core.controllers.ConsultaEventosController">
+   <Label layoutX="23.0" layoutY="18.0" prefHeight="38.0" prefWidth="1250.0" styleClass="title-page" text="EVENTOS" />
+   <Pane layoutX="314.0" layoutY="88.0" prefHeight="125.0" prefWidth="669.0" styleClass="fill-content">
+      <CheckBox fx:id="filtroAgendadosCheckBox" layoutX="47.0" layoutY="75.0" mnemonicParsing="false" text="Agendado" />
+      <CheckBox fx:id="filtroCanceladosCheckBox" layoutX="209.0" layoutY="75.0" mnemonicParsing="false" text="Cancelado" />
+      <CheckBox fx:id="filtroFinalizadosCheckBox" layoutX="384.0" layoutY="75.0" mnemonicParsing="false" text="Finalizado" />
+      <CheckBox fx:id="filtroTodosCheckBox" layoutX="559.0" layoutY="75.0" mnemonicParsing="false" text="Todos" />
+      <Label layoutX="319.0" layoutY="22.0" style="-fx-font-weight: bold; -fx-font-size: 18;" text="Filtros" />
+      <ImageView fx:id="filterIcon" fitHeight="28.0" fitWidth="29.0" layoutX="287.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" />
+   </Pane>
+   <ScrollPane hbarPolicy="NEVER" layoutX="23.0" layoutY="257.0" prefHeight="370.0" prefWidth="1231.0">
+      <FlowPane fx:id="cardsContent" alignment="TOP_CENTER" columnHalignment="CENTER" hgap="20.0" prefHeight="350.0" prefWidth="1212.0" vgap="20.0" />
+   </ScrollPane>
 </AnchorPane>

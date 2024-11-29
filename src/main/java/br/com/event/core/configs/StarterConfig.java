@@ -40,7 +40,7 @@ public class StarterConfig implements CommandLineRunner {
   private JdbcTemplate jdbcTemplate;
 
   @Override
-  public void run(String... args) throws Exception {
+  public void run(String... args) {
     configSequence();
     configUsuarios();
     configEventos();
@@ -82,7 +82,7 @@ public class StarterConfig implements CommandLineRunner {
     usuario3.setCpf("15738582004");
     usuario3.setEmail("eduardo.ambrosio@yahoo.com.br");
     usuario3.setTelefone("80398763011");
-    usuario3.setTipoUsuario(TipoUsuarioEnum.ALUNO);
+    usuario3.setTipoUsuario(TipoUsuarioEnum.VISITANTE);
 
     Usuario usuario4 = new Usuario();
     usuario4.setNome("Raiumunda Cardoso de Freitas");
@@ -117,7 +117,7 @@ public class StarterConfig implements CommandLineRunner {
     usuario8.setCpf("04694988034");
     usuario8.setEmail("luana.janaina@gmail.com");
     usuario8.setTelefone("42114234713");
-    usuario8.setTipoUsuario(TipoUsuarioEnum.ALUNO);
+    usuario8.setTipoUsuario(TipoUsuarioEnum.VISITANTE);
 
     Usuario usuario9 = new Usuario();
     usuario9.setNome("Maria Helena Rodrigues");
@@ -166,29 +166,28 @@ public class StarterConfig implements CommandLineRunner {
     evento2.setData(LocalDateTime.now().plusDays(2).plusHours(4).minusMinutes(40));
     evento2.setDuracao(LocalTime.of(0, 50));
     evento2.setStatus(StatusEventoEnum.AGENDADO);
-    evento2.setPrioridade(PrioridadeEventoEnum.ABERTO);
+    evento2.setPrioridade(PrioridadeEventoEnum.OBRIGATORIO_ALUNOS);
 
     Evento evento3 = new Evento();
     evento3.setNome("Boas práticas no ensino a distância");
     evento3.setData(LocalDateTime.now().plusDays(1).plusHours(6));
     evento3.setDuracao(LocalTime.of(2, 10));
     evento3.setStatus(StatusEventoEnum.AGENDADO);
-//    evento3.setPrioridade(PrioridadeEventoEnum.OBRIGATORIO_PROFESSORES);
-    evento3.setPrioridade(PrioridadeEventoEnum.ABERTO);
+    evento3.setPrioridade(PrioridadeEventoEnum.OBRIGATORIO_PROFESSORES);
 
     Evento evento4 = new Evento();
     evento4.setNome("A Revolução dos Frameworks");
     evento4.setData(LocalDateTime.now().plusDays(10).plusHours(11).minusMinutes(30));
     evento4.setDuracao(LocalTime.of(1, 15));
     evento4.setStatus(StatusEventoEnum.AGENDADO);
-    evento4.setPrioridade(PrioridadeEventoEnum.ABERTO);
+    evento4.setPrioridade(PrioridadeEventoEnum.SOMENTE_ALUNOS);
 
     Evento evento5 = new Evento();
     evento5.setNome("Apresentação da ementa do curso");
     evento5.setData(LocalDateTime.now().plusDays(3).plusHours(3));
     evento5.setDuracao(LocalTime.of(1, 40));
     evento5.setStatus(StatusEventoEnum.AGENDADO);
-    evento5.setPrioridade(PrioridadeEventoEnum.OBRIGATORIO_ALUNOS);
+    evento5.setPrioridade(PrioridadeEventoEnum.SOMENTE_PROFESSORES);
 
     List<Evento> eventos = List.of(evento1, evento2, evento3, evento4, evento5);
 
