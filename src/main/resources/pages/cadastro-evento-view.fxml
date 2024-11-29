@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="527.0" prefWidth="719.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.kafka.controllers.CadastroEventoController">
+<AnchorPane prefHeight="527.0" prefWidth="719.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.event.core.controllers.CadastroEventoController">
    <children>
       <Label layoutX="25.0" layoutY="28.0" prefHeight="38.0" prefWidth="667.0" styleClass="title-page" text="CADASTRO DE EVENTO" />
 

@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="517.0" prefWidth="741.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.kafka.controllers.CadastroUsuarioController">
+<AnchorPane prefHeight="517.0" prefWidth="741.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.event.core.controllers.CadastroUsuarioController">
    <children>
       <Label layoutX="23.0" layoutY="37.0" prefHeight="38.0" prefWidth="686.0" styleClass="title-page" text="CADASTRO DE USUÁRIO" />
 

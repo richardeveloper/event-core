@@ -2,17 +2,21 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="707.0" prefWidth="1200.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.kafka.controllers.ConsultaInscricoesController">
+<AnchorPane prefHeight="727.0" prefWidth="1200.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.event.core.controllers.ConsultaInscricoesController">
    <children>
       <Label layoutX="28.0" layoutY="36.0" prefHeight="38.0" prefWidth="1142.0" styleClass="title-page" text="INSCRIÇÕES" />
-      <TextField fx:id="nomeTextField" alignment="CENTER" layoutX="28.0" layoutY="114.0" prefHeight="29.0" prefWidth="1142.0" />
-      <ListView fx:id="usuariosListView" layoutX="28.0" layoutY="194.0" prefHeight="135.0" prefWidth="1142.0" />
-      <Label layoutX="28.0" layoutY="84.0" text="Nome do usuário" />
-      <Label layoutX="28.0" layoutY="164.0" text="Usuários encontrados" />
-      <Label layoutX="28.0" layoutY="348.0" text="Eventos" />
-      <ScrollPane hbarPolicy="NEVER" layoutX="28.0" layoutY="386.0" prefHeight="290.0" prefWidth="1142.0">
-         <FlowPane fx:id="cardsContent" alignment="TOP_CENTER" columnHalignment="CENTER" hgap="10.0" prefHeight="275.0" prefWidth="1110.0" vgap="10.0" />
+      <TextField fx:id="nomeTextField" alignment="CENTER" layoutX="264.0" layoutY="120.0" prefHeight="29.0" prefWidth="672.0" />
+      <ListView fx:id="usuariosListView" layoutX="266.0" layoutY="194.0" prefHeight="135.0" prefWidth="672.0" />
+      <Label layoutX="264.0" layoutY="88.0" text="Nome do usuário" />
+      <Label layoutX="264.0" layoutY="163.0" text="Usuários encontrados" />
+      <Label layoutX="569.0" layoutY="363.0" text="Eventos">
+         <font>
+            <Font size="18.0" />
+         </font></Label>
+      <ScrollPane hbarPolicy="NEVER" layoutX="28.0" layoutY="404.0" prefHeight="290.0" prefWidth="1142.0">
+         <FlowPane fx:id="cardsContent" alignment="TOP_CENTER" columnHalignment="CENTER" prefHeight="275.0" prefWidth="1110.0" vgap="20.0" hgap="20.0" />
       </ScrollPane>
    </children>
 </AnchorPane>

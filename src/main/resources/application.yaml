@@ -1,8 +1,8 @@
-# SPRING CONFIGS
+# SPRING CONFIGURATIONS
 spring:
   application:
     name: event-core
-  # DATABASE CONFIGS
+# DATABASE CONFIGURATIONS
   datasource:
     url: jdbc:postgresql://localhost:5432/event_core
     username: postgres
@@ -11,7 +11,17 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create-drop
-    show-sql: true
-# OTHER CONFIGS
+# KAFKA CONFIGURATIONS
+kafka:
+  consumer:
+    bootstrap-servers: localhost:9092
+    group-id: event-core-consumer
+    key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+  producer:
+    bootstrap-servers: localhost:9092
+    key-deserializer: org.apache.kafka.common.serialization.StringSerializer
+    value-deserializer: org.apache.kafka.common.serialization.StringSerializer
+# OTHER CONFIGURATIONS
 server:
   port: 8080

@@ -1,0 +1,188 @@
+package br.com.event.core.controllers;
+
+import br.com.event.core.entities.Evento;
+import br.com.event.core.entities.EventosUsuario;
+import br.com.event.core.entities.Usuario;
+import br.com.event.core.services.EventoService;
+import br.com.event.core.services.EventosUsuarioService;
+import br.com.event.core.services.UsuarioService;
+import br.com.event.core.utils.AlertUtils;
+import br.com.event.core.utils.MaskUtils;
+import java.net.URL;
+import java.util.List;
+import java.util.Optional;
+import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Slf4j
+@Component
+public class RealizaInscricaoController implements Initializable {
+
+  @FXML
+  private ComboBox<String> eventosComboBox;
+
+  @FXML
+  private ListView<String> usuariosSemInscricao;
+
+  @FXML
+  private ListView<String> usuariosInscritos;
+
+  @FXML
+  private Button saveButton;
+
+  @Autowired
+  private EventoService eventoService;
+
+  @Autowired
+  private UsuarioService usuarioService;
+
+  @Autowired
+  private EventosUsuarioService eventosUsuarioService;
+
+  private List<Evento> eventos;
+
+  private List<Usuario> usuarios;
+
+  private ObservableList<String> observableUsuariosInscritos;
+
+  private ObservableList<String> observableUsuariosSemInscricao;
+
+  @Override
+  public void initialize(URL url, ResourceBundle resourceBundle) {
+    observableUsuariosInscritos = FXCollections.observableArrayList();
+    observableUsuariosSemInscricao = FXCollections.observableArrayList();
+
+    eventos = eventoService.buscarEventosAgendados();
+    usuarios = usuarioService.buscarTodosUsuarios();
+
+    List<String> nomesEventos = eventos.stream().map(Evento::getNome).toList();
+    eventosComboBox.setItems(FXCollections.observableArrayList(nomesEventos));
+
+    eventosComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+      observableUsuariosInscritos = FXCollections.observableArrayList();
+      observableUsuariosSemInscricao = FXCollections.observableArrayList();
+
+      Optional<Evento> eventoEncontrado = eventos.stream()
+        .filter(e -> e.getNome().equalsIgnoreCase(newValue))
+        .findAny();
+
+      if (eventoEncontrado.isPresent()) {
+        Evento e = eventoEncontrado.get();
+
+        List<EventosUsuario> eventosUsuarios = eventosUsuarioService.buscarTodosEventosPorEventoId(e.getId());
+
+        List<String> participantes = eventosUsuarios.stream()
+          .map(EventosUsuario::getUsuario)
+          .toList()
+          .stream()
+          .map(usuario -> MaskUtils.applyInfoUserMask(usuario.getMatricula(), usuario.getNome()))
+          .toList();
+
+        observableUsuariosInscritos.setAll(participantes);
+
+        List<String> nomesParticipantes = usuarios.stream()
+          .filter(usuario -> !participantes.contains(MaskUtils.applyInfoUserMask(usuario.getMatricula(), usuario.getNome())))
+          .toList()
+          .stream()
+          .map(usuario -> MaskUtils.applyInfoUserMask(usuario.getMatricula(), usuario.getNome()))
+          .toList();
+
+        observableUsuariosSemInscricao.addAll(nomesParticipantes);
+
+        usuariosInscritos.setItems(observableUsuariosInscritos);
+        usuariosSemInscricao.setItems(observableUsuariosSemInscricao);
+      }
+    });
+
+    usuariosSemInscricao.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+    usuariosInscritos.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+    saveButton.getStyleClass().add("edit-button");
+
+    Image image = new Image(getClass().getResource("/icons/save.png").toExternalForm());
+
+    ImageView icon = new ImageView(image);
+    icon.setFitHeight(25);
+    icon.setFitWidth(25);
+
+    saveButton.setGraphic(icon);
+    saveButton.setGraphicTextGap(7.5);
+    saveButton.setContentDisplay(ContentDisplay.RIGHT);
+  }
+
+  @FXML
+  protected void addButtonAction(ActionEvent event) {
+    ObservableList<String> usuarios = usuariosSemInscricao.getSelectionModel().getSelectedItems();
+    if (usuarios != null && !usuarios.isEmpty()) {
+      observableUsuariosInscritos.addAll(usuarios);
+      observableUsuariosSemInscricao.removeAll(usuarios);
+    }
+  }
+
+  @FXML
+  protected void removeButtonAction(ActionEvent event) {
+    ObservableList<String> usuarios = usuariosInscritos.getSelectionModel().getSelectedItems();
+    if (usuarios != null && !usuarios.isEmpty()) {
+      observableUsuariosSemInscricao.addAll(usuarios);
+      observableUsuariosInscritos.removeAll(usuarios);
+    }
+  }
+
+  @FXML
+  protected void finalizarInscricoes(ActionEvent event) {
+
+    if (eventosComboBox.getSelectionModel().getSelectedItem() == null) {
+      AlertUtils.showValidateAlert("É necessário selecionar um evento para inscrever os usuários.");
+      return;
+    }
+
+    String selectedItem = eventosComboBox.getSelectionModel().getSelectedItem();
+
+    Optional<Evento> eventoEncontrado = eventos.stream()
+      .filter(e -> e.getNome().equalsIgnoreCase(selectedItem))
+      .findAny();
+
+    if (eventoEncontrado.isPresent()) {
+      Evento evento = eventoEncontrado.get();
+
+      List<String> inscritos = usuariosInscritos.getItems().stream().toList();
+
+      for (String item : inscritos) {
+        item = MaskUtils.removeInfoUserMask(item);
+        Usuario usuario = usuarioService.buscarUsuarioPorNome(item);
+        eventosUsuarioService.realizarInscricao(usuario.getId(), evento.getId());
+      }
+
+      List<String> naoInscritos = usuariosSemInscricao.getItems().stream().toList();
+
+      for (String item : naoInscritos) {
+        item = MaskUtils.removeInfoUserMask(item);
+        Usuario usuario = usuarioService.buscarUsuarioPorNome(item);
+        eventosUsuarioService.cancelarInscricao(usuario.getId(), evento.getId());
+      }
+
+      usuariosSemInscricao.getItems().clear();
+      usuariosInscritos.getItems().clear();
+
+      eventosComboBox.getSelectionModel().clearSelection();
+      eventosComboBox.setPromptText("Selecione o evento");
+
+      AlertUtils.showSuccessAlert("Inscrições atualizadas com sucesso.");
+    }
+  }
+
+}

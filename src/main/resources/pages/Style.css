@@ -35,6 +35,10 @@
   -fx-background-color: #F0F3F6;
 }
 
+.scroll-bar:vertical {
+  -fx-pref-width: 15px;
+}
+
 .dialog-pane .button:default {
   -fx-text-fill: white;
   -fx-font-weight: bold;

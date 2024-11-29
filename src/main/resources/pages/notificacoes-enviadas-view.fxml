@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.event.core.controllers.NotificacoesEnviadasController">
+  <Label layoutX="21.0" layoutY="42.0" prefHeight="38.0" prefWidth="1154.0" styleClass="title-page" text="NOTIFICAÇÕES ENVIADAS" />
+   <TableView fx:id="notificacoesTableView" layoutX="24.0" layoutY="111.0" prefHeight="566.0" prefWidth="1154.0" />
+</AnchorPane>
