@@ -1,12 +1,12 @@
 package br.com.event.core.services.impl;
 
+import br.com.event.core.amqp.RabbitProducer;
 import br.com.event.core.entities.Evento;
 import br.com.event.core.entities.EventosUsuario;
 import br.com.event.core.entities.Usuario;
 import br.com.event.core.enums.TipoNotificacaoEnum;
 import br.com.event.core.enums.TipoUsuarioEnum;
 import br.com.event.core.exceptions.ServiceException;
-import br.com.event.core.kafka.KafkaProducer;
 import br.com.event.core.repositories.EventoRepository;
 import br.com.event.core.repositories.EventosUsuarioRepository;
 import br.com.event.core.repositories.UsuarioRepository;
@@ -27,16 +27,16 @@ public class EventosUsuarioServiceImpl implements EventosUsuarioService {
 
   private final EventoRepository eventoRepository;
 
-  private final KafkaProducer kafkaProducer;
+  private final RabbitProducer rabbitProducer;
 
   public EventosUsuarioServiceImpl(EventosUsuarioRepository eventosUsuarioRepository,
     UsuarioRepository usuarioRepository, EventoRepository eventoRepository,
-    KafkaProducer kafkaProducer) {
+    RabbitProducer rabbitProducer) {
 
     this.eventosUsuarioRepository = eventosUsuarioRepository;
     this.usuarioRepository = usuarioRepository;
     this.eventoRepository = eventoRepository;
-    this.kafkaProducer = kafkaProducer;
+    this.rabbitProducer = rabbitProducer;
   }
 
   @Override
@@ -76,7 +76,7 @@ public class EventosUsuarioServiceImpl implements EventosUsuarioService {
     String message = "%s sua inscrição no evento %s foi realizada com sucesso."
       .formatted(usuario.getNome(), evento.getNome());
 
-    kafkaProducer.sendMessage(TipoNotificacaoEnum.INSCRICAO_CONFIRMADA, message);
+    rabbitProducer.sendMessage(TipoNotificacaoEnum.INSCRICAO_CONFIRMADA, message);
   }
 
   @Override
@@ -102,7 +102,7 @@ public class EventosUsuarioServiceImpl implements EventosUsuarioService {
     String message = "%s sua inscrição no evento %s foi cancelada com sucesso."
       .formatted(usuario.getNome(), evento.getNome());
 
-    kafkaProducer.sendMessage(TipoNotificacaoEnum.INSCRICAO_CANCELADA, message);
+    rabbitProducer.sendMessage(TipoNotificacaoEnum.INSCRICAO_CANCELADA, message);
   }
 
   @Override

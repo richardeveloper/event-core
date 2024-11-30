@@ -87,7 +87,6 @@ public class CadastroEventoController implements Initializable {
     saveButton.setGraphic(icon);
     saveButton.setGraphicTextGap(7.5);
     saveButton.setContentDisplay(ContentDisplay.RIGHT);
-
   }
 
   @FXML

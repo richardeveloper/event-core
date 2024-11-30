@@ -3,7 +3,6 @@ package br.com.event.core.utils;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Dialog;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class AlertUtils {

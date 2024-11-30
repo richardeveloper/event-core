@@ -4,24 +4,19 @@ spring:
     name: event-core
 # DATABASE CONFIGURATIONS
   datasource:
-    url: jdbc:postgresql://localhost:5432/event_core
-    username: postgres
-    password: richardeveloper
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: create-drop
-# KAFKA CONFIGURATIONS
-kafka:
-  consumer:
-    bootstrap-servers: localhost:9092
-    group-id: event-core-consumer
-    key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-    value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-  producer:
-    bootstrap-servers: localhost:9092
-    key-deserializer: org.apache.kafka.common.serialization.StringSerializer
-    value-deserializer: org.apache.kafka.common.serialization.StringSerializer
+# RABBITMQ CONFIGURATIONS
+  rabbitmq:
+    port: 5672
+    host: localhost
+    username: guest
+    password: guest
 # OTHER CONFIGURATIONS
 server:
   port: 8080

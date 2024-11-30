@@ -1,5 +1,6 @@
 package br.com.event.core.services.impl;
 
+import br.com.event.core.amqp.RabbitProducer;
 import br.com.event.core.entities.Evento;
 import br.com.event.core.entities.EventosUsuario;
 import br.com.event.core.entities.Usuario;
@@ -8,7 +9,6 @@ import br.com.event.core.enums.StatusEventoEnum;
 import br.com.event.core.enums.TipoNotificacaoEnum;
 import br.com.event.core.enums.TipoUsuarioEnum;
 import br.com.event.core.exceptions.ServiceException;
-import br.com.event.core.kafka.KafkaProducer;
 import br.com.event.core.repositories.EventoRepository;
 import br.com.event.core.repositories.UsuarioRepository;
 import br.com.event.core.services.EventoService;
@@ -31,15 +31,15 @@ public class EventoServiceImpl implements EventoService {
 
   private final EventosUsuarioService eventosUsuarioService;
 
-  private final KafkaProducer kafkaProducer;
+  private final RabbitProducer rabbitProducer;
 
   public EventoServiceImpl(EventoRepository eventoRepository, UsuarioRepository usuarioRepository,
-    EventosUsuarioServiceImpl eventosUsuarioService, KafkaProducer kafkaProducer) {
+    EventosUsuarioServiceImpl eventosUsuarioService, RabbitProducer rabbitProducer) {
 
     this.eventoRepository = eventoRepository;
     this.usuarioRepository = usuarioRepository;
     this.eventosUsuarioService = eventosUsuarioService;
-    this.kafkaProducer = kafkaProducer;
+    this.rabbitProducer = rabbitProducer;
   }
 
   @Override
@@ -56,14 +56,10 @@ public class EventoServiceImpl implements EventoService {
       case OBRIGATORIO_ALUNOS -> {
         List<Usuario> alunos = usuarioRepository.findByTipoUsuario(TipoUsuarioEnum.ALUNO);
         alunos.forEach(aluno -> eventosUsuarioService.realizarInscricao(aluno.getId(), save.getId()));
-
-        log.info("Alunos cadastrados no evento {}.", evento.getNome());
       }
       case OBRIGATORIO_PROFESSORES -> {
         List<Usuario> professores = usuarioRepository.findByTipoUsuario(TipoUsuarioEnum.PROFESSOR);
         professores.forEach(professor -> eventosUsuarioService.realizarInscricao(professor.getId(), save.getId()));
-
-        log.info("Professores cadastrados no evento {}.", evento.getNome());
       }
     }
   }
@@ -101,7 +97,7 @@ public class EventoServiceImpl implements EventoService {
         );
 
         log.info("Enviando notificação de alteração de data do evento.");
-        kafkaProducer.sendMessage(TipoNotificacaoEnum.ALTERACAO_DATA_EVENTO, message);
+        rabbitProducer.sendMessage(TipoNotificacaoEnum.ALTERACAO_DATA_EVENTO, message);
       }
     }
   }
@@ -133,7 +129,7 @@ public class EventoServiceImpl implements EventoService {
         .formatted(usuario.getNome(), eventosUsuarios.get(0).getEvento().getNome());
 
       log.info("Enviando notificação de cancelamento de evento.");
-      kafkaProducer.sendMessage(TipoNotificacaoEnum.EVENTO_CANCELADO, message);
+      rabbitProducer.sendMessage(TipoNotificacaoEnum.EVENTO_CANCELADO, message);
     }
   }
 

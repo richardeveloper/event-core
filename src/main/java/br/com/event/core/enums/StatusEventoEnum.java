@@ -20,9 +20,9 @@ public enum StatusEventoEnum {
       return null;
     }
 
-    for (StatusEventoEnum tipoUsuarioEnum : StatusEventoEnum.values()) {
-      if (tipoUsuarioEnum.getDescricao().equalsIgnoreCase(descricao)) {
-        return tipoUsuarioEnum;
+    for (StatusEventoEnum statusEventoEnum : StatusEventoEnum.values()) {
+      if (statusEventoEnum.getDescricao().equalsIgnoreCase(descricao)) {
+        return statusEventoEnum;
       }
     }
 
