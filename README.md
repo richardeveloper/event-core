@@ -13,7 +13,7 @@
 ## Instruções
 
 <p align="justify">
-Você deverá desenvolver um sistema de mensageria utilizando RabbitMQ ou Kafka, integrando o mensageiro a um aplicativo JavaFX e a um banco de dados relacional (PostgreSQL ou outro de sua escolha). Este trabalho pode ser realizado individualmente ou em duplas, e o tema poderá ser escolhido dentre os listados abaixo.
+Você deverá desenvolver um sistema de mensageria utilizando RabbitMQ ou Kafka, integrando o mensageiro a um aplicativo JavaFX e a um banco de dados relacional (PostgreSQL ou outro de sua escolha).
 </p>
 
 ## Arquitetura e Funcionalidades
@@ -24,15 +24,16 @@ Você deverá desenvolver um sistema de mensageria utilizando RabbitMQ ou Kafka,
 Alterações no banco de dados (inserção, exclusão, atualização) deverão ser realizadas por meio dos @RabbitListener ou @KafkaListener implementados no servidor.
 - O sistema deverá refletir as alterações em tempo real entre cliente e servidor, através das mensagens enviadas pelo mensageiro.
 
-## Motivação
+## Tema
 
 ### Organizador de Eventos e Palestras com Notificações
 
 <p align="justify"> 
-Permitir criar eventos/palestras, gerenciar a lista de participantes e enviar lembretes sobre horários ou mudanças de agenda. CRUD: Cadastro de eventos, participantes e notificações enviadas.
+Permitir criar eventos/palestras, gerenciar a lista de participantes e enviar lembretes sobre horários ou mudanças de agenda. 
 </p>
-
-<br>
+<p align="justify">
+CRUD: Cadastro de eventos, participantes e notificações enviadas.
+</p>
 
 > [!TIP]
 >
