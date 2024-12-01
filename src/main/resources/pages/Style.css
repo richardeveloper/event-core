@@ -1,16 +1,37 @@
 /*
     NATIVE STYLES
 */
+@font-face {
+  font-family: "Electrolize";
+  src: url("/fonts/Electrolize-Regular.ttf");
+}
+
+* {
+  -fx-font-family: "Electrolize";
+}
+
 .label {
-  -fx-font-size: 15px;
+  -fx-font-size: 18px;
 }
 
 .text-field {
-  -fx-font-size: 15px;
+  -fx-font-size: 18px;
 }
 
 .button {
-  -fx-font-size: 15px;
+  -fx-font-size: 18px;
+}
+
+.list-view {
+  -fx-font-size: 18px;
+}
+
+.check-box {
+  -fx-font-size: 16px;
+}
+
+.table-view {
+  -fx-font-size: 17px;
 }
 
 .button:hover {
@@ -18,7 +39,7 @@
 }
 
 .combo-box {
-  -fx-font-size: 15px;
+  -fx-font-size: 18px;
   -fx-min-height: 35px;
 }
 
@@ -75,7 +96,7 @@
 .main-menu-title {
   -fx-background-color: #393E46;
   -fx-text-fill: white;
-  -fx-font-size: 23px;
+  -fx-font-size: 24px;
   -fx-border-width: 0 0 3px 0;
   -fx-border-color: #F0F3F6;
   -fx-border-style: solid;
@@ -88,7 +109,7 @@
 .menu-item {
   -fx-background-color: #393E46;
   -fx-text-fill: white;
-  -fx-font-size: 20px;
+  -fx-font-size: 22px;
   -fx-padding: 10px 0px 10px 50px;
 }
 
@@ -99,8 +120,8 @@
 .menu-sub-item {
   -fx-background-color: #393E46;
   -fx-text-fill: #FAF0E6;
-  -fx-font-size: 18px;
-  -fx-padding: 15px 0px 15px 30px;
+  -fx-font-size: 20px;
+  -fx-padding: 15px 0px 15px 25px;
 }
 
 .menu-sub-item-on {
@@ -113,8 +134,7 @@
 
 .card {
   -fx-background-color: white;
-  /*-fx-border-color: #393E46;*/
-  -fx-border-color: rgba(0, 0, 0, 0.40);
+  -fx-border-color: rgba(57, 62, 70, 0.85);
   -fx-border-width: 2px;
   -fx-border-radius: 5px;
   -fx-background-radius: 5px;
@@ -122,9 +142,8 @@
 }
 
 .card-title {
-  -fx-font-size: 16px;
+  -fx-font-size: 20px;
   -fx-font-weight: bold;
-  -fx-text-fill: #4a4a4a;
 }
 
 .success-card {

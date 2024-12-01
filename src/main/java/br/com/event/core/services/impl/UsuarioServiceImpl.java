@@ -4,6 +4,7 @@ import br.com.event.core.entities.Usuario;
 import br.com.event.core.enums.TipoUsuarioEnum;
 import br.com.event.core.exceptions.ServiceException;
 import br.com.event.core.repositories.UsuarioRepository;
+import br.com.event.core.services.EventosUsuarioService;
 import br.com.event.core.services.GeradorMatriculaService;
 import br.com.event.core.services.UsuarioService;
 import br.com.event.core.utils.MaskUtils;
@@ -21,6 +22,8 @@ public class UsuarioServiceImpl implements UsuarioService {
   private final UsuarioRepository usuarioRepository;
 
   private final GeradorMatriculaService geradorMatriculaService;
+
+  private EventosUsuarioService eventosUsuarioService;
 
   public UsuarioServiceImpl(UsuarioRepository usuarioRepository, GeradorMatriculaServiceImpl geradorMatriculaService) {
     this.usuarioRepository = usuarioRepository;

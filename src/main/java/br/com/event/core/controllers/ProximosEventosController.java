@@ -58,9 +58,6 @@ public class ProximosEventosController implements Initializable {
   private CheckBox filtroSomenteProfessoresCheckBox;
 
   @FXML
-  private CheckBox filtroTodosCheckBox;
-
-  @FXML
   private ImageView filterIcon;
 
   @Autowired
@@ -79,12 +76,14 @@ public class ProximosEventosController implements Initializable {
     filtroObrigatorioProfessorCheckBox.selectedProperty().addListener(this::filtroObrigatorioProfessorAction);
     filtroSomenteAlunosCheckBox.selectedProperty().addListener(this::filtroSomenteAlunosAction);
     filtroSomenteProfessoresCheckBox.selectedProperty().addListener(this::filtroSomenteProfessoresAction);
-    filtroTodosCheckBox.selectedProperty().addListener(this::filtroTodosAction);
   }
-
 
   private void fillContentCards() {
     List<Evento> eventos = eventoService.buscarEventosMaisProximos();
+
+    if (eventos.isEmpty()) {
+      cardsContent.getChildren().add(new Label("Nenhum evento foi encontrado"));
+    }
 
     for (Evento evento : eventos) {
       VBox card = createCard(evento);
@@ -407,13 +406,15 @@ public class ProximosEventosController implements Initializable {
       filtroObrigatorioProfessorCheckBox.setSelected(false);
       filtroSomenteAlunosCheckBox.setSelected(false);
       filtroSomenteProfessoresCheckBox.setSelected(false);
-      filtroTodosCheckBox.setSelected(false);
 
       filtroAbertoPublicoCheckBox.setSelected(true);
 
       List<Evento> eventos = eventoService.buscarTodosEventosPorPrioridade(PrioridadeEventoEnum.ABERTO);
 
       fillContentCards(eventos);
+    }
+    else {
+      fillContentCards();
     }
   }
 
@@ -424,7 +425,6 @@ public class ProximosEventosController implements Initializable {
       filtroObrigatorioProfessorCheckBox.setSelected(false);
       filtroSomenteAlunosCheckBox.setSelected(false);
       filtroSomenteProfessoresCheckBox.setSelected(false);
-      filtroTodosCheckBox.setSelected(false);
 
       filtroObrigatorioAlunoCheckBox.setSelected(true);
 
@@ -432,6 +432,9 @@ public class ProximosEventosController implements Initializable {
         PrioridadeEventoEnum.OBRIGATORIO_ALUNOS);
 
       fillContentCards(eventos);
+    }
+    else {
+      fillContentCards();
     }
   }
 
@@ -442,7 +445,6 @@ public class ProximosEventosController implements Initializable {
       filtroObrigatorioAlunoCheckBox.setSelected(false);
       filtroSomenteAlunosCheckBox.setSelected(false);
       filtroSomenteProfessoresCheckBox.setSelected(false);
-      filtroTodosCheckBox.setSelected(false);
 
       filtroObrigatorioProfessorCheckBox.setSelected(true);
 
@@ -450,6 +452,9 @@ public class ProximosEventosController implements Initializable {
         PrioridadeEventoEnum.OBRIGATORIO_PROFESSORES);
 
       fillContentCards(eventos);
+    }
+    else {
+      fillContentCards();
     }
   }
 
@@ -460,7 +465,6 @@ public class ProximosEventosController implements Initializable {
       filtroObrigatorioAlunoCheckBox.setSelected(false);
       filtroObrigatorioProfessorCheckBox.setSelected(false);
       filtroSomenteProfessoresCheckBox.setSelected(false);
-      filtroTodosCheckBox.setSelected(false);
 
       filtroSomenteAlunosCheckBox.setSelected(true);
 
@@ -468,6 +472,9 @@ public class ProximosEventosController implements Initializable {
         PrioridadeEventoEnum.SOMENTE_ALUNOS);
 
       fillContentCards(eventos);
+    }
+    else {
+      fillContentCards();
     }
   }
 
@@ -478,7 +485,6 @@ public class ProximosEventosController implements Initializable {
       filtroObrigatorioAlunoCheckBox.setSelected(false);
       filtroObrigatorioProfessorCheckBox.setSelected(false);
       filtroSomenteAlunosCheckBox.setSelected(false);
-      filtroTodosCheckBox.setSelected(false);
 
       filtroSomenteProfessoresCheckBox.setSelected(true);
 
@@ -487,22 +493,9 @@ public class ProximosEventosController implements Initializable {
 
       fillContentCards(eventos);
     }
-  }
-
-  private void filtroTodosAction(ObservableValue<? extends Boolean> observable, Boolean oldValue,
-    Boolean newValue) {
-    if (newValue) {
-      filtroAbertoPublicoCheckBox.setSelected(false);
-      filtroObrigatorioAlunoCheckBox.setSelected(false);
-      filtroObrigatorioProfessorCheckBox.setSelected(false);
-      filtroSomenteAlunosCheckBox.setSelected(false);
-      filtroSomenteProfessoresCheckBox.setSelected(false);
-
-      filtroTodosCheckBox.setSelected(true);
-
-      List<Evento> eventos = eventoService.buscarTodosEventos();
-
-      fillContentCards(eventos);
+    else {
+      fillContentCards();
     }
   }
+
 }

@@ -52,9 +52,6 @@ public class ConsultaEventosController implements Initializable {
   private CheckBox filtroFinalizadosCheckBox;
 
   @FXML
-  private CheckBox filtroTodosCheckBox;
-
-  @FXML
   private ImageView filterIcon;
 
   @Autowired
@@ -72,7 +69,6 @@ public class ConsultaEventosController implements Initializable {
     filtroAgendadosCheckBox.selectedProperty().addListener(this::filtroAgendadosAction);
     filtroCanceladosCheckBox.selectedProperty().addListener(this::filtroCanceladosAction);
     filtroFinalizadosCheckBox.selectedProperty().addListener(this::filtroFinalizadosAction);
-    filtroTodosCheckBox.selectedProperty().addListener(this::filtroTodosAction);
   }
 
   private void fillContentCards() {
@@ -190,8 +186,7 @@ public class ConsultaEventosController implements Initializable {
             filtroEmAndamentoCheckBox,
             filtroAgendadosCheckBox,
             filtroCanceladosCheckBox,
-            filtroFinalizadosCheckBox,
-            filtroTodosCheckBox
+            filtroFinalizadosCheckBox
           );
 
           for (CheckBox checkBox : filtros) {
@@ -249,13 +244,15 @@ public class ConsultaEventosController implements Initializable {
       filtroAgendadosCheckBox.setSelected(false);
       filtroCanceladosCheckBox.setSelected(false);
       filtroFinalizadosCheckBox.setSelected(false);
-      filtroTodosCheckBox.setSelected(false);
 
       filtroEmAndamentoCheckBox.setSelected(true);
 
       List<Evento> eventos = eventoService.buscarTodosEventosPorStatus(StatusEventoEnum.EM_ANDAMENTO);
 
       fillContentCards(eventos);
+    }
+    else {
+      fillContentCards();
     }
   }
 
@@ -265,13 +262,15 @@ public class ConsultaEventosController implements Initializable {
       filtroEmAndamentoCheckBox.setSelected(false);
       filtroCanceladosCheckBox.setSelected(false);
       filtroFinalizadosCheckBox.setSelected(false);
-      filtroTodosCheckBox.setSelected(false);
 
       filtroAgendadosCheckBox.setSelected(true);
 
       List<Evento> eventos = eventoService.buscarTodosEventosPorStatus(StatusEventoEnum.AGENDADO);
 
       fillContentCards(eventos);
+    }
+    else {
+      fillContentCards();
     }
   }
 
@@ -280,13 +279,15 @@ public class ConsultaEventosController implements Initializable {
       filtroEmAndamentoCheckBox.setSelected(false);
       filtroAgendadosCheckBox.setSelected(false);
       filtroFinalizadosCheckBox.setSelected(false);
-      filtroTodosCheckBox.setSelected(false);
 
       filtroCanceladosCheckBox.setSelected(true);
 
       List<Evento> eventos = eventoService.buscarTodosEventosPorStatus(StatusEventoEnum.CANCELADO);
 
       fillContentCards(eventos);
+    }
+    else {
+      fillContentCards();
     }
   }
 
@@ -295,7 +296,6 @@ public class ConsultaEventosController implements Initializable {
       filtroEmAndamentoCheckBox.setSelected(false);
       filtroAgendadosCheckBox.setSelected(false);
       filtroCanceladosCheckBox.setSelected(false);
-      filtroTodosCheckBox.setSelected(false);
 
       filtroFinalizadosCheckBox.setSelected(true);
 
@@ -303,20 +303,9 @@ public class ConsultaEventosController implements Initializable {
 
       fillContentCards(eventos);
     }
-  }
-
-  private void filtroTodosAction(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-    if (newValue) {
-      filtroEmAndamentoCheckBox.setSelected(false);
-      filtroAgendadosCheckBox.setSelected(false);
-      filtroCanceladosCheckBox.setSelected(false);
-      filtroFinalizadosCheckBox.setSelected(true);
-
-      filtroTodosCheckBox.setSelected(true);
-
-      List<Evento> eventos = eventoService.buscarTodosEventos();
-
-      fillContentCards(eventos);
+    else {
+      fillContentCards();
     }
   }
+
 }

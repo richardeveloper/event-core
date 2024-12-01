@@ -1,9 +1,10 @@
-package br.com.event.core.amqp;
+package br.com.event.core.rabbit;
 
-import br.com.event.core.entities.LogNotificacao;
+import br.com.event.core.dtos.NotificacaoDto;
+import br.com.event.core.entities.Evento;
+import br.com.event.core.entities.Usuario;
 import br.com.event.core.enums.TipoNotificacaoEnum;
 import br.com.event.core.exceptions.ServiceException;
-import java.time.LocalDateTime;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
@@ -25,17 +26,23 @@ public class RabbitProducer {
     this.rabbitTemplate = rabbitTemplate;
   }
 
-  public void sendMessage(TipoNotificacaoEnum tipoNotificacao, String notificacao) {
+  public void sendMessage(Usuario usuario, Evento evento, TipoNotificacaoEnum tipoNotificacao, String notificacao) {
 
-    LogNotificacao logNotificacao = LogNotificacao.builder()
+    NotificacaoDto notificacaoDto = NotificacaoDto.builder()
       .notificacao(notificacao)
       .tipoNotificacao(tipoNotificacao)
-      .dataEnvio(LocalDateTime.now())
+      .dataEnvio(null)
+      .nomeUsuario(usuario.getNome())
+      .tipoUsuario(usuario.getTipoUsuario())
+      .emailUsuario(usuario.getEmail())
+      .telefoneUsuario(usuario.getTelefone())
+      .nomeEvento(evento.getNome())
+      .dataEvento(evento.getData())
       .build();
 
     String routingKey = generateRoutingKey(tipoNotificacao);
 
-    rabbitTemplate.convertAndSend(routingKey, logNotificacao);
+    rabbitTemplate.convertAndSend(routingKey, notificacaoDto);
   }
 
   private static String generateRoutingKey(TipoNotificacaoEnum tipoNotificacao) {

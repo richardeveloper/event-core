@@ -1,10 +1,9 @@
 package br.com.event.core.services.impl;
 
-import br.com.event.core.amqp.RabbitProducer;
+import br.com.event.core.rabbit.RabbitProducer;
 import br.com.event.core.entities.Evento;
 import br.com.event.core.entities.EventosUsuario;
 import br.com.event.core.entities.Usuario;
-import br.com.event.core.enums.StatusEventoEnum;
 import br.com.event.core.enums.TipoNotificacaoEnum;
 import br.com.event.core.enums.TipoUsuarioEnum;
 import br.com.event.core.exceptions.ServiceException;
@@ -77,7 +76,7 @@ public class EventosUsuarioServiceImpl implements EventosUsuarioService {
 
     String message = "Sua inscrição no evento %s foi realizada com sucesso.".formatted(evento.getNome());
 
-    rabbitProducer.sendMessage(TipoNotificacaoEnum.INSCRICAO_CONFIRMADA, message);
+    rabbitProducer.sendMessage(usuario, evento, TipoNotificacaoEnum.INSCRICAO_CONFIRMADA, message);
   }
 
   @Override
@@ -107,7 +106,7 @@ public class EventosUsuarioServiceImpl implements EventosUsuarioService {
 
     String message = "Sua inscrição no evento %s foi cancelada com sucesso.".formatted(evento.getNome());
 
-    rabbitProducer.sendMessage(TipoNotificacaoEnum.INSCRICAO_CANCELADA, message);
+    rabbitProducer.sendMessage(usuario, evento, TipoNotificacaoEnum.INSCRICAO_CANCELADA, message);
   }
 
   @Override

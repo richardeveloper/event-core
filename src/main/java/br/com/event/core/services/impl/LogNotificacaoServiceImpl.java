@@ -1,6 +1,7 @@
 package br.com.event.core.services.impl;
 
 import br.com.event.core.entities.LogNotificacao;
+import br.com.event.core.enums.TipoNotificacaoEnum;
 import br.com.event.core.repositories.LogNotificacaoRepository;
 import br.com.event.core.services.LogNotificacaoService;
 import java.util.List;
@@ -18,5 +19,10 @@ public class LogNotificacaoServiceImpl implements LogNotificacaoService {
   @Override
   public List<LogNotificacao> buscarLogNotificacoesMaisRecentes() {
     return logNotificacaoRepository.findAllOrderByDataEnvioDesc();
+  }
+
+  @Override
+  public List<LogNotificacao> buscarTodosPorTipoNotificacao(TipoNotificacaoEnum tipoNotificacao) {
+    return logNotificacaoRepository.findAllByTipoNotificacaoOrderByDataEnvioDesc(tipoNotificacao);
   }
 }

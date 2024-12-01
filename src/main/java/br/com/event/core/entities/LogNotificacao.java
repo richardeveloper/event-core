@@ -39,4 +39,16 @@ public class LogNotificacao {
   @Column(name = "DATA_ENVIO")
   private LocalDateTime dataEnvio;
 
+  @Column(name = "NOME_USUARIO")
+  private String nomeUsuario;
+
+  @Column(name = "Tipo_USUARIO")
+  private String tipoUsuario;
+
+  @Column(name = "NOME_EVENTO")
+  private String nomeEvento;
+
+  @Column(name = "DATA_EVENTO")
+  private String dataEvento;
+
 }

@@ -4,20 +4,19 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="714.0" prefWidth="1276.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.event.core.controllers.ProximosEventosController">
-   <Label layoutX="12.0" layoutY="16.0" prefHeight="38.0" prefWidth="1250.0" styleClass="title-page" text="PRÓXIMOS EVENTOS" />
-   <Pane layoutX="93.0" layoutY="87.0" prefHeight="125.0" prefWidth="1091.0" styleClass="fill-content">
+<AnchorPane prefHeight="834.0" prefWidth="1638.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.event.core.controllers.ProximosEventosController">
+   <Label layoutY="14.0" prefHeight="38.0" prefWidth="1638.0" styleClass="title-page" text="PRÓXIMOS EVENTOS" />
+   <Pane layoutX="215.0" layoutY="89.0" prefHeight="125.0" prefWidth="1208.0" styleClass="fill-content">
 
-         <CheckBox fx:id="filtroAbertoPublicoCheckBox" layoutX="21.0" layoutY="75.0" mnemonicParsing="false" text="Aberto ao público" />
-         <CheckBox fx:id="filtroObrigatorioAlunoCheckBox" layoutX="180.0" layoutY="75.0" mnemonicParsing="false" text="Obrigatório para alunos" />
-         <CheckBox fx:id="filtroObrigatorioProfessorCheckBox" layoutX="378.0" layoutY="75.0" mnemonicParsing="false" text="Obrigatório para professores" />
-         <CheckBox fx:id="filtroSomenteAlunosCheckBox" layoutX="609.0" layoutY="75.0" mnemonicParsing="false" text="Somente para alunos" />
-         <CheckBox fx:id="filtroSomenteProfessoresCheckBox" layoutX="792.0" layoutY="75.0" mnemonicParsing="false" text="Somente para professores" />
-         <CheckBox fx:id="filtroTodosCheckBox" layoutX="1008.0" layoutY="75.0" mnemonicParsing="false" text="Todos" />
-         <Label layoutX="513.0" layoutY="28.0" style="-fx-font-weight: bold; -fx-font-size: 18;" text="Filtros" />
-         <ImageView fx:id="filterIcon" fitHeight="20.0" fitWidth="20.0" layoutX="484.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true" />
+         <CheckBox fx:id="filtroAbertoPublicoCheckBox" layoutX="37.0" layoutY="75.0" mnemonicParsing="false" text="Aberto ao público" />
+         <CheckBox fx:id="filtroObrigatorioAlunoCheckBox" layoutX="228.0" layoutY="75.0" mnemonicParsing="false" text="Obrigatório para alunos" />
+         <CheckBox fx:id="filtroObrigatorioProfessorCheckBox" layoutX="462.0" layoutY="75.0" mnemonicParsing="false" text="Obrigatório para professores" />
+         <CheckBox fx:id="filtroSomenteAlunosCheckBox" layoutX="731.0" layoutY="75.0" mnemonicParsing="false" text="Somente para alunos" />
+         <CheckBox fx:id="filtroSomenteProfessoresCheckBox" layoutX="950.0" layoutY="75.0" mnemonicParsing="false" text="Somente para professores" />
+         <Label layoutX="549.0" layoutY="27.0" style="-fx-font-weight: bold; -fx-font-size: 20px;" text="Filtros" />
+         <ImageView fx:id="filterIcon" fitHeight="20.0" fitWidth="20.0" layoutX="520.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true" />
    </Pane>
-   <ScrollPane hbarPolicy="NEVER" layoutX="14.0" layoutY="247.0" prefHeight="430.0" prefWidth="1250.0">
-      <FlowPane fx:id="cardsContent" alignment="TOP_CENTER" columnHalignment="CENTER" hgap="20.0" prefHeight="420.0" prefWidth="1215.0" vgap="20.0" />
+   <ScrollPane hbarPolicy="NEVER" layoutY="247.0" prefHeight="590.0" prefWidth="1638.0">
+      <FlowPane fx:id="cardsContent" alignment="TOP_CENTER" columnHalignment="CENTER" hgap="20.0" prefHeight="641.0" prefWidth="1600.0" vgap="20.0" />
    </ScrollPane>
 </AnchorPane>

@@ -1,7 +1,10 @@
-package br.com.event.core.amqp;
+package br.com.event.core.rabbit;
 
+import br.com.event.core.dtos.NotificacaoDto;
 import br.com.event.core.entities.LogNotificacao;
 import br.com.event.core.repositories.LogNotificacaoRepository;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
@@ -24,37 +27,49 @@ public class RabbitConsumer {
   }
 
   @RabbitListener(queues = CONFIRMACAO_INSCRICAO)
-  public void readConfirmacaoInscricacao(LogNotificacao notificacao) {
+  public void readConfirmacaoInscricacao(NotificacaoDto notificacao) {
     readMessage(notificacao);
   }
 
   @RabbitListener(queues = CANCELAMENTO_INSCRICAO)
-  public void readCancelamentoInscricacao(LogNotificacao notificacao) {
+  public void readCancelamentoInscricacao(NotificacaoDto notificacao) {
     readMessage(notificacao);
   }
 
   @RabbitListener(queues = ALTERACAO_DATA_EVENTO)
-  public void readAlteracaoDataEvento(LogNotificacao notificacao) {
+  public void readAlteracaoDataEvento(NotificacaoDto notificacao) {
     readMessage(notificacao);
   }
 
   @RabbitListener(queues = INICIO_EVENTO)
-  public void readInicioEvento(LogNotificacao notificacao) {
+  public void readInicioEvento(NotificacaoDto notificacao) {
     readMessage(notificacao);
   }
 
   @RabbitListener(queues = FIM_EVENTO)
-  public void readFimEvento(LogNotificacao notificacao) {
+  public void readFimEvento(NotificacaoDto notificacao) {
     readMessage(notificacao);
   }
 
   @RabbitListener(queues = CANCELAMENTO_EVENTO)
-  public void readCancelamentoEvento(LogNotificacao notificacao) {
+  public void readCancelamentoEvento(NotificacaoDto notificacao) {
     readMessage(notificacao);
   }
 
-  private void readMessage(LogNotificacao logNotificacao) {
+  private void readMessage(NotificacaoDto notificacao) {
+
+    LogNotificacao logNotificacao = LogNotificacao.builder()
+      .notificacao(notificacao.getNotificacao())
+      .tipoNotificacao(notificacao.getTipoNotificacao())
+      .dataEnvio(LocalDateTime.now())
+      .nomeUsuario(notificacao.getNomeUsuario())
+      .tipoUsuario(notificacao.getTipoUsuario().getDescricao())
+      .nomeEvento(notificacao.getNomeEvento())
+      .dataEvento(notificacao.getDataEvento().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")))
+      .build();
+
     logNotificacaoRepository.save(logNotificacao);
+
     log.info(logNotificacao.getNotificacao());
   }
 

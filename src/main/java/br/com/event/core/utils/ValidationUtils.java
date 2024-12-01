@@ -10,6 +10,7 @@ public class ValidationUtils {
   private static final int PHONE_LENGHT = 11;
   private static final String ONLY_NUMBERS = "^[0-9]+$";
   private static final String ONLY_LETTERS = "^[A-Za-zÀ-ÿ ]+$";
+  private static final String ONLY_LETTERS_AND_NUMBERS = "^[A-Za-zÀ-ÿ0-9 ]+$";
   private static final String DIFFERENT_EMAIL_FORMAT = "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$";
 
   public static void validarNome(String nome) {
@@ -18,6 +19,16 @@ public class ValidationUtils {
     }
 
     if (!nome.matches(ONLY_LETTERS)) {
+      throw new ServiceException("O campo nome deve ser preenchido apenas com letras.");
+    }
+  }
+
+  public static void validarNomeEvento(String nomeEvento) {
+    if (nomeEvento == null || nomeEvento.isEmpty()) {
+      throw new ServiceException("O campo nome deve ser preenchido.");
+    }
+
+    if (!nomeEvento.matches(ONLY_LETTERS_AND_NUMBERS)) {
       throw new ServiceException("O campo nome deve ser preenchido apenas com letras.");
     }
   }

@@ -1,6 +1,6 @@
 package br.com.event.core.services.impl;
 
-import br.com.event.core.amqp.RabbitProducer;
+import br.com.event.core.rabbit.RabbitProducer;
 import br.com.event.core.entities.Evento;
 import br.com.event.core.entities.EventosUsuario;
 import br.com.event.core.entities.Usuario;
@@ -96,7 +96,7 @@ public class EventoServiceImpl implements EventoService {
         novoEvento.getData().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
       );
 
-      usuarios.forEach(usuario -> rabbitProducer.sendMessage(TipoNotificacaoEnum.ALTERACAO_DATA_EVENTO, message));
+      usuarios.forEach(usuario -> rabbitProducer.sendMessage(usuario, evento, TipoNotificacaoEnum.ALTERACAO_DATA_EVENTO, message));
     }
   }
 
@@ -125,7 +125,7 @@ public class EventoServiceImpl implements EventoService {
     String message = "Atenção ! O evento %s foi cancelado, entre em contato para mais informações."
       .formatted(eventosUsuarios.get(0).getEvento().getNome());
 
-    usuarios.forEach(usuario -> rabbitProducer.sendMessage(TipoNotificacaoEnum.EVENTO_CANCELADO, message));
+    usuarios.forEach(usuario -> rabbitProducer.sendMessage(usuario, evento, TipoNotificacaoEnum.EVENTO_CANCELADO, message));
   }
 
   @Override
@@ -177,7 +177,7 @@ public class EventoServiceImpl implements EventoService {
   }
 
   private void validarCampos(Evento evento) throws ServiceException {
-    ValidationUtils.validarNome(evento.getNome());
+    ValidationUtils.validarNomeEvento(evento.getNome());
     ValidationUtils.validarData(evento.getData());
     ValidationUtils.validarDuracao(evento.getDuracao());
     ValidationUtils.validarCampo(evento.getPrioridade(), "prioridade");

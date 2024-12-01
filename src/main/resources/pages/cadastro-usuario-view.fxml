@@ -3,23 +3,23 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="517.0" prefWidth="834.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.event.core.controllers.CadastroUsuarioController">
-   <Label layoutX="23.0" layoutY="18.0" prefHeight="38.0" prefWidth="784.0" styleClass="title-page" text="CADASTRO DE USUÁRIO" />
+<AnchorPane prefHeight="834.0" prefWidth="1638.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.event.core.controllers.CadastroUsuarioController">
+   <Label layoutX="1.0" layoutY="14.0" prefHeight="38.0" prefWidth="1638.0" styleClass="title-page" text="CADASTRO DE USUÁRIO" />
 
-   <Label layoutX="39.0" layoutY="98.0" text="Nome" />
-   <TextField fx:id="nomeTextField" alignment="CENTER" layoutX="38.0" layoutY="131.0" prefHeight="29.0" prefWidth="466.0" promptText="Fulano de Tal" />
+   <Label layoutX="440.0" layoutY="116.0" text="Nome" />
+   <TextField fx:id="nomeTextField" alignment="CENTER" layoutX="439.0" layoutY="149.0" prefHeight="29.0" prefWidth="466.0" promptText="Fulano de Tal" />
 
-   <Label layoutX="546.0" layoutY="98.0" text="CPF" />
-   <TextField fx:id="cpfTextField" alignment="CENTER" layoutX="546.0" layoutY="131.0" prefHeight="24.0" prefWidth="248.0" promptText="123.456.789-00" />
+   <Label layoutX="947.0" layoutY="116.0" text="CPF" />
+   <TextField fx:id="cpfTextField" alignment="CENTER" layoutX="947.0" layoutY="149.0" prefHeight="24.0" prefWidth="248.0" promptText="123.456.789-00" />
 
-   <Label layoutX="39.0" layoutY="176.0" text="E-mail" />
-   <TextField fx:id="emailTextField" alignment="CENTER" layoutX="38.0" layoutY="213.0" prefHeight="29.0" prefWidth="466.0" promptText="fulano@email.com" />
+   <Label layoutX="440.0" layoutY="219.0" text="E-mail" />
+   <TextField fx:id="emailTextField" alignment="CENTER" layoutX="439.0" layoutY="256.0" prefHeight="29.0" prefWidth="466.0" promptText="fulano@email.com" />
 
-   <Label layoutX="543.0" layoutY="176.0" text="Telefone" />
-   <TextField fx:id="telefoneTextField" alignment="CENTER" layoutX="546.0" layoutY="213.0" prefHeight="24.0" prefWidth="248.0" promptText="(99) 12345-6789" />
+   <Label layoutX="944.0" layoutY="219.0" text="Telefone" />
+   <TextField fx:id="telefoneTextField" alignment="CENTER" layoutX="947.0" layoutY="256.0" prefHeight="24.0" prefWidth="248.0" promptText="(99) 12345-6789" />
 
-   <Label layoutX="39.0" layoutY="259.0" text="Tipo de Usuario" />
-   <ComboBox fx:id="cargoComboBox" layoutX="40.0" layoutY="293.0" prefHeight="35.0" prefWidth="757.0" promptText="Selecione o tipo" />
+   <Label layoutX="440.0" layoutY="327.0" text="Tipo de usuario" />
+   <ComboBox fx:id="cargoComboBox" layoutX="441.0" layoutY="361.0" prefHeight="35.0" prefWidth="757.0" promptText="Selecione o tipo" />
 
-   <Button fx:id="saveButton" layoutX="338.0" layoutY="386.0" mnemonicParsing="false" onAction="#salvarUsuario" text="Cadastrar usuário" />
+   <Button fx:id="saveButton" layoutX="739.0" layoutY="464.0" mnemonicParsing="false" onAction="#salvarUsuario" text="Cadastrar usuário" />
 </AnchorPane>

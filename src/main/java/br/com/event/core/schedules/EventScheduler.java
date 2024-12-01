@@ -1,6 +1,6 @@
 package br.com.event.core.schedules;
 
-import br.com.event.core.amqp.RabbitProducer;
+import br.com.event.core.rabbit.RabbitProducer;
 import br.com.event.core.entities.Evento;
 import br.com.event.core.entities.EventosUsuario;
 import br.com.event.core.entities.Usuario;
@@ -11,7 +11,6 @@ import br.com.event.core.services.EventosUsuarioService;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoField;
 import java.util.List;
-import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -53,7 +52,7 @@ public class EventScheduler {
         .map(EventosUsuario::getUsuario)
         .toList();
 
-      usuarios.forEach(usuario -> rabbitProducer.sendMessage(TipoNotificacaoEnum.EVENTO_INICIADO, message));
+      usuarios.forEach(usuario -> rabbitProducer.sendMessage(usuario, evento, TipoNotificacaoEnum.EVENTO_INICIADO, message));
     }
   }
 
@@ -76,7 +75,7 @@ public class EventScheduler {
 
         String message = "Em breve o certificado do evento %s estará disponível no site.".formatted(evento.getNome());
 
-        usuarios.forEach(usuario -> rabbitProducer.sendMessage(TipoNotificacaoEnum.EVENTO_FINALIZADO, message));
+        usuarios.forEach(usuario -> rabbitProducer.sendMessage(usuario, evento, TipoNotificacaoEnum.EVENTO_FINALIZADO, message));
       }
     }
   }
