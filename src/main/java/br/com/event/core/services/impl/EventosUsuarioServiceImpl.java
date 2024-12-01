@@ -4,6 +4,7 @@ import br.com.event.core.amqp.RabbitProducer;
 import br.com.event.core.entities.Evento;
 import br.com.event.core.entities.EventosUsuario;
 import br.com.event.core.entities.Usuario;
+import br.com.event.core.enums.StatusEventoEnum;
 import br.com.event.core.enums.TipoNotificacaoEnum;
 import br.com.event.core.enums.TipoUsuarioEnum;
 import br.com.event.core.exceptions.ServiceException;
@@ -87,6 +88,11 @@ public class EventosUsuarioServiceImpl implements EventosUsuarioService {
 
     Evento evento = eventoRepository.findById(eventoId)
       .orElseThrow(() -> new ServiceException("O evento informado não foi identificado."));
+
+    switch (evento.getStatus()) {
+      case EM_ANDAMENTO -> throw new ServiceException("A inscrição no evento não pode ser cancelada pois ele já está em andamento.");
+      case FINALIZADO -> throw new ServiceException("A inscrição no evento não pode ser cancelada pois ele já foi finalizado.");
+    }
 
     Optional<EventosUsuario> eventos = eventosUsuarioRepository.findByEventoAndUsuario(evento, usuario);
 

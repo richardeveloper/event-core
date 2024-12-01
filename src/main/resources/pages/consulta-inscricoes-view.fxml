@@ -6,10 +6,10 @@
 
 <AnchorPane prefHeight="717.0" prefWidth="1200.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.event.core.controllers.ConsultaInscricoesController">
    <Label layoutX="28.0" layoutY="17.0" prefHeight="38.0" prefWidth="1142.0" styleClass="title-page" text="INSCRIÇÕES" />
-   <TextField fx:id="nomeTextField" alignment="CENTER" layoutX="263.0" layoutY="104.0" prefHeight="29.0" prefWidth="672.0" />
-   <ListView fx:id="usuariosListView" layoutX="265.0" layoutY="178.0" prefHeight="135.0" prefWidth="672.0" />
-   <Label layoutX="263.0" layoutY="72.0" text="Nome do usuário" />
-   <Label layoutX="263.0" layoutY="147.0" text="Usuários encontrados" />
+   <TextField fx:id="nomeTextField" alignment="CENTER" layoutX="213.0" layoutY="104.0" prefHeight="29.0" prefWidth="777.0" />
+   <ListView fx:id="usuariosListView" layoutX="213.0" layoutY="177.0" prefHeight="135.0" prefWidth="777.0" />
+   <Label layoutX="213.0" layoutY="70.0" text="Nome do usuário" />
+   <Label layoutX="213.0" layoutY="147.0" text="Usuários encontrados" />
    <Label layoutX="568.0" layoutY="340.0" text="Eventos">
       <font>
          <Font size="18.0" />

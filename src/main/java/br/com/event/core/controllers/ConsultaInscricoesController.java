@@ -167,19 +167,24 @@ public class ConsultaInscricoesController implements Initializable {
     statusTextField.setAlignment(Pos.CENTER);
     statusTextField.setPrefColumnCount(evento.getStatus().getDescricao().length());
 
-    StatusEventoEnum statusEventoEnum = StatusEventoEnum.parse(statusTextField.getText());
-
-    switch (statusEventoEnum) {
-      case AGENDADO, EM_ANDAMENTO -> statusTextField.getStyleClass().add("success-card");
-      case FINALIZADO -> statusTextField.getStyleClass().add("warning-card");
-      case CANCELADO -> statusTextField.getStyleClass().add("error-card");
-    }
-
     HBox firstRow = createRowCard(dataLabel, dataTextField, duracaoLabel, duracaoTextField);
     HBox secondRow = createRowCard(prioridadeLabel, prioridadeTextField, statusLabel, statusTextField);
 
     Button deleteButton = new Button("Cancelar inscrição");
     deleteButton.getStyleClass().add("edit-button");
+    deleteButton.setDisable(true);
+
+    StatusEventoEnum statusEventoEnum = StatusEventoEnum.parse(statusTextField.getText());
+
+    switch (statusEventoEnum) {
+      case AGENDADO -> {
+        deleteButton.setDisable(false);
+        statusTextField.getStyleClass().add("success-card");
+      }
+      case EM_ANDAMENTO -> statusTextField.getStyleClass().add("success-card");
+      case FINALIZADO -> statusTextField.getStyleClass().add("warning-card");
+      case CANCELADO -> statusTextField.getStyleClass().add("error-card");
+    }
 
     ImageView icon = IconUtils.getIcon("/icons/close.png", 25, 25);
 
@@ -228,7 +233,7 @@ public class ConsultaInscricoesController implements Initializable {
     footer.setAlignment(Pos.BASELINE_RIGHT);
 
     card.getChildren().addAll(
-      card,
+      nomeRow,
       createSpace(),
       firstRow,
       secondRow,

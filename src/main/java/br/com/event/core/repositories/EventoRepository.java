@@ -35,7 +35,14 @@ public interface EventoRepository extends JpaRepository<Evento, Long> {
     "SELECT evento FROM Evento evento " +
     "WHERE evento.data <= :data " +
     "AND evento.status = :statusEvento " +
-    "ORDER BY evento.data DESC"
+    "ORDER BY " +
+    "CASE evento.status " +
+    " WHEN br.com.event.core.enums.StatusEventoEnum.EM_ANDAMENTO THEN 0 " +
+    " WHEN br.com.event.core.enums.StatusEventoEnum.AGENDADO THEN 1 " +
+    " WHEN br.com.event.core.enums.StatusEventoEnum.FINALIZADO THEN 2 " +
+    " WHEN br.com.event.core.enums.StatusEventoEnum.CANCELADO THEN 3 " +
+    "END, " +
+    "evento.data"
   )
   List<Evento> findAllByDataAndStatus(LocalDateTime data, StatusEventoEnum statusEvento);
 }

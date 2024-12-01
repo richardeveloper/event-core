@@ -178,8 +178,7 @@ public class RealizaInscricaoController implements Initializable {
     if (eventoEncontrado.isPresent()) {
       Evento e = eventoEncontrado.get();
 
-      List<EventosUsuario> eventosUsuarios = eventosUsuarioService.buscarTodosEventosUsuarioPorEventoId(
-        e.getId());
+      List<EventosUsuario> eventosUsuarios = eventosUsuarioService.buscarTodosEventosUsuarioPorEventoId(e.getId());
 
       List<String> participantes = eventosUsuarios.stream()
         .map(EventosUsuario::getUsuario)
