@@ -6,6 +6,7 @@ import br.com.event.core.exceptions.ServiceException;
 import br.com.event.core.services.EventoService;
 import br.com.event.core.services.EventosUsuarioService;
 import br.com.event.core.utils.AlertUtils;
+import br.com.event.core.utils.IconUtils;
 import br.com.event.core.utils.MaskUtils;
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
@@ -22,7 +23,6 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
@@ -38,6 +38,9 @@ public class ConsultaEventosController implements Initializable {
 
   @FXML
   private FlowPane cardsContent;
+
+  @FXML
+  private CheckBox filtroEmAndamentoCheckBox;
 
   @FXML
   private CheckBox filtroAgendadosCheckBox;
@@ -63,8 +66,9 @@ public class ConsultaEventosController implements Initializable {
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
     fillContentCards();
-    configFilterIcon();
+    filterIcon.setImage(IconUtils.getIcon("/icons/filter.png", 20, 20).getImage());
 
+    filtroEmAndamentoCheckBox.selectedProperty().addListener(this::filtroEmAndamentoAction);
     filtroAgendadosCheckBox.selectedProperty().addListener(this::filtroAgendadosAction);
     filtroCanceladosCheckBox.selectedProperty().addListener(this::filtroCanceladosAction);
     filtroFinalizadosCheckBox.selectedProperty().addListener(this::filtroFinalizadosAction);
@@ -95,13 +99,6 @@ public class ConsultaEventosController implements Initializable {
       VBox card = createCard(evento);
       cardsContent.getChildren().add(card);
     }
-  }
-
-  private void configFilterIcon() {
-    Image image = new Image(getClass().getResource("/icons/filter.png").toExternalForm());
-    filterIcon.setImage(image);
-    filterIcon.setFitWidth(20);
-    filterIcon.setFitHeight(20);
   }
 
   private VBox createCard(Evento evento) {
@@ -149,18 +146,12 @@ public class ConsultaEventosController implements Initializable {
     statusTextField.setEditable(false);
     statusTextField.setAlignment(Pos.CENTER);
 
-    StatusEventoEnum status = StatusEventoEnum.parse(statusTextField.getText());
+    StatusEventoEnum statusEventoEnum = StatusEventoEnum.parse(statusTextField.getText());
 
-    switch (status) {
-      case AGENDADO:
-        statusTextField.getStyleClass().add("success-card");
-        break;
-      case FINALIZADO:
-        statusTextField.getStyleClass().add("warning-card");
-        break;
-      case CANCELADO:
-        statusTextField.getStyleClass().add("error-card");
-        break;
+    switch (statusEventoEnum) {
+      case EM_ANDAMENTO, AGENDADO -> statusTextField.getStyleClass().add("success-card");
+      case FINALIZADO -> statusTextField.getStyleClass().add("warning-card");
+      case CANCELADO -> statusTextField.getStyleClass().add("error-card");
     }
 
     HBox firstRow = createRowCard(dataLabel, dataTextField, duracaoLabel, duracaoTextField);
@@ -169,11 +160,7 @@ public class ConsultaEventosController implements Initializable {
     Button deleteButton = new Button("Apagar evento");
     deleteButton.getStyleClass().add("delete-button");
 
-    Image image = new Image(getClass().getResource("/icons/trash.png").toExternalForm());
-
-    ImageView icon = new ImageView(image);
-    icon.setFitHeight(25);
-    icon.setFitWidth(25);
+    ImageView icon = IconUtils.getIcon("/icons/trash.png", 25, 25);
 
     deleteButton.setGraphic(icon);
     deleteButton.setGraphicTextGap(7.5);
@@ -199,21 +186,19 @@ public class ConsultaEventosController implements Initializable {
 
           cardsContent.getChildren().clear();
 
-          if (filtroAgendadosCheckBox.isSelected()) {
-            filtroAgendadosCheckBox.setSelected(false);
-            filtroAgendadosCheckBox.setSelected(true);
-          }
-          else if (filtroCanceladosCheckBox.isSelected()) {
-            filtroCanceladosCheckBox.setSelected(false);
-            filtroCanceladosCheckBox.setSelected(true);
-          }
-          else if (filtroFinalizadosCheckBox.isSelected()) {
-            filtroFinalizadosCheckBox.setSelected(false);
-            filtroFinalizadosCheckBox.setSelected(true);
-          }
-          else {
-            filtroTodosCheckBox.setSelected(false);
-            filtroTodosCheckBox.setSelected(true);
+          List<CheckBox> filtros = List.of(
+            filtroEmAndamentoCheckBox,
+            filtroAgendadosCheckBox,
+            filtroCanceladosCheckBox,
+            filtroFinalizadosCheckBox,
+            filtroTodosCheckBox
+          );
+
+          for (CheckBox checkBox : filtros) {
+            if  (checkBox.isSelected()) {
+              checkBox.setSelected(false);
+              checkBox.setDisable(true);
+            }
           }
 
           AlertUtils.showSuccessAlert("Evento apagado com sucesso.");
@@ -224,20 +209,14 @@ public class ConsultaEventosController implements Initializable {
     HBox footer = new HBox(10, deleteButton);
     footer.setAlignment(Pos.BASELINE_RIGHT);
 
-    Region space1 = new Region();
-    space1.setPrefWidth(10);
-
-    Region space2 = new Region();
-    space2.setPrefWidth(10);
-
     card.getChildren().addAll(
       nomeRow,
-      space1,
+      createSpace(),
       firstRow,
       secondRow,
       prioridadeLabel,
       prioridadeTextField,
-      space2,
+      createSpace(),
       footer
     );
 
@@ -259,8 +238,31 @@ public class ConsultaEventosController implements Initializable {
     return row;
   }
 
+  private Region createSpace() {
+    Region space = new Region();
+    space.setPrefWidth(10);
+    return space;
+  }
+
+  private void filtroEmAndamentoAction(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+    if (newValue) {
+      filtroAgendadosCheckBox.setSelected(false);
+      filtroCanceladosCheckBox.setSelected(false);
+      filtroFinalizadosCheckBox.setSelected(false);
+      filtroTodosCheckBox.setSelected(false);
+
+      filtroEmAndamentoCheckBox.setSelected(true);
+
+      List<Evento> eventos = eventoService.buscarTodosEventosPorStatus(StatusEventoEnum.EM_ANDAMENTO);
+
+      fillContentCards(eventos);
+    }
+  }
+
+
   private void filtroAgendadosAction(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
     if (newValue) {
+      filtroEmAndamentoCheckBox.setSelected(false);
       filtroCanceladosCheckBox.setSelected(false);
       filtroFinalizadosCheckBox.setSelected(false);
       filtroTodosCheckBox.setSelected(false);
@@ -275,6 +277,7 @@ public class ConsultaEventosController implements Initializable {
 
   private void filtroCanceladosAction(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
     if (newValue) {
+      filtroEmAndamentoCheckBox.setSelected(false);
       filtroAgendadosCheckBox.setSelected(false);
       filtroFinalizadosCheckBox.setSelected(false);
       filtroTodosCheckBox.setSelected(false);
@@ -289,6 +292,7 @@ public class ConsultaEventosController implements Initializable {
 
   private void filtroFinalizadosAction(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
     if (newValue) {
+      filtroEmAndamentoCheckBox.setSelected(false);
       filtroAgendadosCheckBox.setSelected(false);
       filtroCanceladosCheckBox.setSelected(false);
       filtroTodosCheckBox.setSelected(false);
@@ -303,6 +307,7 @@ public class ConsultaEventosController implements Initializable {
 
   private void filtroTodosAction(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
     if (newValue) {
+      filtroEmAndamentoCheckBox.setSelected(false);
       filtroAgendadosCheckBox.setSelected(false);
       filtroCanceladosCheckBox.setSelected(false);
       filtroFinalizadosCheckBox.setSelected(true);

@@ -8,6 +8,7 @@ import br.com.event.core.services.EventoService;
 import br.com.event.core.services.EventosUsuarioService;
 import br.com.event.core.services.UsuarioService;
 import br.com.event.core.utils.AlertUtils;
+import br.com.event.core.utils.IconUtils;
 import br.com.event.core.utils.MaskUtils;
 import java.net.URL;
 import java.util.List;
@@ -16,7 +17,6 @@ import java.util.ResourceBundle;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -24,7 +24,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,7 +84,7 @@ public class RealizaInscricaoController implements Initializable {
   }
 
   @FXML
-  protected void addButtonAction(ActionEvent event) {
+  protected void addButtonAction() {
     ObservableList<String> usuarios = usuariosSemInscricao.getSelectionModel().getSelectedItems();
     if (usuarios != null && !usuarios.isEmpty()) {
       observableUsuariosInscritos.addAll(usuarios);
@@ -94,7 +93,7 @@ public class RealizaInscricaoController implements Initializable {
   }
 
   @FXML
-  protected void removeButtonAction(ActionEvent event) {
+  protected void removeButtonAction() {
     ObservableList<String> usuarios = usuariosInscritos.getSelectionModel().getSelectedItems();
     if (usuarios != null && !usuarios.isEmpty()) {
       observableUsuariosSemInscricao.addAll(usuarios);
@@ -103,7 +102,7 @@ public class RealizaInscricaoController implements Initializable {
   }
 
   @FXML
-  protected void finalizarInscricoes(ActionEvent event) {
+  protected void finalizarInscricoes() {
     if (eventosComboBox.getSelectionModel().getSelectedItem() == null) {
       AlertUtils.showValidateAlert("É necessário selecionar um evento para inscrever os usuários.");
       return;
@@ -179,7 +178,7 @@ public class RealizaInscricaoController implements Initializable {
     if (eventoEncontrado.isPresent()) {
       Evento e = eventoEncontrado.get();
 
-      List<EventosUsuario> eventosUsuarios = eventosUsuarioService.buscarTodosEventosPorEventoId(
+      List<EventosUsuario> eventosUsuarios = eventosUsuarioService.buscarTodosEventosUsuarioPorEventoId(
         e.getId());
 
       List<String> participantes = eventosUsuarios.stream()
@@ -208,11 +207,7 @@ public class RealizaInscricaoController implements Initializable {
   private void configSaveButton() {
     saveButton.getStyleClass().add("edit-button");
 
-    Image image = new Image(getClass().getResource("/icons/save.png").toExternalForm());
-
-    ImageView icon = new ImageView(image);
-    icon.setFitHeight(25);
-    icon.setFitWidth(25);
+    ImageView icon = IconUtils.getIcon("/icons/save.png", 25, 25);
 
     saveButton.setGraphic(icon);
     saveButton.setGraphicTextGap(7.5);

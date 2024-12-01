@@ -15,6 +15,6 @@
       <CheckBox fx:id="filtroVisitantesCheckBox" layoutX="384.0" layoutY="75.0" mnemonicParsing="false" text="Visitantes" />
       <CheckBox fx:id="filtroTodosCheckBox" layoutX="552.0" layoutY="75.0" mnemonicParsing="false" text="Todos" />
       <Label layoutX="319.0" layoutY="22.0" style="-fx-font-weight: bold; -fx-font-size: 18;" text="Filtros" />
-      <ImageView fx:id="filterIcon" fitHeight="28.0" fitWidth="29.0" layoutX="287.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="filterIcon" fitHeight="20.0" fitWidth="20.0" layoutX="287.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" />
    </Pane>
 </AnchorPane>

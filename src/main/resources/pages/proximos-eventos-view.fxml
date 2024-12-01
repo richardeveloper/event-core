@@ -15,7 +15,7 @@
          <CheckBox fx:id="filtroSomenteProfessoresCheckBox" layoutX="792.0" layoutY="75.0" mnemonicParsing="false" text="Somente para professores" />
          <CheckBox fx:id="filtroTodosCheckBox" layoutX="1008.0" layoutY="75.0" mnemonicParsing="false" text="Todos" />
          <Label layoutX="513.0" layoutY="28.0" style="-fx-font-weight: bold; -fx-font-size: 18;" text="Filtros" />
-         <ImageView fx:id="filterIcon" fitHeight="28.0" fitWidth="29.0" layoutX="484.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true" />
+         <ImageView fx:id="filterIcon" fitHeight="20.0" fitWidth="20.0" layoutX="484.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true" />
    </Pane>
    <ScrollPane hbarPolicy="NEVER" layoutX="14.0" layoutY="247.0" prefHeight="430.0" prefWidth="1250.0">
       <FlowPane fx:id="cardsContent" alignment="TOP_CENTER" columnHalignment="CENTER" hgap="20.0" prefHeight="420.0" prefWidth="1215.0" vgap="20.0" />

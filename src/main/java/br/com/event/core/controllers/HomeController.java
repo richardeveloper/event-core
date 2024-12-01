@@ -1,5 +1,6 @@
 package br.com.event.core.controllers;
 
+import br.com.event.core.utils.IconUtils;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -7,7 +8,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import lombok.extern.slf4j.Slf4j;
@@ -212,17 +212,10 @@ public class HomeController implements Initializable {
   }
 
   private void setupIcons() {
-    Image calendar = new Image(getClass().getResource("/icons/subscribe.png").toExternalForm());
-    inscricoesIcon.setImage(calendar);
-
-    Image user = new Image(getClass().getResource("/icons/user.png").toExternalForm());
-    usuariosIcon.setImage(user);
-
-    Image event = new Image(getClass().getResource("/icons/event.png").toExternalForm());
-    eventosIcon.setImage(event);
-
-    Image logs = new Image(getClass().getResource("/icons/dashboard.png").toExternalForm());
-    logsIcons.setImage(logs);
+    inscricoesIcon.setImage(IconUtils.getIcon("/icons/subscribe.png", 26, 26).getImage());
+    usuariosIcon.setImage(IconUtils.getIcon("/icons/user.png", 27, 27).getImage());
+    eventosIcon.setImage(IconUtils.getIcon("/icons/event.png", 26, 26).getImage());
+    logsIcons.setImage(IconUtils.getIcon("/icons/dashboard.png", 25, 25).getImage());
   }
 
   private void disableAllButtons() {

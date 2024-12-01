@@ -1,7 +1,7 @@
 package br.com.event.core.controllers;
 
 import br.com.event.core.entities.LogNotificacao;
-import br.com.event.core.repositories.LogNotificacaoRepository;
+import br.com.event.core.services.LogNotificacaoService;
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -25,7 +25,7 @@ public class NotificacoesEnviadasController implements Initializable {
   private TableView<LogNotificacao> notificacoesTableView;
 
   @Autowired
-  private LogNotificacaoRepository logNotificacaoRepository;
+  private LogNotificacaoService logNotificacaoService;
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -33,8 +33,8 @@ public class NotificacoesEnviadasController implements Initializable {
     fillTableView();
   }
 
-  private void fillTableView() {
-    List<LogNotificacao> logsNotificacoes = logNotificacaoRepository.findAllOrderByDataEnvioDesc();
+  public void fillTableView() {
+    List<LogNotificacao> logsNotificacoes = logNotificacaoService.buscarLogNotificacoesMaisRecentes();
     notificacoesTableView.setItems(FXCollections.observableArrayList(logsNotificacoes));
   }
 

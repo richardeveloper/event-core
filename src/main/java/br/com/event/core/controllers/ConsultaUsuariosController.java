@@ -5,6 +5,7 @@ import br.com.event.core.enums.TipoUsuarioEnum;
 import br.com.event.core.exceptions.ServiceException;
 import br.com.event.core.services.UsuarioService;
 import br.com.event.core.utils.AlertUtils;
+import br.com.event.core.utils.IconUtils;
 import br.com.event.core.utils.MaskUtils;
 import java.net.URL;
 import java.util.List;
@@ -20,7 +21,6 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
@@ -57,7 +57,7 @@ public class ConsultaUsuariosController implements Initializable {
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
     fillContentCards();
-    configFilterIcon();
+    filterIcon.setImage(IconUtils.getIcon("/icons/filter.png", 20, 20).getImage());
 
     filtroAlunosCheckBox.selectedProperty().addListener(this::filtroAlunosAction);
     filtroProfessoresCheckBox.selectedProperty().addListener(this::filtroProfessoresAction);
@@ -89,13 +89,6 @@ public class ConsultaUsuariosController implements Initializable {
       VBox card = createCard(usuario);
       cardsContent.getChildren().add(card);
     }
-  }
-
-  private void configFilterIcon() {
-    Image image = new Image(getClass().getResource("/icons/filter.png").toExternalForm());
-    filterIcon.setImage(image);
-    filterIcon.setFitWidth(20);
-    filterIcon.setFitHeight(20);
   }
 
   private VBox createCard(Usuario usuario) {
@@ -147,11 +140,7 @@ public class ConsultaUsuariosController implements Initializable {
     Button deleteButton = new Button("Apagar usuário");
     deleteButton.getStyleClass().add("delete-button");
 
-    Image image = new Image(getClass().getResource("/icons/trash.png").toExternalForm());
-
-    ImageView icon = new ImageView(image);
-    icon.setFitHeight(25);
-    icon.setFitWidth(25);
+    ImageView icon = IconUtils.getIcon("/icons/trash.png", 25, 25);
 
     deleteButton.setGraphic(icon);
     deleteButton.setGraphicTextGap(7.5);
@@ -177,21 +166,16 @@ public class ConsultaUsuariosController implements Initializable {
 
           cardsContent.getChildren().clear();
 
-          if (filtroAlunosCheckBox.isSelected()) {
-            filtroAlunosCheckBox.setSelected(false);
-            filtroAlunosCheckBox.setSelected(true);
-          }
-          else if (filtroProfessoresCheckBox.isSelected()) {
-            filtroProfessoresCheckBox.setSelected(false);
-            filtroProfessoresCheckBox.setSelected(true);
-          }
-          else if (filtroVisitantesCheckBox.isSelected()) {
-            filtroVisitantesCheckBox.setSelected(false);
-            filtroVisitantesCheckBox.setSelected(true);
-          }
-          else {
-            filtroTodosCheckBox.setSelected(false);
-            filtroTodosCheckBox.setSelected(true);
+          List<CheckBox> filtros = List.of(
+            filtroAlunosCheckBox,
+            filtroProfessoresCheckBox,
+            filtroVisitantesCheckBox,
+            filtroTodosCheckBox
+          );
+
+          for (CheckBox checkBox : filtros) {
+            checkBox.setSelected(false);
+            checkBox.setSelected(true);
           }
 
           AlertUtils.showSuccessAlert("Usuário apagado com sucesso.");
@@ -205,20 +189,14 @@ public class ConsultaUsuariosController implements Initializable {
     HBox firstRow = createRowCard(cpfLabel, cpfTextField, matriculaLabel, matriculaTextField);
     HBox secondRow = createRowCard(telefoneLabel, telefoneTextField, tipoUsuarioLabel, tipoUsuarioTextField);
 
-    Region space1 = new Region();
-    space1.setPrefWidth(10);
-
-    Region space2 = new Region();
-    space2.setPrefWidth(10);
-
     card.getChildren().addAll(
       nomeRow,
-      space1,
+      createSpace(),
       firstRow,
       emailLabel,
       emailTextField,
       secondRow,
-      space2,
+      createSpace(),
       footer
     );
 
@@ -235,6 +213,12 @@ public class ConsultaUsuariosController implements Initializable {
     secondColumn.getChildren().addAll(segundoLabel, segundoTextField);
 
     return new HBox(10, firstColumn, secondColumn);
+  }
+
+  private Region createSpace() {
+    Region space = new Region();
+    space.setPrefWidth(10);
+    return space;
   }
 
   private void filtroAlunosAction(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {

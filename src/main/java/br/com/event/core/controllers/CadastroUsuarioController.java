@@ -1,23 +1,23 @@
 package br.com.event.core.controllers;
 
 import br.com.event.core.entities.Usuario;
+import br.com.event.core.entities.Usuario.UsuarioBuilder;
 import br.com.event.core.enums.TipoUsuarioEnum;
 import br.com.event.core.exceptions.ServiceException;
 import br.com.event.core.services.UsuarioService;
 import br.com.event.core.utils.AlertUtils;
+import br.com.event.core.utils.IconUtils;
 import br.com.event.core.utils.MaskUtils;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,11 +76,7 @@ public class CadastroUsuarioController implements Initializable {
 
     saveButton.getStyleClass().add("edit-button");
 
-    Image image = new Image(getClass().getResource("/icons/save.png").toExternalForm());
-
-    ImageView icon = new ImageView(image);
-    icon.setFitHeight(25);
-    icon.setFitWidth(25);
+    ImageView icon = IconUtils.getIcon("/icons/save.png", 25, 25);
 
     saveButton.setGraphic(icon);
     saveButton.setGraphicTextGap(7.5);
@@ -88,7 +84,7 @@ public class CadastroUsuarioController implements Initializable {
   }
 
   @FXML
-  protected void salvarUsuario(ActionEvent event) {
+  protected void salvarUsuario() {
 
     if (nomeTextField.getText().isBlank()) {
       AlertUtils.showValidateAlert("O campo nome deve ser preenchido.");
@@ -129,12 +125,13 @@ public class CadastroUsuarioController implements Initializable {
       return;
     }
 
-    Usuario usuario = new Usuario();
-    usuario.setNome(nomeTextField.getText());
-    usuario.setCpf(cpf);
-    usuario.setEmail(emailTextField.getText());
-    usuario.setTelefone(telefone);
-    usuario.setTipoUsuario(TipoUsuarioEnum.parse(cargoComboBox.getSelectionModel().getSelectedItem()));
+    Usuario usuario = Usuario.builder()
+      .nome(nomeTextField.getText())
+      .cpf(cpf)
+      .email(emailTextField.getText())
+      .telefone(telefone)
+      .tipoUsuario(TipoUsuarioEnum.parse(cargoComboBox.getSelectionModel().getSelectedItem()))
+      .build();
 
     try {
       usuarioService.salvarUsuario(usuario);

@@ -63,89 +63,101 @@ public class StarterConfig implements CommandLineRunner {
   }
 
   private void configUsuarios() {
-    Usuario usuario1 = new Usuario();
-    usuario1.setNome("Adao Luiz Ferreira");
-    usuario1.setCpf("26208784620");
-    usuario1.setEmail("adao.luiz@outlook.com");
-    usuario1.setTelefone("30400807092");
-    usuario1.setTipoUsuario(TipoUsuarioEnum.ALUNO);
+    Usuario usuario1 = Usuario.builder()
+      .nome("Adao Luiz Ferreira")
+      .cpf("26208784620")
+      .email("adao.luiz@outlook.com")
+      .telefone("30400807092")
+      .tipoUsuario(TipoUsuarioEnum.ALUNO)
+      .build();
 
-    Usuario usuario2 = new Usuario();
-    usuario2.setNome("Celia Caetano de Maedeiros");
-    usuario2.setCpf("34310279031");
-    usuario2.setEmail("celia.caetano@gmail.com");
-    usuario2.setTelefone("65758688482");
-    usuario2.setTipoUsuario(TipoUsuarioEnum.ALUNO);
+    Usuario usuario2 = Usuario.builder()
+      .nome("Celia Caetano de Maedeiros")
+      .cpf("34310279031")
+      .email("celia.caetano@gmail.com")
+      .telefone("65758688482")
+      .tipoUsuario(TipoUsuarioEnum.ALUNO)
+      .build();
 
-    Usuario usuario3 = new Usuario();
-    usuario3.setNome("Eduardo Ambrosio");
-    usuario3.setCpf("15738582004");
-    usuario3.setEmail("eduardo.ambrosio@yahoo.com.br");
-    usuario3.setTelefone("80398763011");
-    usuario3.setTipoUsuario(TipoUsuarioEnum.VISITANTE);
+    Usuario usuario3 = Usuario.builder()
+      .nome("Eduardo Ambrosio")
+      .cpf("15738582004")
+      .email("eduardo.ambrosio@yahoo.com.br")
+      .telefone("80398763011")
+      .tipoUsuario(TipoUsuarioEnum.VISITANTE)
+      .build();
 
-    Usuario usuario4 = new Usuario();
-    usuario4.setNome("Raiumunda Cardoso de Freitas");
-    usuario4.setCpf("78791968038");
-    usuario4.setEmail("raiumunda.cardoso@uol.com");
-    usuario4.setTelefone("36568875408");
-    usuario4.setTipoUsuario(TipoUsuarioEnum.ALUNO);
+    Usuario usuario4 = Usuario.builder()
+      .nome("Raiumunda Cardoso de Freitas")
+      .cpf("78791968038")
+      .email("raiumunda.cardoso@uol.com")
+      .telefone("36568875408")
+      .tipoUsuario(TipoUsuarioEnum.ALUNO)
+      .build();
 
-    Usuario usuario5 = new Usuario();
-    usuario5.setNome("Francisco Antonio Cardoso");
-    usuario5.setCpf("49276781056");
-    usuario5.setEmail("francisco.antonio@gmail.com");
-    usuario5.setTelefone("69202950714");
-    usuario5.setTipoUsuario(TipoUsuarioEnum.ALUNO);
+    Usuario usuario5 = Usuario.builder()
+      .nome("Francisco Antonio Cardoso")
+      .cpf("49276781056")
+      .email("francisco.antonio@gmail.com")
+      .telefone("69202950714")
+      .tipoUsuario(TipoUsuarioEnum.ALUNO)
+      .build();
 
-    Usuario usuario6 = new Usuario();
-    usuario6.setNome("Nelci Campos Matias");
-    usuario6.setCpf("64422062034");
-    usuario6.setEmail("nelci.campos@hotmail.com");
-    usuario6.setTelefone("79810547168");
-    usuario6.setTipoUsuario(TipoUsuarioEnum.ALUNO);
+    Usuario usuario6 = Usuario.builder()
+      .nome("Nelci Campos Matias")
+      .cpf("64422062034")
+      .email("nelci.campos@hotmail.com")
+      .telefone("79810547168")
+      .tipoUsuario(TipoUsuarioEnum.ALUNO)
+      .build();
 
-    Usuario usuario7 = new Usuario();
-    usuario7.setNome("Maria Alice Martins");
-    usuario7.setCpf("99348682024");
-    usuario7.setEmail("maria.alice@yahoo.com.br");
-    usuario7.setTelefone("27554020367");
-    usuario7.setTipoUsuario(TipoUsuarioEnum.ALUNO);
+    Usuario usuario7 = Usuario.builder()
+      .nome("Maria Alice Martins")
+      .cpf("99348682024")
+      .email("maria.alice@yahoo.com.br")
+      .telefone("27554020367")
+      .tipoUsuario(TipoUsuarioEnum.ALUNO)
+      .build();
 
-    Usuario usuario8 = new Usuario();
-    usuario8.setNome("Luana Janaina Lopes");
-    usuario8.setCpf("04694988034");
-    usuario8.setEmail("luana.janaina@gmail.com");
-    usuario8.setTelefone("42114234713");
-    usuario8.setTipoUsuario(TipoUsuarioEnum.VISITANTE);
+    Usuario usuario8 = Usuario.builder()
+      .nome("Luana Janaina Lopes")
+      .cpf("04694988034")
+      .email("luana.janaina@gmail.com")
+      .telefone("42114234713")
+      .tipoUsuario(TipoUsuarioEnum.VISITANTE)
+      .build();
 
-    Usuario usuario9 = new Usuario();
-    usuario9.setNome("Maria Helena Rodrigues");
-    usuario9.setCpf("41737855003");
-    usuario9.setEmail("maria.helena@outlook.com");
-    usuario9.setTelefone("86388919773");
-    usuario9.setTipoUsuario(TipoUsuarioEnum.ALUNO);
+    Usuario usuario9 = Usuario.builder()
+      .nome("Maria Helena Rodrigues")
+      .cpf("41737855003")
+      .email("maria.helena@outlook.com")
+      .telefone("86388919773")
+      .tipoUsuario(TipoUsuarioEnum.ALUNO)
+      .build();
 
-    Usuario usuario10 = new Usuario();
-    usuario10.setNome("Vera Lucia de Araujo");
-    usuario10.setCpf("01640297022");
-    usuario10.setEmail("vera.lucia@yahoo.com.br");
-    usuario10.setTelefone("77128568464");
-    usuario10.setTipoUsuario(TipoUsuarioEnum.ALUNO);
+    Usuario usuario10 = Usuario.builder()
+      .nome("Vera Lucia de Araujo")
+      .cpf("01640297022")
+      .email("vera.lucia@yahoo.com.br")
+      .telefone("77128568464")
+      .tipoUsuario(TipoUsuarioEnum.ALUNO)
+      .build();
 
-    Usuario usuario11 = new Usuario();
-    usuario11.setNome("Fabrício Morais Almeira");
-    usuario11.setCpf("69852314651");
-    usuario11.setEmail("fabricio.morais@outlook.com");
-    usuario11.setTelefone("62985632145");
-    usuario11.setTipoUsuario(TipoUsuarioEnum.PROFESSOR);
+    Usuario usuario11 = Usuario.builder()
+      .nome("Fabrício Morais Almeira")
+      .cpf("69852314651")
+      .email("fabricio.morais@outlook.com")
+      .telefone("62985632145")
+      .tipoUsuario(TipoUsuarioEnum.PROFESSOR)
+      .build();
 
-    Usuario usuario12 = new Usuario();
-    usuario12.setNome("Mônica Alves de Araujo");
-    usuario12.setCpf("16325988740");
-    usuario12.setEmail("monica.alves@yahoo.com.br");
-    usuario12.setTelefone("83928568464");
-    usuario12.setTipoUsuario(TipoUsuarioEnum.PROFESSOR);
+    Usuario usuario12 = Usuario.builder()
+      .nome("Mônica Alves de Araujo")
+      .cpf("16325988740")
+      .email("monica.alves@yahoo.com.br")
+      .telefone("83928568464")
+      .tipoUsuario(TipoUsuarioEnum.PROFESSOR)
+      .build();
 
     List<Usuario> usuarios = List.of(usuario1, usuario2, usuario3, usuario4, usuario5, usuario6,
       usuario7, usuario8, usuario9, usuario10, usuario11, usuario12);
@@ -154,42 +166,42 @@ public class StarterConfig implements CommandLineRunner {
   }
 
   private void configEventos() {
-    Evento evento1 = new Evento();
-    evento1.setNome("Desvendando a Inteligência Artificial");
-    evento1.setData(LocalDateTime.now().plusHours(2));
-    evento1.setDuracao(LocalTime.of(1, 0));
-    evento1.setStatus(StatusEventoEnum.AGENDADO);
-    evento1.setPrioridade(PrioridadeEventoEnum.ABERTO);
+    Evento evento1 = Evento.builder()
+      .nome("A Arte da Arquitetura de Software")
+      .data(LocalDateTime.now().plusMinutes(1))
+      .duracao(LocalTime.of(0, 1))
+      .prioridade(PrioridadeEventoEnum.OBRIGATORIO_ALUNOS)
+      .build();
 
-    Evento evento2 = new Evento();
-    evento2.setNome("A Arte da Arquitetura de Software");
-    evento2.setData(LocalDateTime.now().plusDays(2).plusHours(4).minusMinutes(40));
-    evento2.setDuracao(LocalTime.of(0, 50));
-    evento2.setStatus(StatusEventoEnum.AGENDADO);
-    evento2.setPrioridade(PrioridadeEventoEnum.OBRIGATORIO_ALUNOS);
+    Evento evento2 = Evento.builder()
+      .nome("Boas práticas no ensino a distância")
+      .data(LocalDateTime.now().plusMinutes(2))
+      .duracao(LocalTime.of(0, 1))
+      .prioridade(PrioridadeEventoEnum.OBRIGATORIO_PROFESSORES)
+      .build();
 
-    Evento evento3 = new Evento();
-    evento3.setNome("Boas práticas no ensino a distância");
-    evento3.setData(LocalDateTime.now().plusDays(1).plusHours(6));
-    evento3.setDuracao(LocalTime.of(2, 10));
-    evento3.setStatus(StatusEventoEnum.AGENDADO);
-    evento3.setPrioridade(PrioridadeEventoEnum.OBRIGATORIO_PROFESSORES);
+    Evento evento3 = Evento.builder()
+      .nome("Desvendando a Inteligência Artificial")
+      .data(LocalDateTime.now().plusMinutes(2))
+      .duracao(LocalTime.of(0, 1))
+      .prioridade(PrioridadeEventoEnum.ABERTO)
+      .build();
 
-    Evento evento4 = new Evento();
-    evento4.setNome("A Revolução dos Frameworks");
-    evento4.setData(LocalDateTime.now().plusDays(10).plusHours(11).minusMinutes(30));
-    evento4.setDuracao(LocalTime.of(1, 15));
-    evento4.setStatus(StatusEventoEnum.AGENDADO);
-    evento4.setPrioridade(PrioridadeEventoEnum.SOMENTE_ALUNOS);
+    Evento evento4 = Evento.builder()
+      .nome("A Revolução dos Frameworks")
+      .data(LocalDateTime.now().plusMinutes(5))
+      .duracao(LocalTime.of(0, 1))
+      .prioridade(PrioridadeEventoEnum.SOMENTE_ALUNOS)
+      .build();
 
-    Evento evento5 = new Evento();
-    evento5.setNome("Apresentação da ementa do curso");
-    evento5.setData(LocalDateTime.now().plusDays(3).plusHours(3));
-    evento5.setDuracao(LocalTime.of(1, 40));
-    evento5.setStatus(StatusEventoEnum.AGENDADO);
-    evento5.setPrioridade(PrioridadeEventoEnum.SOMENTE_PROFESSORES);
+    Evento evento5 = Evento.builder()
+      .nome("Apresentação da ementa do curso")
+      .data(LocalDateTime.now().plusMinutes(10))
+      .duracao(LocalTime.of(0, 1))
+      .prioridade(PrioridadeEventoEnum.SOMENTE_PROFESSORES)
+      .build();
 
-    List<Evento> eventos = List.of(evento1, evento2, evento3, evento4, evento5);
+    List<Evento> eventos = List.of(evento3, evento1, evento2, evento4, evento5);
 
     eventos.forEach(evento -> eventoService.salvarEvento(evento));
   }

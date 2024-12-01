@@ -50,6 +50,8 @@ public class EventoServiceImpl implements EventoService {
       throw new ServiceException("O nome %s já está sendo utilizado.".formatted(evento.getNome()));
     }
 
+    evento.setStatus(StatusEventoEnum.AGENDADO);
+
     Evento save = eventoRepository.save(evento);
 
     switch (evento.getPrioridade()) {
@@ -83,22 +85,18 @@ public class EventoServiceImpl implements EventoService {
     Evento save = eventoRepository.save(evento);
 
     if (dataAnterior != null) {
-      List<Usuario> usuarios = eventosUsuarioService.buscarTodosEventosPorEventoId(save.getId())
+      List<Usuario> usuarios = eventosUsuarioService.buscarTodosEventosUsuarioPorEventoId(save.getId())
         .stream()
         .map(EventosUsuario::getUsuario)
         .toList();
 
-      for (Usuario usuario : usuarios) {
-        String message = "Atenção %s ! O evento %s teve sua data alterada de %s para %s.".formatted(
-          usuario.getNome(),
-          evento.getNome(),
-          dataAnterior.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
-          novoEvento.getData().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
-        );
+      String message = "Atenção ! O evento %s teve sua data alterada de %s para %s.".formatted(
+        evento.getNome(),
+        dataAnterior.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
+        novoEvento.getData().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
+      );
 
-        log.info("Enviando notificação de alteração de data do evento.");
-        rabbitProducer.sendMessage(TipoNotificacaoEnum.ALTERACAO_DATA_EVENTO, message);
-      }
+      usuarios.forEach(usuario -> rabbitProducer.sendMessage(TipoNotificacaoEnum.ALTERACAO_DATA_EVENTO, message));
     }
   }
 
@@ -108,7 +106,7 @@ public class EventoServiceImpl implements EventoService {
 
     evento.setStatus(StatusEventoEnum.CANCELADO);
 
-    List<EventosUsuario> eventosUsuarios = eventosUsuarioService.buscarTodosEventosPorEventoId(evento.getId());
+    List<EventosUsuario> eventosUsuarios = eventosUsuarioService.buscarTodosEventosUsuarioPorEventoId(evento.getId());
 
     if (eventosUsuarios.isEmpty()) {
       eventoRepository.save(evento);
@@ -124,13 +122,10 @@ public class EventoServiceImpl implements EventoService {
 
     eventoRepository.save(evento);
 
-    for (Usuario usuario : usuarios) {
-      String message = "Atenção %s ! O evento %s foi cancelado, entre em contato para mais informações."
-        .formatted(usuario.getNome(), eventosUsuarios.get(0).getEvento().getNome());
+    String message = "Atenção ! O evento %s foi cancelado, entre em contato para mais informações."
+      .formatted(eventosUsuarios.get(0).getEvento().getNome());
 
-      log.info("Enviando notificação de cancelamento de evento.");
-      rabbitProducer.sendMessage(TipoNotificacaoEnum.EVENTO_CANCELADO, message);
-    }
+    usuarios.forEach(usuario -> rabbitProducer.sendMessage(TipoNotificacaoEnum.EVENTO_CANCELADO, message));
   }
 
   @Override
@@ -141,7 +136,7 @@ public class EventoServiceImpl implements EventoService {
 
   @Override
   public List<Evento> buscarTodosEventos() {
-    return eventoRepository.findAll();
+    return eventoRepository.findAllOrderByData();
   }
 
   @Override
@@ -167,6 +162,12 @@ public class EventoServiceImpl implements EventoService {
   @Override
   public void apagarEvento(Long id) throws ServiceException {
     try {
+      Evento evento = buscarEventoPorId(id);
+
+      if (evento.getStatus().equals(StatusEventoEnum.EM_ANDAMENTO) || evento.getStatus().equals(StatusEventoEnum.AGENDADO)) {
+        throw new ServiceException("Eventos que não foram finalizados ou cancelados não podem ser apagados.");
+      }
+
       eventoRepository.deleteById(id);
     }
     catch (DataIntegrityViolationException e) {

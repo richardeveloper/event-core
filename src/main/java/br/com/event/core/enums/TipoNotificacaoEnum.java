@@ -8,6 +8,8 @@ public enum TipoNotificacaoEnum {
   INSCRICAO_CONFIRMADA("Confirmação de inscrição"),
   INSCRICAO_CANCELADA("Confirmação de cancelamento"),
   ALTERACAO_DATA_EVENTO("Alteração na data do evento"),
+  EVENTO_INICIADO("Evento iniciado"),
+  EVENTO_FINALIZADO("Evento finalizado"),
   EVENTO_CANCELADO("Evento cancelado");
 
   private final String descricao;

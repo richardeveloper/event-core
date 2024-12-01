@@ -6,6 +6,7 @@ import br.com.event.core.enums.StatusEventoEnum;
 import br.com.event.core.exceptions.ServiceException;
 import br.com.event.core.services.EventoService;
 import br.com.event.core.utils.AlertUtils;
+import br.com.event.core.utils.IconUtils;
 import br.com.event.core.utils.MaskUtils;
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -15,14 +16,12 @@ import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,11 +77,7 @@ public class CadastroEventoController implements Initializable {
 
     saveButton.getStyleClass().add("edit-button");
 
-    Image image = new Image(getClass().getResource("/icons/save.png").toExternalForm());
-
-    ImageView icon = new ImageView(image);
-    icon.setFitHeight(25);
-    icon.setFitWidth(25);
+    ImageView icon = IconUtils.getIcon("/icons/save.png", 25, 25);
 
     saveButton.setGraphic(icon);
     saveButton.setGraphicTextGap(7.5);
@@ -90,7 +85,7 @@ public class CadastroEventoController implements Initializable {
   }
 
   @FXML
-  protected void salvarEvento(ActionEvent event) {
+  protected void salvarEvento() {
 
     if (nomeTextField.getText().isBlank()) {
       AlertUtils.showValidateAlert("O campo nome deve ser preenchido.");
@@ -139,12 +134,13 @@ public class CadastroEventoController implements Initializable {
       return;
     }
 
-    Evento evento = new Evento();
-    evento.setNome(nomeTextField.getText());
-    evento.setData(data);
-    evento.setDuracao(duracao);
-    evento.setPrioridade(PrioridadeEventoEnum.parse(prioridadeComboBox.getSelectionModel().getSelectedItem()));
-    evento.setStatus(StatusEventoEnum.AGENDADO);
+    Evento evento = Evento.builder()
+      .nome(nomeTextField.getText())
+      .data(data)
+      .duracao(duracao)
+      .prioridade(PrioridadeEventoEnum.parse(prioridadeComboBox.getSelectionModel().getSelectedItem()))
+      .status(StatusEventoEnum.AGENDADO)
+      .build();
 
     try {
       eventoService.salvarEvento(evento);

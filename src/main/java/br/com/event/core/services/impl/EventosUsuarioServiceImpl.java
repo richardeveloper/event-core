@@ -67,14 +67,14 @@ public class EventosUsuarioServiceImpl implements EventosUsuarioService {
       return;
     }
 
-    EventosUsuario eventosUsuario = new EventosUsuario();
-    eventosUsuario.setEvento(evento);
-    eventosUsuario.setUsuario(usuario);
+    EventosUsuario eventosUsuario = EventosUsuario.builder()
+      .usuario(usuario)
+      .evento(evento)
+      .build();
 
     eventosUsuarioRepository.save(eventosUsuario);
 
-    String message = "%s sua inscrição no evento %s foi realizada com sucesso."
-      .formatted(usuario.getNome(), evento.getNome());
+    String message = "Sua inscrição no evento %s foi realizada com sucesso.".formatted(evento.getNome());
 
     rabbitProducer.sendMessage(TipoNotificacaoEnum.INSCRICAO_CONFIRMADA, message);
   }
@@ -99,19 +99,18 @@ public class EventosUsuarioServiceImpl implements EventosUsuarioService {
 
     eventosUsuarioRepository.delete(eventosUsuario);
 
-    String message = "%s sua inscrição no evento %s foi cancelada com sucesso."
-      .formatted(usuario.getNome(), evento.getNome());
+    String message = "Sua inscrição no evento %s foi cancelada com sucesso.".formatted(evento.getNome());
 
     rabbitProducer.sendMessage(TipoNotificacaoEnum.INSCRICAO_CANCELADA, message);
   }
 
   @Override
-  public List<EventosUsuario> buscarTodosEventosPorEventoId(Long eventoId) {
+  public List<EventosUsuario> buscarTodosEventosUsuarioPorEventoId(Long eventoId) {
     return eventosUsuarioRepository.findAllByEventoId(eventoId);
   }
 
   @Override
-  public List<EventosUsuario> buscarTodosEventosPorUsuarioId(Long usuarioId) {
+  public List<EventosUsuario> buscarTodosEventosUsuarioPorUsuarioId(Long usuarioId) {
     return eventosUsuarioRepository.findAllByUsuarioId(usuarioId);
   }
 

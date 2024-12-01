@@ -23,7 +23,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
   List<Usuario> findByTipoUsuario(TipoUsuarioEnum tipoUsuario);
 
-  @Query(value = "SELECT usuario FROM Usuario usuario WHERE UPPER(usuario.nome) LIKE UPPER(CONCAT('%', :nome, '%'))")
+  @Query(value =
+    "SELECT usuario FROM Usuario usuario WHERE UPPER(usuario.nome) LIKE UPPER(CONCAT('%', :nome, '%'))")
   List<Usuario> findByNomeLike(String nome);
 
   @Query(value = "SELECT nextval('user_code_seq')", nativeQuery = true)

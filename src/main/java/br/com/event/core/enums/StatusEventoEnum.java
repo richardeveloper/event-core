@@ -7,7 +7,8 @@ public enum StatusEventoEnum {
 
   AGENDADO("AGENDADO"),
   CANCELADO("CANCELADO"),
-  FINALIZADO("FINALIZADO");
+  FINALIZADO("FINALIZADO"),
+  EM_ANDAMENTO("EM ANDAMENTO");
 
   private final String descricao;
 

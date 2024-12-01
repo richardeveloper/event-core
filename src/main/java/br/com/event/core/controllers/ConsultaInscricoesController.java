@@ -8,6 +8,7 @@ import br.com.event.core.exceptions.ServiceException;
 import br.com.event.core.services.EventosUsuarioService;
 import br.com.event.core.services.UsuarioService;
 import br.com.event.core.utils.AlertUtils;
+import br.com.event.core.utils.IconUtils;
 import br.com.event.core.utils.MaskUtils;
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
@@ -26,7 +27,6 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
@@ -95,7 +95,7 @@ public class ConsultaInscricoesController implements Initializable {
           if (usuarioEncontrado.isPresent()) {
             Usuario usuario = usuarioEncontrado.get();
 
-            List<Evento> eventos = eventosUsuarioService.buscarTodosEventosPorUsuarioId(usuario.getId())
+            List<Evento> eventos = eventosUsuarioService.buscarTodosEventosUsuarioPorUsuarioId(usuario.getId())
               .stream()
               .map(EventosUsuario::getEvento)
               .toList();
@@ -167,18 +167,12 @@ public class ConsultaInscricoesController implements Initializable {
     statusTextField.setAlignment(Pos.CENTER);
     statusTextField.setPrefColumnCount(evento.getStatus().getDescricao().length());
 
-    StatusEventoEnum status = StatusEventoEnum.parse(statusTextField.getText());
+    StatusEventoEnum statusEventoEnum = StatusEventoEnum.parse(statusTextField.getText());
 
-    switch (status) {
-      case AGENDADO:
-        statusTextField.getStyleClass().add("success-card");
-        break;
-      case FINALIZADO:
-        statusTextField.getStyleClass().add("warning-card");
-        break;
-      case CANCELADO:
-        statusTextField.getStyleClass().add("error-card");
-        break;
+    switch (statusEventoEnum) {
+      case AGENDADO, EM_ANDAMENTO -> statusTextField.getStyleClass().add("success-card");
+      case FINALIZADO -> statusTextField.getStyleClass().add("warning-card");
+      case CANCELADO -> statusTextField.getStyleClass().add("error-card");
     }
 
     HBox firstRow = createRowCard(dataLabel, dataTextField, duracaoLabel, duracaoTextField);
@@ -187,11 +181,7 @@ public class ConsultaInscricoesController implements Initializable {
     Button deleteButton = new Button("Cancelar inscrição");
     deleteButton.getStyleClass().add("edit-button");
 
-    Image image = new Image(getClass().getResource("/icons/close.png").toExternalForm());
-
-    ImageView icon = new ImageView(image);
-    icon.setFitHeight(25);
-    icon.setFitWidth(25);
+    ImageView icon = IconUtils.getIcon("/icons/close.png", 25, 25);
 
     deleteButton.setGraphic(icon);
     deleteButton.setGraphicTextGap(7.5);
@@ -221,7 +211,7 @@ public class ConsultaInscricoesController implements Initializable {
             return;
           }
 
-          List<Evento> eventos = eventosUsuarioService.buscarTodosEventosPorUsuarioId(usuario.getId())
+          List<Evento> eventos = eventosUsuarioService.buscarTodosEventosUsuarioPorUsuarioId(usuario.getId())
             .stream()
             .map(EventosUsuario::getEvento)
             .toList();
@@ -237,18 +227,12 @@ public class ConsultaInscricoesController implements Initializable {
     HBox footer = new HBox(10, deleteButton);
     footer.setAlignment(Pos.BASELINE_RIGHT);
 
-    Region space1 = new Region();
-    space1.setPrefWidth(10);
-
-    Region space2 = new Region();
-    space2.setPrefWidth(10);
-
     card.getChildren().addAll(
-      nomeRow,
-      space1,
+      card,
+      createSpace(),
       firstRow,
       secondRow,
-      space2,
+      createSpace(),
       footer
     );
 
@@ -268,6 +252,12 @@ public class ConsultaInscricoesController implements Initializable {
     HBox.setHgrow(firstColumn, Priority.ALWAYS);
 
     return row;
+  }
+
+  private Region createSpace() {
+    Region space = new Region();
+    space.setPrefWidth(10);
+    return space;
   }
 
 }

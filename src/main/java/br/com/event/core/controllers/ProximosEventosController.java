@@ -7,6 +7,7 @@ import br.com.event.core.exceptions.ServiceException;
 import br.com.event.core.services.EventoService;
 import br.com.event.core.services.EventosUsuarioService;
 import br.com.event.core.utils.AlertUtils;
+import br.com.event.core.utils.IconUtils;
 import br.com.event.core.utils.MaskUtils;
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -26,7 +27,6 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
@@ -72,7 +72,7 @@ public class ProximosEventosController implements Initializable {
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
     fillContentCards();
-    configFilterIcon();
+    filterIcon.setImage(IconUtils.getIcon("/icons/filter.png", 20, 20).getImage());
 
     filtroAbertoPublicoCheckBox.selectedProperty().addListener(this::filtroAbertoPublicAction);
     filtroObrigatorioAlunoCheckBox.selectedProperty().addListener(this::filtroObrigatorioAlunoAction);
@@ -105,17 +105,9 @@ public class ProximosEventosController implements Initializable {
     }
   }
 
-  private void configFilterIcon() {
-    Image image = new Image(getClass().getResource("/icons/filter.png").toExternalForm());
-    filterIcon.setImage(image);
-    filterIcon.setFitWidth(20);
-    filterIcon.setFitHeight(20);
-  }
-
   private VBox createCard(Evento evento) {
     VBox card = new VBox();
     card.setSpacing(10);
-
     card.getStyleClass().add("card");
 
     Label nomeLabel = new Label(evento.getNome().toUpperCase());
@@ -132,7 +124,9 @@ public class ProximosEventosController implements Initializable {
 
     Button dataButton = new Button("Editar");
     dataButton.getStyleClass().add("edit-button");
+    dataButton.setDisable(true);
     dataButton.setOnAction(event -> createDateDialog(evento, dataTextField));
+
     HBox dataRow = new HBox(10, dataTextField, dataButton);
     HBox.setHgrow(dataTextField, Priority.ALWAYS);
 
@@ -145,6 +139,7 @@ public class ProximosEventosController implements Initializable {
 
     Button duracaoButton = new Button("Editar");
     duracaoButton.getStyleClass().add("edit-button");
+    duracaoButton.setDisable(true);
     duracaoButton.setOnAction(event -> createDuracaoDialog(evento, duracaoTextField));
 
     HBox duracaoRow = new HBox(10, duracaoTextField, duracaoButton);
@@ -175,34 +170,28 @@ public class ProximosEventosController implements Initializable {
     cancelButton.getStyleClass().add("edit-button");
     cancelButton.setDisable(true);
 
-    Image image = new Image(getClass().getResource("/icons/close.png").toExternalForm());
-
-    ImageView icon = new ImageView(image);
-    icon.setFitHeight(25);
-    icon.setFitWidth(25);
+    ImageView icon = IconUtils.getIcon("/icons/close.png", 25, 25);
 
     cancelButton.setGraphic(icon);
     cancelButton.setGraphicTextGap(7.5);
     cancelButton.setContentDisplay(ContentDisplay.RIGHT);
 
-    StatusEventoEnum status = StatusEventoEnum.parse(statusTextField.getText());
+    StatusEventoEnum statusEventoEnum = StatusEventoEnum.parse(statusTextField.getText());
 
-    if (status.equals(StatusEventoEnum.AGENDADO)) {
-      cancelButton.setDisable(false);
-      cancelButton.setOnAction(event -> cancelEventAction(evento));
-    }
+    switch (statusEventoEnum) {
+      case EM_ANDAMENTO -> statusTextField.getStyleClass().add("success-card");
+      case AGENDADO -> {
+        dataButton.setDisable(false);
+        duracaoButton.setDisable(false);
+        cancelButton.setDisable(false);
+        cancelButton.setOnAction(event -> cancelEventAction(evento));
 
-    switch (status) {
-      case AGENDADO:
         statusTextField.getStyleClass().add("success-card");
-        break;
-      case FINALIZADO:
-        statusTextField.getStyleClass().add("warning-card");
-        break;
-      case CANCELADO:
-        statusTextField.getStyleClass().add("error-card");
-        break;
+      }
+      case FINALIZADO -> statusTextField.getStyleClass().add("warning-card");
+      case CANCELADO -> statusTextField.getStyleClass().add("error-card");
     }
+
 
     VBox colunaParticipantes = new VBox(10);
     colunaParticipantes.getChildren().addAll(participantesLabel, participantesTextField);
@@ -216,15 +205,9 @@ public class ProximosEventosController implements Initializable {
     HBox cancelRow = new HBox(10, cancelButton);
     cancelRow.setAlignment(Pos.CENTER_RIGHT);
 
-    Region space1 = new Region();
-    space1.setPrefWidth(10);
-
-    Region space2 = new Region();
-    space2.setPrefWidth(10);
-
     card.getChildren().addAll(
       nomeRow,
-      space1,
+      createSpace(),
       dataLabel,
       dataRow,
       duracaoLabel,
@@ -232,11 +215,17 @@ public class ProximosEventosController implements Initializable {
       participantesRow,
       prioridadeLabel,
       prioridadeTextField,
-      space2,
+      createSpace(),
       cancelRow
     );
 
     return card;
+  }
+
+  private Region createSpace() {
+    Region space = new Region();
+    space.setPrefWidth(10);
+    return space;
   }
 
   private void createDateDialog(Evento evento, TextField textField) {
@@ -365,10 +354,12 @@ public class ProximosEventosController implements Initializable {
     catch (ServiceException e) {
       AlertUtils.showWarningAlert(e.getMessage());
       dialog.close();
+      return;
     }
     catch (Exception e) {
       AlertUtils.showErrorAlert("Ocorreu um erro durante o processamento.");
       dialog.close();
+      return;
     }
 
     cardsContent.getChildren().clear();

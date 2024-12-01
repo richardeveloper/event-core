@@ -66,13 +66,17 @@ public class ValidationUtils {
     }
 
     if (data.isBefore(LocalDateTime.now())) {
-      throw new ServiceException("A data do evento deve ser superior ou igual a data atual.");
+      throw new ServiceException("A data do evento deve ser superior a data atual.");
     }
   }
 
   public static void validarDuracao(LocalTime duracao) {
     if (duracao == null) {
       throw new ServiceException("O campo duracao deve ser preenchido.");
+    }
+
+    if (duracao.isBefore(LocalTime.of(0, 1))) {
+      throw new ServiceException("O campo duracao deve ser maior que zero.");
     }
   }
 

@@ -10,9 +10,9 @@ public interface EventosUsuarioService {
 
   void cancelarInscricao(Long usuarioId, Long eventoId) throws ServiceException;
 
-  List<EventosUsuario> buscarTodosEventosPorEventoId(Long eventoId);
+  List<EventosUsuario> buscarTodosEventosUsuarioPorEventoId(Long eventoId);
 
-  List<EventosUsuario> buscarTodosEventosPorUsuarioId(Long usuarioId);
+  List<EventosUsuario> buscarTodosEventosUsuarioPorUsuarioId(Long usuarioId);
 
   int buscarParticipantesEvento(Long eventoId);
 

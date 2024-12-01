@@ -10,10 +10,18 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
 @Entity
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "LOG_NOTIFICACAO")
 public class LogNotificacao {
 
@@ -21,18 +29,12 @@ public class LogNotificacao {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(name = "CODIGO_NOTIFICACAO")
-  private String codigoNotificacao;
-
-  @Column(name = "NOTIFICACAO")
-  private String notificacao;
-
   @Enumerated(EnumType.STRING)
   @Column(name = "TIPO_NOTIFICACAO")
   private TipoNotificacaoEnum tipoNotificacao;
 
-  @Column(name = "CODIGO_LOTE")
-  private Integer codigoLote;
+  @Column(name = "NOTIFICACAO", columnDefinition = "TEXT")
+  private String notificacao;
 
   @Column(name = "DATA_ENVIO")
   private LocalDateTime dataEnvio;
