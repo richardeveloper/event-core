@@ -35,9 +35,9 @@ Permitir criar eventos/palestras, gerenciar a lista de participantes e enviar le
 CRUD: Cadastro de eventos, participantes e notificações enviadas.
 </p>
 
+## Rodar aplicação
+
 > [!TIP]
->
-> ### Rodar aplicação
 >
 > **Requisitos:**
 > - Java 17 ou superior
