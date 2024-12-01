@@ -10,13 +10,19 @@
 
 </div>
 
+## Organizador de Eventos e Palestras
+
+<p align="justify"> 
+Permitir criar eventos/palestras, gerenciar a lista de participantes e enviar lembretes sobre horários ou mudanças de agenda. Cadastro de eventos, participantes e notificações enviadas.
+</p>
+
 ## Instruções
 
 <p align="justify">
 Você deverá desenvolver um sistema de mensageria utilizando RabbitMQ ou Kafka, integrando o mensageiro a um aplicativo JavaFX e a um banco de dados relacional (PostgreSQL ou outro de sua escolha).
 </p>
 
-## Arquitetura e Funcionalidades
+## Arquitetura e funcionalidades
 
 - O sistema deverá contar com cliente e servidor, comunicando-se exclusivamente através do mensageiro (RabbitMQ ou Kafka).
 - Deve ser implementado um CRUD simples, utilizando JavaFX como interface do cliente.
@@ -24,27 +30,17 @@ Você deverá desenvolver um sistema de mensageria utilizando RabbitMQ ou Kafka,
 Alterações no banco de dados (inserção, exclusão, atualização) deverão ser realizadas por meio dos @RabbitListener ou @KafkaListener implementados no servidor.
 - O sistema deverá refletir as alterações em tempo real entre cliente e servidor, através das mensagens enviadas pelo mensageiro.
 
-## Tema
-
-### Organizador de Eventos e Palestras com Notificações
-
-<p align="justify"> 
-Permitir criar eventos/palestras, gerenciar a lista de participantes e enviar lembretes sobre horários ou mudanças de agenda. 
-</p>
-<p align="justify">
-CRUD: Cadastro de eventos, participantes e notificações enviadas.
-</p>
-
-## Rodar aplicação
+## Execução
 
 > [!TIP]
 >
 > **Requisitos:**
-> - Java 17 ou superior
+> - Java 17
 > - <a href="http://localhost:8080/api-docs" style="text-decoration: none;">Java FX 17.0.13</a>
 > - PostgreSQL
+> - Docker
 >
-> **Variáveis para execução:**
+> **Argumentos para execução:**
 > 
 > ```
 > --module-path /path/to/lib/javafx-sdk-17.0.13/lib --add-modules javafx.controls,javafx.fxml
@@ -56,4 +52,9 @@ CRUD: Cadastro de eventos, participantes e notificações enviadas.
 > DB_URL="jdbc:postgresql://localhost:5432/banco_de_dados"
 > DB_USERNAME="postgres"
 > DB_PASSWORD="postgres"
+> ```
+> **Container docker para execução do rabbitmq:**
+>
+> ```
+> docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:4.0-management
 > ```
