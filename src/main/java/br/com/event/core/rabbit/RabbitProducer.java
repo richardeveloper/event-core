@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class RabbitProducer {
 
+  private static final String LOGS_EXCHANGE = "logs_exchange";
+
   private static final String CONFIRMACAO_INSCRICAO = "confirmacao_inscricao";
   private static final String CANCELAMENTO_INSCRICAO = "cancelamento_inscricao";
   private static final String ALTERACAO_DATA_EVENTO = "alteracao_data_evento";
@@ -42,7 +44,7 @@ public class RabbitProducer {
 
     String routingKey = generateRoutingKey(tipoNotificacao);
 
-    rabbitTemplate.convertAndSend(routingKey, notificacaoDto);
+    rabbitTemplate.convertAndSend(LOGS_EXCHANGE, routingKey, notificacaoDto);
   }
 
   private static String generateRoutingKey(TipoNotificacaoEnum tipoNotificacao) {

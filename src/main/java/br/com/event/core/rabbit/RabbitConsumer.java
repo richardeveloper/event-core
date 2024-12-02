@@ -19,6 +19,7 @@ public class RabbitConsumer {
   private static final String INICIO_EVENTO = "inicio_evento";
   private static final String FIM_EVENTO = "fim_evento";
   private static final String CANCELAMENTO_EVENTO = "cancelamento_evento";
+  private static final String LOGS_NOTIFICACOES = "logs_notificacoes";
 
   private final LogNotificacaoRepository logNotificacaoRepository;
 
@@ -28,31 +29,36 @@ public class RabbitConsumer {
 
   @RabbitListener(queues = CONFIRMACAO_INSCRICAO)
   public void readConfirmacaoInscricacao(NotificacaoDto notificacao) {
-    readMessage(notificacao);
+    log.info(notificacao.getNotificacao());
   }
 
   @RabbitListener(queues = CANCELAMENTO_INSCRICAO)
   public void readCancelamentoInscricacao(NotificacaoDto notificacao) {
-    readMessage(notificacao);
+    log.info(notificacao.getNotificacao());
   }
 
   @RabbitListener(queues = ALTERACAO_DATA_EVENTO)
   public void readAlteracaoDataEvento(NotificacaoDto notificacao) {
-    readMessage(notificacao);
+    log.info(notificacao.getNotificacao());
   }
 
   @RabbitListener(queues = INICIO_EVENTO)
   public void readInicioEvento(NotificacaoDto notificacao) {
-    readMessage(notificacao);
+    log.info(notificacao.getNotificacao());
   }
 
   @RabbitListener(queues = FIM_EVENTO)
   public void readFimEvento(NotificacaoDto notificacao) {
-    readMessage(notificacao);
+    log.info(notificacao.getNotificacao());
   }
 
   @RabbitListener(queues = CANCELAMENTO_EVENTO)
   public void readCancelamentoEvento(NotificacaoDto notificacao) {
+    log.info(notificacao.getNotificacao());
+  }
+
+  @RabbitListener(queues = LOGS_NOTIFICACOES)
+  public void readLogsNotificacoes(NotificacaoDto notificacao) {
     readMessage(notificacao);
   }
 
@@ -69,8 +75,6 @@ public class RabbitConsumer {
       .build();
 
     logNotificacaoRepository.save(logNotificacao);
-
-    log.info(logNotificacao.getNotificacao());
   }
 
 }
