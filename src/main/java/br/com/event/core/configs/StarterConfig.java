@@ -3,7 +3,6 @@ package br.com.event.core.configs;
 import br.com.event.core.entities.Evento;
 import br.com.event.core.entities.Usuario;
 import br.com.event.core.enums.PrioridadeEventoEnum;
-import br.com.event.core.enums.StatusEventoEnum;
 import br.com.event.core.enums.TipoUsuarioEnum;
 import br.com.event.core.repositories.EventoRepository;
 import br.com.event.core.repositories.UsuarioRepository;
@@ -84,7 +83,7 @@ public class StarterConfig implements CommandLineRunner {
       .cpf("15738582004")
       .email("eduardo.ambrosio@yahoo.com.br")
       .telefone("80398763011")
-      .tipoUsuario(TipoUsuarioEnum.VISITANTE)
+      .tipoUsuario(TipoUsuarioEnum.ALUNO)
       .build();
 
     Usuario usuario4 = Usuario.builder()
@@ -108,7 +107,7 @@ public class StarterConfig implements CommandLineRunner {
       .cpf("64422062034")
       .email("nelci.campos@hotmail.com")
       .telefone("79810547168")
-      .tipoUsuario(TipoUsuarioEnum.ALUNO)
+      .tipoUsuario(TipoUsuarioEnum.PROFESSOR)
       .build();
 
     Usuario usuario7 = Usuario.builder()
@@ -116,7 +115,7 @@ public class StarterConfig implements CommandLineRunner {
       .cpf("99348682024")
       .email("maria.alice@yahoo.com.br")
       .telefone("27554020367")
-      .tipoUsuario(TipoUsuarioEnum.ALUNO)
+      .tipoUsuario(TipoUsuarioEnum.PROFESSOR)
       .build();
 
     Usuario usuario8 = Usuario.builder()
@@ -124,7 +123,7 @@ public class StarterConfig implements CommandLineRunner {
       .cpf("04694988034")
       .email("luana.janaina@gmail.com")
       .telefone("42114234713")
-      .tipoUsuario(TipoUsuarioEnum.VISITANTE)
+      .tipoUsuario(TipoUsuarioEnum.PROFESSOR)
       .build();
 
     Usuario usuario9 = Usuario.builder()
@@ -132,7 +131,7 @@ public class StarterConfig implements CommandLineRunner {
       .cpf("41737855003")
       .email("maria.helena@outlook.com")
       .telefone("86388919773")
-      .tipoUsuario(TipoUsuarioEnum.ALUNO)
+      .tipoUsuario(TipoUsuarioEnum.VISITANTE)
       .build();
 
     Usuario usuario10 = Usuario.builder()
@@ -140,63 +139,46 @@ public class StarterConfig implements CommandLineRunner {
       .cpf("01640297022")
       .email("vera.lucia@yahoo.com.br")
       .telefone("77128568464")
-      .tipoUsuario(TipoUsuarioEnum.ALUNO)
+      .tipoUsuario(TipoUsuarioEnum.VISITANTE)
       .build();
 
-    Usuario usuario11 = Usuario.builder()
-      .nome("Fabrício Morais Almeira")
-      .cpf("69852314651")
-      .email("fabricio.morais@outlook.com")
-      .telefone("62985632145")
-      .tipoUsuario(TipoUsuarioEnum.PROFESSOR)
-      .build();
-
-    Usuario usuario12 = Usuario.builder()
-      .nome("Mônica Alves de Araujo")
-      .cpf("16325988740")
-      .email("monica.alves@yahoo.com.br")
-      .telefone("83928568464")
-      .tipoUsuario(TipoUsuarioEnum.PROFESSOR)
-      .build();
-
-    List<Usuario> usuarios = List.of(usuario1, usuario2, usuario3, usuario4, usuario5, usuario6,
-      usuario7, usuario8, usuario9, usuario10, usuario11, usuario12);
+    List<Usuario> usuarios = List.of(usuario1, usuario2, usuario3, usuario4, usuario5, usuario6, usuario7, usuario8, usuario9, usuario10);
 
     usuarios.forEach(usuario -> usuarioService.salvarUsuario(usuario));
   }
 
   private void configEventos() {
     Evento evento1 = Evento.builder()
-      .nome("A Arte da Arquitetura de Software")
+      .nome("Apresentação da Ementa do Curso")
       .data(LocalDateTime.now().plusMinutes(1))
       .duracao(LocalTime.of(0, 1))
       .prioridade(PrioridadeEventoEnum.OBRIGATORIO_ALUNOS)
       .build();
 
     Evento evento2 = Evento.builder()
-      .nome("Boas práticas no ensino a distância")
+      .nome("Boas Práticas no Ensino a Distância")
       .data(LocalDateTime.now().plusMinutes(2))
       .duracao(LocalTime.of(0, 1))
       .prioridade(PrioridadeEventoEnum.OBRIGATORIO_PROFESSORES)
       .build();
 
     Evento evento3 = Evento.builder()
-      .nome("Desvendando a Inteligência Artificial")
-      .data(LocalDateTime.now().plusMinutes(2))
+      .nome("A Tecnologia em Nosso Cotidiano")
+      .data(LocalDateTime.now().plusMinutes(3))
       .duracao(LocalTime.of(0, 1))
       .prioridade(PrioridadeEventoEnum.ABERTO)
       .build();
 
     Evento evento4 = Evento.builder()
-      .nome("A Revolução dos Frameworks")
-      .data(LocalDateTime.now().plusMinutes(5))
+      .nome("Internet das Coisas: A Revolução Conectada")
+      .data(LocalDateTime.now().plusMinutes(4))
       .duracao(LocalTime.of(0, 1))
       .prioridade(PrioridadeEventoEnum.SOMENTE_ALUNOS)
       .build();
 
     Evento evento5 = Evento.builder()
-      .nome("Apresentação da ementa do curso")
-      .data(LocalDateTime.now().plusMinutes(10))
+      .nome("Como Utilizar a I.A em Sala de Aula")
+      .data(LocalDateTime.now().plusMinutes(5))
       .duracao(LocalTime.of(0, 1))
       .prioridade(PrioridadeEventoEnum.SOMENTE_PROFESSORES)
       .build();

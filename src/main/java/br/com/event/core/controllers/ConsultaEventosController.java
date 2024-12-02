@@ -72,6 +72,8 @@ public class ConsultaEventosController implements Initializable {
   }
 
   private void fillContentCards() {
+    cardsContent.getChildren().clear();
+
     List<Evento> eventos = eventoService.buscarTodosEventos();
 
     if (eventos.isEmpty()) {

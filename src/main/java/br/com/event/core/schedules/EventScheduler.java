@@ -8,6 +8,7 @@ import br.com.event.core.enums.StatusEventoEnum;
 import br.com.event.core.enums.TipoNotificacaoEnum;
 import br.com.event.core.repositories.EventoRepository;
 import br.com.event.core.services.EventosUsuarioService;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoField;
 import java.util.List;
@@ -36,10 +37,14 @@ public class EventScheduler {
   }
 
   @Scheduled(fixedDelay = 60000)
-  public void initEvents() {
-    log.info("Iniciando verificação dos eventos iniciados.");
+  public void verificarEventosIniciados() {
+    log.info("Iniciando verificação dos eventos agendados.");
 
-    List<Evento> eventos = eventoRepository.findAllByDataAndStatus(LocalDateTime.now().plusMinutes(1), StatusEventoEnum.AGENDADO);
+    LocalDateTime data = LocalDate.now()
+      .atTime(LocalDateTime.now().getHour(), LocalDateTime.now().getMinute(), 0)
+      .plusMinutes(1);
+
+    List<Evento> eventos = eventoRepository.findAllByDataAndStatus(data , StatusEventoEnum.AGENDADO);
 
     for (Evento evento : eventos) {
       evento.setStatus(StatusEventoEnum.EM_ANDAMENTO);
@@ -54,16 +59,22 @@ public class EventScheduler {
 
       usuarios.forEach(usuario -> rabbitProducer.sendMessage(usuario, evento, TipoNotificacaoEnum.EVENTO_INICIADO, message));
     }
+
+    log.info("Encerrando verificação dos eventos agendados.");
   }
 
   @Scheduled(fixedDelay = 60000)
-  public void finishEvents() {
+  public void verificarEventosFinalizados() {
     log.info("Iniciando verificação dos eventos finalizados.");
 
-    List<Evento> eventos = eventoRepository.findAllByDataAndStatus(LocalDateTime.now(), StatusEventoEnum.EM_ANDAMENTO);
+    LocalDateTime data = LocalDate.now()
+      .atTime(LocalDateTime.now().getHour(), LocalDateTime.now().getMinute(), 0)
+      .plusMinutes(1);
+
+    List<Evento> eventos = eventoRepository.findAllByDataAndStatus(data, StatusEventoEnum.EM_ANDAMENTO);
 
     for (Evento evento : eventos) {
-      if (evento.getData().plusMinutes(evento.getDuracao().getLong(ChronoField.MINUTE_OF_DAY)).isBefore((LocalDateTime.now()))) {
+      if (evento.getData().plusMinutes(evento.getDuracao().getLong(ChronoField.MINUTE_OF_DAY)).isBefore(LocalDateTime.now())) {
 
         evento.setStatus(StatusEventoEnum.FINALIZADO);
         Evento save = eventoRepository.save(evento);
@@ -78,6 +89,8 @@ public class EventScheduler {
         usuarios.forEach(usuario -> rabbitProducer.sendMessage(usuario, evento, TipoNotificacaoEnum.EVENTO_FINALIZADO, message));
       }
     }
+
+    log.info("Encerrando verificação dos eventos finalizados.");
   }
 
 }

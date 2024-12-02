@@ -4,10 +4,10 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="834.0" prefWidth="1638.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.event.core.controllers.ConsultaUsuariosController">
-   <Label layoutX="1.0" layoutY="14.0" prefHeight="38.0" prefWidth="1638.0" styleClass="title-page" text="USUÁRIOS" />
-   <ScrollPane hbarPolicy="NEVER" layoutY="249.0" prefHeight="586.0" prefWidth="1638.0">
-      <FlowPane fx:id="cardsContent" alignment="TOP_CENTER" columnHalignment="CENTER" hgap="20.0" prefHeight="348.0" prefWidth="1601.0" vgap="20.0" />
+<AnchorPane prefHeight="834.0" prefWidth="1600.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.event.core.controllers.ConsultaUsuariosController">
+   <Label layoutX="1.0" layoutY="14.0" prefHeight="38.0" prefWidth="1600.0" styleClass="title-page" text="USUÁRIOS" />
+   <ScrollPane hbarPolicy="NEVER" layoutY="249.0" prefHeight="586.0" prefWidth="1600.0">
+      <FlowPane fx:id="cardsContent" alignment="TOP_CENTER" columnHalignment="CENTER" prefHeight="563.0" prefWidth="1564.0" hgap="15.0" vgap="15.0" />
    </ScrollPane>
    <Pane layoutX="558.0" layoutY="86.0" prefHeight="125.0" prefWidth="525.0" styleClass="fill-content">
       <CheckBox fx:id="filtroAlunosCheckBox" layoutX="54.0" layoutY="75.0" mnemonicParsing="false" text="Alunos" />

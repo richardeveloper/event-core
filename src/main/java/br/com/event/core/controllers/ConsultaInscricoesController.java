@@ -118,6 +118,8 @@ public class ConsultaInscricoesController implements Initializable {
   }
 
   private void fillContentCards(List<Evento> eventos) {
+    cardsContent.getChildren().clear();
+
     if (eventos.isEmpty()) {
       cardsContent.getChildren().add(new Label("Nenhum evento foi encontrado"));
     }
@@ -221,7 +223,6 @@ public class ConsultaInscricoesController implements Initializable {
             .map(EventosUsuario::getEvento)
             .toList();
 
-          cardsContent.getChildren().clear();
           fillContentCards(eventos);
 
           AlertUtils.showSuccessAlert("Evento apagado com sucesso.");

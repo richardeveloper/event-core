@@ -12,7 +12,7 @@ public class GeradorMatriculaServiceImpl implements GeradorMatriculaService {
   private static final int START_INDEX = 0;
   private static final int END_INDEX = 6;
 
-  private static final int DEFAULT_CODE_LENGTH = 5;
+  private static final int DEFAULT_CODE_LENGTH = 4;
   private static final String FILL_CHARACTER_CODE = "0";
 
   private static final String REGEX_DIFFERENT_NUMBERS = "\\D";

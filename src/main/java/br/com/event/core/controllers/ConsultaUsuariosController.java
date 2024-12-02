@@ -62,6 +62,8 @@ public class ConsultaUsuariosController implements Initializable {
   }
 
   private void fillContentCards() {
+    cardsContent.getChildren().clear();
+
     List<Usuario> usuarios = usuarioService.buscarTodosUsuarios();
 
     if (usuarios.isEmpty()) {

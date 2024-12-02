@@ -4,17 +4,17 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="834.0" prefWidth="1638.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.event.core.controllers.ConsultaInscricoesController">
-   <Label layoutX="1.0" layoutY="14.0" prefHeight="38.0" prefWidth="1638.0" styleClass="title-page" text="INSCRIÇÕES" />
+<AnchorPane prefHeight="834.0" prefWidth="1600.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.event.core.controllers.ConsultaInscricoesController">
+   <Label layoutX="1.0" layoutY="14.0" prefHeight="38.0" prefWidth="1600.0" styleClass="title-page" text="INSCRIÇÕES" />
    <TextField fx:id="nomeTextField" alignment="CENTER" layoutX="431.0" layoutY="102.0" prefHeight="29.0" prefWidth="777.0" />
    <ListView fx:id="usuariosListView" layoutX="431.0" layoutY="177.0" prefHeight="176.0" prefWidth="777.0" />
    <Label layoutX="431.0" layoutY="69.0" text="Nome do usuário" />
    <Label layoutX="431.0" layoutY="146.0" text="Usuários encontrados" />
-   <Label layoutX="740.0" layoutY="398.0" text="Inscrições em eventos">
+   <Label layoutX="736.0" layoutY="398.0" text="Inscrições em eventos">
       <font>
          <Font size="18.0" />
       </font></Label>
-   <ScrollPane hbarPolicy="NEVER" layoutY="434.0" prefHeight="400.0" prefWidth="1638.0">
-      <FlowPane fx:id="cardsContent" alignment="TOP_CENTER" columnHalignment="CENTER" hgap="20.0" prefHeight="445.0" prefWidth="1619.0" vgap="20.0" />
+   <ScrollPane hbarPolicy="NEVER" layoutY="434.0" prefHeight="400.0" prefWidth="1600.0">
+      <FlowPane fx:id="cardsContent" alignment="TOP_CENTER" columnHalignment="CENTER" prefHeight="381.0" prefWidth="1561.0" vgap="15.0" hgap="15.0 "/>
    </ScrollPane>
 </AnchorPane>

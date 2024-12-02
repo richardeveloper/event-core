@@ -3,8 +3,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="834.0" prefWidth="1638.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.event.core.controllers.CadastroUsuarioController">
-   <Label layoutX="1.0" layoutY="14.0" prefHeight="38.0" prefWidth="1638.0" styleClass="title-page" text="CADASTRO DE USUÁRIO" />
+<AnchorPane prefHeight="834.0" prefWidth="1600.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.event.core.controllers.CadastroUsuarioController">
+   <Label layoutX="1.0" layoutY="14.0" prefHeight="38.0" prefWidth="1600.0" styleClass="title-page" text="CADASTRO DE USUÁRIO" />
 
    <Label layoutX="440.0" layoutY="116.0" text="Nome" />
    <TextField fx:id="nomeTextField" alignment="CENTER" layoutX="439.0" layoutY="149.0" prefHeight="29.0" prefWidth="466.0" promptText="Fulano de Tal" />

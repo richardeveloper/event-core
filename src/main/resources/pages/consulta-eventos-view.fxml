@@ -4,8 +4,8 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="834.0" prefWidth="1638.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.event.core.controllers.ConsultaEventosController">
-   <Label layoutY="14.0" prefHeight="38.0" prefWidth="1638.0" styleClass="title-page" text="EVENTOS" />
+<AnchorPane prefHeight="834.0" prefWidth="1600.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.event.core.controllers.ConsultaEventosController">
+   <Label layoutY="14.0" prefHeight="38.0" prefWidth="1600.0" styleClass="title-page" text="EVENTOS" />
    <Pane layoutX="467.0" layoutY="89.0" prefHeight="125.0" prefWidth="704.0" styleClass="fill-content">
       <CheckBox fx:id="filtroEmAndamentoCheckBox" layoutX="43.0" layoutY="75.0" mnemonicParsing="false" text="Em andamento" />
       <CheckBox fx:id="filtroAgendadosCheckBox" layoutX="225.0" layoutY="75.0" mnemonicParsing="false" text="Agendado" />
@@ -14,7 +14,7 @@
       <Label layoutX="335.0" layoutY="27.0" style="-fx-font-weight: bold; -fx-font-size: 20px;" text="Filtros" />
       <ImageView fx:id="filterIcon" fitHeight="20.0" fitWidth="20.0" layoutX="304.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true" />
    </Pane>
-   <ScrollPane hbarPolicy="NEVER" layoutY="253.0" prefHeight="580.0" prefWidth="1638.0">
-      <FlowPane fx:id="cardsContent" alignment="TOP_CENTER" columnHalignment="CENTER" hgap="20.0" prefHeight="350.0" prefWidth="1622.0" vgap="20.0" />
+   <ScrollPane hbarPolicy="NEVER" layoutY="253.0" prefHeight="580.0" prefWidth="1600.0">
+      <FlowPane fx:id="cardsContent" alignment="TOP_CENTER" columnHalignment="CENTER" prefHeight="350.0" prefWidth="1564.0" hgap="15.0" vgap="15.0" />
    </ScrollPane>
 </AnchorPane>

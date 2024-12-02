@@ -28,9 +28,9 @@ public class ValidationUtils {
       throw new ServiceException("O campo nome deve ser preenchido.");
     }
 
-    if (!nomeEvento.matches(ONLY_LETTERS_AND_NUMBERS)) {
-      throw new ServiceException("O campo nome deve ser preenchido apenas com letras.");
-    }
+//    if (!nomeEvento.matches(ONLY_LETTERS_AND_NUMBERS)) {
+//      throw new ServiceException("O campo nome deve ser preenchido apenas com letras.");
+//    }
   }
   
   public static void validarCpf(String cpf) {

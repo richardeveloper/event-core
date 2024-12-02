@@ -96,7 +96,7 @@
 .main-menu-title {
   -fx-background-color: #393E46;
   -fx-text-fill: white;
-  -fx-font-size: 24px;
+  -fx-font-size: 26px;
   -fx-border-width: 0 0 3px 0;
   -fx-border-color: #F0F3F6;
   -fx-border-style: solid;
@@ -109,7 +109,7 @@
 .menu-item {
   -fx-background-color: #393E46;
   -fx-text-fill: white;
-  -fx-font-size: 22px;
+  -fx-font-size: 24px;
   -fx-padding: 10px 0px 10px 50px;
 }
 
@@ -120,7 +120,7 @@
 .menu-sub-item {
   -fx-background-color: #393E46;
   -fx-text-fill: #FAF0E6;
-  -fx-font-size: 20px;
+  -fx-font-size: 22px;
   -fx-padding: 15px 0px 15px 25px;
 }
 
@@ -130,6 +130,8 @@
 
 .menu-sub-item:hover {
   -fx-background-color: #272a30;
+  -fx-border-radius: 0px;
+  -fx-background-radius: 0px;
 }
 
 .card {
@@ -144,6 +146,9 @@
 .card-title {
   -fx-font-size: 20px;
   -fx-font-weight: bold;
+  -fx-max-width: 350;
+  -fx-wrap-text: true;
+  -fx-text-alignment: center;
 }
 
 .success-card {
