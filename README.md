@@ -34,11 +34,11 @@ Alterações no banco de dados (inserção, exclusão, atualização) deverão s
 
 > [!TIP]
 >
-> **Requisitos:**
-> - Java 17
-> - <a href="http://localhost:8080/api-docs" style="text-decoration: none;">Java FX 17.0.13</a>
-> - PostgreSQL
-> - Docker
+> **Tecnologias:**
+> - [Java 17](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html)
+> - [Java FX 17.0.13](http://localhost:8080/api-docs)
+> - [PostgreSQL](https://www.postgresql.org/)
+> - [Docker](https://www.docker.com/)
 >
 > **Argumentos para execução:**
 > 
@@ -46,12 +46,12 @@ Alterações no banco de dados (inserção, exclusão, atualização) deverão s
 > --module-path /path/to/lib/javafx-sdk-17.0.13/lib --add-modules javafx.controls,javafx.fxml
 > ```
 > 
-> **Variáveis para conexão com banco de dados:**
+> **Variáveis de ambiente para conexão com banco de dados:**
 >
 > ```
-> DB_URL="jdbc:postgresql://localhost:5432/banco_de_dados"
-> DB_USERNAME="postgres"
-> DB_PASSWORD="postgres"
+> DB_URL=jdbc:postgresql://localhost:5432/database
+> DB_USERNAME=username
+> DB_PASSWORD=password
 > ```
 > **Container docker para execução do rabbitmq:**
 >
