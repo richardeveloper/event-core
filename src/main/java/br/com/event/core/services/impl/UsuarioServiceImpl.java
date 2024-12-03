@@ -1,9 +1,11 @@
 package br.com.event.core.services.impl;
 
+import br.com.event.core.entities.EventosUsuario;
 import br.com.event.core.entities.Usuario;
 import br.com.event.core.enums.TipoUsuarioEnum;
 import br.com.event.core.exceptions.ServiceException;
 import br.com.event.core.repositories.UsuarioRepository;
+import br.com.event.core.services.EventosUsuarioService;
 import br.com.event.core.services.GeradorMatriculaService;
 import br.com.event.core.services.UsuarioService;
 import br.com.event.core.utils.MaskUtils;
@@ -22,9 +24,14 @@ public class UsuarioServiceImpl implements UsuarioService {
 
   private final GeradorMatriculaService geradorMatriculaService;
 
-  public UsuarioServiceImpl(UsuarioRepository usuarioRepository, GeradorMatriculaServiceImpl geradorMatriculaService) {
+  private final EventosUsuarioService eventosUsuarioService;
+
+  public UsuarioServiceImpl(UsuarioRepository usuarioRepository,
+    GeradorMatriculaServiceImpl geradorMatriculaService, EventosUsuarioService eventosUsuarioService) {
+
     this.usuarioRepository = usuarioRepository;
     this.geradorMatriculaService = geradorMatriculaService;
+    this.eventosUsuarioService = eventosUsuarioService;
   }
 
   @Override
@@ -82,14 +89,15 @@ public class UsuarioServiceImpl implements UsuarioService {
   }
 
   public void apagarUsuario(Long id) throws ServiceException {
-    try {
-      Usuario usuario = buscarUsuarioPorId(id);
-      usuarioRepository.delete(usuario);
+    Usuario usuario = buscarUsuarioPorId(id);
+
+    List<EventosUsuario> eventosUsuarios = eventosUsuarioService.buscarTodosEventosUsuarioPorUsuarioId(usuario.getId());
+
+    if (!eventosUsuarios.isEmpty()) {
+      eventosUsuarioService.apagarTodosUsuariosEvento(eventosUsuarios);
     }
-    catch (DataIntegrityViolationException e) {
-      log.error(e.getMessage(), e);
-      throw new ServiceException("Não foi possível apagar o usuário, pois ele está inscrito em eventos.");
-    }
+
+    usuarioRepository.delete(usuario);
   }
 
   private void validarCampos(Usuario usuario) throws ServiceException {

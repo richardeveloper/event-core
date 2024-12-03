@@ -47,6 +47,12 @@ public class EventosUsuarioServiceImpl implements EventosUsuarioService {
     Evento evento = eventoRepository.findById(eventoId)
       .orElseThrow(() -> new ServiceException("O evento informado não foi identificado."));
 
+    switch (evento.getStatus()) {
+      case EM_ANDAMENTO -> throw new ServiceException("Não foi possível realizar a inscrição pois o evento já está em andamento.");
+      case FINALIZADO -> throw new ServiceException("Não foi possível realizar a inscrição pois o evento já foi finalizado.");
+      case CANCELADO -> throw new ServiceException("Não foi possível realizar a inscrição pois o evento foi cancelado.");
+    }
+
     switch (evento.getPrioridade()) {
       case SOMENTE_ALUNOS -> {
         if (!usuario.getTipoUsuario().equals(TipoUsuarioEnum.ALUNO)) {
@@ -89,8 +95,9 @@ public class EventosUsuarioServiceImpl implements EventosUsuarioService {
       .orElseThrow(() -> new ServiceException("O evento informado não foi identificado."));
 
     switch (evento.getStatus()) {
-      case EM_ANDAMENTO -> throw new ServiceException("A inscrição no evento não pode ser cancelada pois ele já está em andamento.");
-      case FINALIZADO -> throw new ServiceException("A inscrição no evento não pode ser cancelada pois ele já foi finalizado.");
+      case EM_ANDAMENTO -> throw new ServiceException("Não foi possível cancelar a inscrição pois o evento já está em andamento.");
+      case FINALIZADO -> throw new ServiceException("Não foi possível cancelar a inscrição pois o evento já foi finalizado.");
+      case CANCELADO -> throw new ServiceException("Não foi possível cancelar a inscrição pois o evento foi cancelado.");
     }
 
     Optional<EventosUsuario> eventos = eventosUsuarioRepository.findByEventoAndUsuario(evento, usuario);

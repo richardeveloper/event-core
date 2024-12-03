@@ -168,6 +168,10 @@ public class EventoServiceImpl implements EventoService {
         throw new ServiceException("Eventos que não foram finalizados ou cancelados não podem ser apagados.");
       }
 
+      if (evento.getStatus().equals(StatusEventoEnum.FINALIZADO)) {
+        throw new ServiceException("Não foi possível apagar o evento pois existem usuários vinculados a ele.");
+      }
+
       eventoRepository.delete(evento);
     }
     catch (DataIntegrityViolationException e) {

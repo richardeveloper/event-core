@@ -175,17 +175,25 @@ public class ConsultaEventosController implements Initializable {
 
     StatusEventoEnum statusEventoEnum = StatusEventoEnum.parse(statusTextField.getText());
 
-    switch (statusEventoEnum) {
-      case EM_ANDAMENTO, AGENDADO -> statusTextField.getStyleClass().add("success-card");
-      case FINALIZADO -> statusTextField.getStyleClass().add("warning-card");
-      case CANCELADO -> statusTextField.getStyleClass().add("error-card");
-    }
 
     HBox firstRow = createRowCard(dataLabel, dataTextField, duracaoLabel, duracaoTextField);
     HBox secondRow = createRowCard(participantesLabel, participantesTextField, statusLabel, statusTextField);
 
     Button deleteButton = new Button("Apagar evento");
     deleteButton.getStyleClass().add("delete-button");
+    deleteButton.setDisable(true);
+
+    switch (statusEventoEnum) {
+      case EM_ANDAMENTO, AGENDADO -> statusTextField.getStyleClass().add("success-card");
+      case FINALIZADO -> {
+        statusTextField.getStyleClass().add("warning-card");
+        deleteButton.setDisable(false);
+      }
+      case CANCELADO -> {
+        statusTextField.getStyleClass().add("error-card");
+        deleteButton.setDisable(false);
+      }
+    }
 
     ImageView icon = ResourceUtils.getIcon("/icons/trash.png", 25, 25);
 
