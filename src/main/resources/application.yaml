@@ -1,8 +1,8 @@
-# SPRING CONFIGURATIONS
+# SPRING CONFIGS
 spring:
   application:
     name: event-core
-# DATABASE CONFIGURATIONS
+# DATABASE CONFIGS
   datasource:
     url: ${DB_URL}
     username: ${DB_USERNAME}
@@ -11,12 +11,12 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create-drop
-# RABBITMQ CONFIGURATIONS
+# RABBITMQ CONFIGS
   rabbitmq:
     port: 5672
     host: localhost
     username: guest
     password: guest
-# OTHER CONFIGURATIONS
+# OTHER CONFIGS
 server:
   port: 8080
