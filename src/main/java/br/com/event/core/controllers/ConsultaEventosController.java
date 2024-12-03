@@ -11,6 +11,7 @@ import br.com.event.core.utils.ResourceUtils;
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.value.ObservableValue;
@@ -51,6 +52,9 @@ public class ConsultaEventosController implements Initializable {
 
   @FXML
   private CheckBox filtroFinalizadosCheckBox;
+
+  @FXML
+  private CheckBox filtroTodosCheckBox;
 
   @FXML
   private ImageView filterIcon;
@@ -107,6 +111,8 @@ public class ConsultaEventosController implements Initializable {
 
     filtroFinalizadosCheckBox.setText(StatusEventoEnum.FINALIZADO.getDescricao());
     filtroFinalizadosCheckBox.selectedProperty().addListener(this::filtrosAction);
+
+    filtroTodosCheckBox.selectedProperty().addListener(this::filtroTodosAction);
 
     filterIcon.setImage(ResourceUtils.getIcon("/icons/filter.png", 20, 20).getImage());
   }
@@ -282,6 +288,35 @@ public class ConsultaEventosController implements Initializable {
     List<Evento> eventos = eventoService.buscarTodosEventosPorStatus(statusEventoList);
 
     fillContentCards(eventos);
+  }
+
+  private void filtroTodosAction(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+    List<CheckBox> checkBoxList = List.of(
+      filtroEmAndamentoCheckBox,
+      filtroAgendadosCheckBox,
+      filtroCanceladosCheckBox,
+      filtroFinalizadosCheckBox
+    );
+
+    if (newValue) {
+      checkBoxList.forEach(checkBox -> checkBox.setSelected(true));
+
+      filtroTodosCheckBox.setSelected(true);
+
+      List<StatusEventoEnum> statusEventoList = Arrays.stream(StatusEventoEnum.values()).toList();
+
+      if (statusEventoList.isEmpty()) {
+        fillContentCards();
+        return;
+      }
+
+      List<Evento> eventos = eventoService.buscarTodosEventosPorStatus(statusEventoList);
+
+      fillContentCards(eventos);
+    }
+    else {
+      checkBoxList.forEach(checkBox -> checkBox.setSelected(false));
+    }
   }
 
 }

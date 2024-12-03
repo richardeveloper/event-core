@@ -1,6 +1,8 @@
 package br.com.event.core.controllers;
 
+import br.com.event.core.entities.Evento;
 import br.com.event.core.entities.Usuario;
+import br.com.event.core.enums.StatusEventoEnum;
 import br.com.event.core.enums.TipoUsuarioEnum;
 import br.com.event.core.exceptions.ServiceException;
 import br.com.event.core.services.UsuarioService;
@@ -9,6 +11,7 @@ import br.com.event.core.utils.MaskUtils;
 import br.com.event.core.utils.ResourceUtils;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.value.ObservableValue;
@@ -45,6 +48,9 @@ public class ConsultaUsuariosController implements Initializable {
 
   @FXML
   private CheckBox filtroVisitantesCheckBox;
+
+  @FXML
+  private CheckBox filtroTodosCheckBox;
 
   @FXML
   private ImageView filterIcon;
@@ -95,6 +101,8 @@ public class ConsultaUsuariosController implements Initializable {
 
     filtroVisitantesCheckBox.setText(TipoUsuarioEnum.VISITANTE.getDescricao());
     filtroVisitantesCheckBox.selectedProperty().addListener(this::filtrosAction);
+
+    filtroTodosCheckBox.selectedProperty().addListener(this::filtroTodosAction);
 
     filterIcon.setImage(ResourceUtils.getIcon("/icons/filter.png", 20, 20).getImage());
   }
@@ -254,6 +262,34 @@ public class ConsultaUsuariosController implements Initializable {
     List<Usuario> usuarios = usuarioService.buscarTodosUsuariosPorTiposUsuarios(tipoUsuarioList);
 
     fillContentCards(usuarios);
+  }
+
+  private void filtroTodosAction(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+    List<CheckBox> checkBoxList = List.of(
+      filtroAlunosCheckBox,
+      filtroProfessoresCheckBox,
+      filtroVisitantesCheckBox
+    );
+
+    if (newValue) {
+      checkBoxList.forEach(checkBox -> checkBox.setSelected(true));
+
+      filtroTodosCheckBox.setSelected(true);
+
+      List<TipoUsuarioEnum> tipoUsuarioList = Arrays.stream(TipoUsuarioEnum.values()).toList();
+
+      if (tipoUsuarioList.isEmpty()) {
+        fillContentCards();
+        return;
+      }
+
+      List<Usuario> usuarios = usuarioService.buscarTodosUsuariosPorTiposUsuarios(tipoUsuarioList);
+
+      fillContentCards(usuarios);
+    }
+    else {
+      checkBoxList.forEach(checkBox -> checkBox.setSelected(false));
+    }
   }
 
 }

@@ -1,8 +1,10 @@
 package br.com.event.core.controllers;
 
 import br.com.event.core.entities.Evento;
+import br.com.event.core.entities.LogNotificacao;
 import br.com.event.core.enums.PrioridadeEventoEnum;
 import br.com.event.core.enums.StatusEventoEnum;
+import br.com.event.core.enums.TipoNotificacaoEnum;
 import br.com.event.core.exceptions.ServiceException;
 import br.com.event.core.services.EventoService;
 import br.com.event.core.services.EventosUsuarioService;
@@ -14,6 +16,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.value.ObservableValue;
@@ -57,6 +60,9 @@ public class ProximosEventosController implements Initializable {
 
   @FXML
   private CheckBox filtroSomenteProfessoresCheckBox;
+
+  @FXML
+  private CheckBox filtroTodosCheckBox;
 
   @FXML
   private ImageView filterIcon;
@@ -116,6 +122,8 @@ public class ProximosEventosController implements Initializable {
 
     filtroSomenteProfessoresCheckBox.setText(PrioridadeEventoEnum.OBRIGATORIO_PROFESSORES.getDescricao());
     filtroSomenteProfessoresCheckBox.selectedProperty().addListener(this::filtrosAction);
+
+    filtroTodosCheckBox.selectedProperty().addListener(this::filtroTodosAction);
 
     filterIcon.setImage(ResourceUtils.getIcon("/icons/filter.png", 20, 20).getImage());
   }
@@ -445,6 +453,36 @@ public class ProximosEventosController implements Initializable {
     List<Evento> proximosEventos = eventoService.buscarTodosEventosPorPrioridades(prioridadeEventoList);
 
     fillContentCards(proximosEventos);
+  }
+
+  private void filtroTodosAction(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+    List<CheckBox> checkBoxList = List.of(
+      filtroAbertoPublicoCheckBox,
+      filtroObrigatorioAlunoCheckBox,
+      filtroObrigatorioProfessorCheckBox,
+      filtroSomenteAlunosCheckBox,
+      filtroSomenteProfessoresCheckBox
+    );
+
+    if (newValue) {
+      checkBoxList.forEach(checkBox -> checkBox.setSelected(true));
+
+      filtroTodosCheckBox.setSelected(true);
+
+      List<PrioridadeEventoEnum> prioridadeEventoList = Arrays.stream(PrioridadeEventoEnum.values()).toList();
+
+      if (prioridadeEventoList.isEmpty()) {
+        fillContentCards();
+        return;
+      }
+
+      List<Evento> proximosEventos = eventoService.buscarTodosEventosPorPrioridades(prioridadeEventoList);
+
+      fillContentCards(proximosEventos);
+    }
+    else {
+      checkBoxList.forEach(checkBox -> checkBox.setSelected(false));
+    }
   }
 
 }

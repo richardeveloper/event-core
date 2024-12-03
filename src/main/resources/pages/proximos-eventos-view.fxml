@@ -6,15 +6,16 @@
 
 <AnchorPane prefHeight="834.0" prefWidth="1600.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.event.core.controllers.ProximosEventosController">
    <Label layoutY="14.0" prefHeight="38.0" prefWidth="1600.0" styleClass="title-page" text="PRÓXIMOS EVENTOS" />
-   <Pane layoutX="187.0" layoutY="84.0" prefHeight="125.0" prefWidth="1227.0" styleClass="fill-content">
+   <Pane layoutX="131.0" layoutY="85.0" prefHeight="125.0" prefWidth="1339.0" styleClass="fill-content">
 
          <CheckBox fx:id="filtroAbertoPublicoCheckBox" layoutX="37.0" layoutY="75.0" mnemonicParsing="false" text="Aberto ao público" />
          <CheckBox fx:id="filtroObrigatorioAlunoCheckBox" layoutX="228.0" layoutY="75.0" mnemonicParsing="false" text="Obrigatório para alunos" />
          <CheckBox fx:id="filtroObrigatorioProfessorCheckBox" layoutX="462.0" layoutY="75.0" mnemonicParsing="false" text="Obrigatório para professores" />
          <CheckBox fx:id="filtroSomenteAlunosCheckBox" layoutX="731.0" layoutY="75.0" mnemonicParsing="false" text="Somente para alunos" />
-         <CheckBox fx:id="filtroSomenteProfessoresCheckBox" layoutX="950.0" layoutY="75.0" mnemonicParsing="false" text="Somente para professores" />
-         <Label layoutX="592.0" layoutY="29.0" style="-fx-font-weight: bold; -fx-font-size: 20px;" text="Filtros" />
-         <ImageView fx:id="filterIcon" fitHeight="20.0" fitWidth="20.0" layoutX="563.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true" />
+         <CheckBox fx:id="filtroSomenteProfessoresCheckBox" layoutX="953.0" layoutY="75.0" mnemonicParsing="false" text="Somente para professores" />
+         <CheckBox fx:id="filtroTodosCheckBox" layoutX="1230.0" layoutY="75.0" mnemonicParsing="false" text="Todos" />
+         <Label layoutX="648.0" layoutY="31.0" style="-fx-font-weight: bold; -fx-font-size: 20px;" text="Filtros" />
+         <ImageView fx:id="filterIcon" fitHeight="20.0" fitWidth="20.0" layoutX="619.0" layoutY="31.0" pickOnBounds="true" preserveRatio="true" />
    </Pane>
    <ScrollPane hbarPolicy="NEVER" layoutY="247.0" prefHeight="590.0" prefWidth="1600.0">
       <FlowPane fx:id="cardsContent" alignment="TOP_CENTER" columnHalignment="CENTER" hgap="15.0" prefHeight="570.0" prefWidth="1564.0" vgap="15.0" />
