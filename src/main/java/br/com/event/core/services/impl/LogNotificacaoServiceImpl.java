@@ -5,7 +5,6 @@ import br.com.event.core.enums.TipoNotificacaoEnum;
 import br.com.event.core.repositories.LogNotificacaoRepository;
 import br.com.event.core.services.LogNotificacaoService;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,11 +21,6 @@ public class LogNotificacaoServiceImpl implements LogNotificacaoService {
   @Override
   public List<LogNotificacao> buscarLogNotificacoesMaisRecentes() {
     return logNotificacaoRepository.findAllOrderByDataEnvioDesc();
-  }
-
-  @Override
-  public List<LogNotificacao> buscarTodosPorTipoNotificacao(TipoNotificacaoEnum tipoNotificacao) {
-    return logNotificacaoRepository.findAllByTipoNotificacaoOrderByDataEnvioDesc(tipoNotificacao);
   }
 
   @Override

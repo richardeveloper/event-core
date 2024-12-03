@@ -8,8 +8,6 @@ public interface LogNotificacaoService {
 
   List<LogNotificacao> buscarLogNotificacoesMaisRecentes();
 
-  List<LogNotificacao> buscarTodosPorTipoNotificacao(TipoNotificacaoEnum tipoNotificacao);
-
   List<LogNotificacao> buscarTodosPorTiposNotificacoes(List<TipoNotificacaoEnum> tiposNotificacoes);
 
 }

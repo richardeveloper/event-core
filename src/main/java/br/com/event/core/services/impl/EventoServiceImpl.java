@@ -140,18 +140,8 @@ public class EventoServiceImpl implements EventoService {
   }
 
   @Override
-  public List<Evento> buscarTodosEventosPorStatus(StatusEventoEnum statusEvento) {
-    return eventoRepository.findAllByStatus(statusEvento);
-  }
-
-  @Override
   public List<Evento> buscarTodosEventosPorStatus(List<StatusEventoEnum> statusEvento) {
     return eventoRepository.findAllByStatusIn(statusEvento);
-  }
-
-  @Override
-  public List<Evento> buscarTodosEventosPorPrioridade(PrioridadeEventoEnum prioridadeEvento) {
-    return eventoRepository.findAllByPrioridade(prioridadeEvento);
   }
 
   @Override
@@ -178,7 +168,7 @@ public class EventoServiceImpl implements EventoService {
         throw new ServiceException("Eventos que não foram finalizados ou cancelados não podem ser apagados.");
       }
 
-      eventoRepository.deleteById(id);
+      eventoRepository.delete(evento);
     }
     catch (DataIntegrityViolationException e) {
       log.error(e.getMessage(), e);

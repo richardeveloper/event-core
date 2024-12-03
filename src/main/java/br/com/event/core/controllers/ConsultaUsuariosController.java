@@ -1,8 +1,6 @@
 package br.com.event.core.controllers;
 
-import br.com.event.core.entities.Evento;
 import br.com.event.core.entities.Usuario;
-import br.com.event.core.enums.StatusEventoEnum;
 import br.com.event.core.enums.TipoUsuarioEnum;
 import br.com.event.core.exceptions.ServiceException;
 import br.com.event.core.services.UsuarioService;
@@ -58,6 +56,8 @@ public class ConsultaUsuariosController implements Initializable {
   @Autowired
   private UsuarioService usuarioService;
 
+  private List<CheckBox> checkBoxList;
+
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
     fillContentCards();
@@ -105,6 +105,12 @@ public class ConsultaUsuariosController implements Initializable {
     filtroTodosCheckBox.selectedProperty().addListener(this::filtroTodosAction);
 
     filterIcon.setImage(ResourceUtils.getIcon("/icons/filter.png", 20, 20).getImage());
+
+    checkBoxList = List.of(
+      filtroAlunosCheckBox,
+      filtroProfessoresCheckBox,
+      filtroVisitantesCheckBox
+    );
   }
 
   private VBox createCard(Usuario usuario) {
@@ -180,18 +186,7 @@ public class ConsultaUsuariosController implements Initializable {
             return;
           }
 
-          cardsContent.getChildren().clear();
-
-          List<CheckBox> filtros = List.of(
-            filtroAlunosCheckBox,
-            filtroProfessoresCheckBox,
-            filtroVisitantesCheckBox
-          );
-
-          for (CheckBox checkBox : filtros) {
-            checkBox.setSelected(false);
-            checkBox.setSelected(true);
-          }
+          fillContentCards();
 
           AlertUtils.showSuccessAlert("Usuário apagado com sucesso.");
         }
@@ -239,12 +234,6 @@ public class ConsultaUsuariosController implements Initializable {
   private void filtrosAction(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
     List<TipoUsuarioEnum> tipoUsuarioList = new ArrayList<>();
 
-    List<CheckBox> checkBoxList = List.of(
-      filtroAlunosCheckBox,
-      filtroProfessoresCheckBox,
-      filtroVisitantesCheckBox
-    );
-
     for (CheckBox checkBox : checkBoxList) {
       if (checkBox.isSelected()) {
         String tipoUsuario = checkBox.getText();
@@ -265,16 +254,8 @@ public class ConsultaUsuariosController implements Initializable {
   }
 
   private void filtroTodosAction(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-    List<CheckBox> checkBoxList = List.of(
-      filtroAlunosCheckBox,
-      filtroProfessoresCheckBox,
-      filtroVisitantesCheckBox
-    );
-
     if (newValue) {
       checkBoxList.forEach(checkBox -> checkBox.setSelected(true));
-
-      filtroTodosCheckBox.setSelected(true);
 
       List<TipoUsuarioEnum> tipoUsuarioList = Arrays.stream(TipoUsuarioEnum.values()).toList();
 

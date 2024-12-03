@@ -65,6 +65,8 @@ public class ConsultaEventosController implements Initializable {
   @Autowired
   private EventosUsuarioService eventosUsuarioService;
 
+  private List<CheckBox> checkBoxList;
+
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
     fillContentCards();
@@ -115,6 +117,13 @@ public class ConsultaEventosController implements Initializable {
     filtroTodosCheckBox.selectedProperty().addListener(this::filtroTodosAction);
 
     filterIcon.setImage(ResourceUtils.getIcon("/icons/filter.png", 20, 20).getImage());
+
+    checkBoxList = List.of(
+      filtroEmAndamentoCheckBox,
+      filtroAgendadosCheckBox,
+      filtroCanceladosCheckBox,
+      filtroFinalizadosCheckBox
+    );
   }
 
   private VBox createCard(Evento evento) {
@@ -202,21 +211,7 @@ public class ConsultaEventosController implements Initializable {
             return;
           }
 
-          cardsContent.getChildren().clear();
-
-          List<CheckBox> filtros = List.of(
-            filtroEmAndamentoCheckBox,
-            filtroAgendadosCheckBox,
-            filtroCanceladosCheckBox,
-            filtroFinalizadosCheckBox
-          );
-
-          for (CheckBox checkBox : filtros) {
-            if  (checkBox.isSelected()) {
-              checkBox.setSelected(false);
-              checkBox.setDisable(true);
-            }
-          }
+          fillContentCards();
 
           AlertUtils.showSuccessAlert("Evento apagado com sucesso.");
         }
@@ -264,13 +259,6 @@ public class ConsultaEventosController implements Initializable {
   private void filtrosAction(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
     List<StatusEventoEnum> statusEventoList = new ArrayList<>();
 
-    List<CheckBox> checkBoxList = List.of(
-      filtroEmAndamentoCheckBox,
-      filtroAgendadosCheckBox,
-      filtroCanceladosCheckBox,
-      filtroFinalizadosCheckBox
-    );
-
     for (CheckBox checkBox : checkBoxList) {
       if (checkBox.isSelected()) {
         String statusEvento = checkBox.getText();
@@ -291,17 +279,9 @@ public class ConsultaEventosController implements Initializable {
   }
 
   private void filtroTodosAction(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-    List<CheckBox> checkBoxList = List.of(
-      filtroEmAndamentoCheckBox,
-      filtroAgendadosCheckBox,
-      filtroCanceladosCheckBox,
-      filtroFinalizadosCheckBox
-    );
 
     if (newValue) {
       checkBoxList.forEach(checkBox -> checkBox.setSelected(true));
-
-      filtroTodosCheckBox.setSelected(true);
 
       List<StatusEventoEnum> statusEventoList = Arrays.stream(StatusEventoEnum.values()).toList();
 

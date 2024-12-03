@@ -77,29 +77,14 @@ public class UsuarioServiceImpl implements UsuarioService {
   }
 
   @Override
-  public List<Usuario> buscarTodosUsuariosPorTipoUsuario(TipoUsuarioEnum tipoUsuario) {
-    switch (tipoUsuario) {
-      case ALUNO -> {
-        return usuarioRepository.findByTipoUsuario(tipoUsuario);
-      }
-      case PROFESSOR -> {
-        return usuarioRepository.findByTipoUsuario(TipoUsuarioEnum.PROFESSOR);
-      }
-      case VISITANTE -> {
-        return usuarioRepository.findByTipoUsuario(TipoUsuarioEnum.VISITANTE);
-      }
-      default -> throw new ServiceException("Não foi possível identificar o tipo de usuário informado");
-    }
-  }
-
-  @Override
   public List<Usuario> buscarTodosUsuariosPorTiposUsuarios(List<TipoUsuarioEnum> tiposUsuarios) {
     return usuarioRepository.findByTipoUsuarioIn(tiposUsuarios);
   }
 
   public void apagarUsuario(Long id) throws ServiceException {
     try {
-      usuarioRepository.deleteById(id);
+      Usuario usuario = buscarUsuarioPorId(id);
+      usuarioRepository.delete(usuario);
     }
     catch (DataIntegrityViolationException e) {
       log.error(e.getMessage(), e);

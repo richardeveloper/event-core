@@ -18,11 +18,7 @@ public interface EventoService {
 
   List<Evento> buscarTodosEventos();
 
-  List<Evento> buscarTodosEventosPorStatus(StatusEventoEnum statusEvento);
-
   List<Evento> buscarTodosEventosPorStatus(List<StatusEventoEnum> statusEvento);
-
-  List<Evento> buscarTodosEventosPorPrioridade(PrioridadeEventoEnum prioridadeEvento);
 
   List<Evento> buscarTodosEventosPorPrioridades(List<PrioridadeEventoEnum> prioridades);
 

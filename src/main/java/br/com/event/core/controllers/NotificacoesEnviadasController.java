@@ -1,8 +1,6 @@
 package br.com.event.core.controllers;
 
-import br.com.event.core.entities.Evento;
 import br.com.event.core.entities.LogNotificacao;
-import br.com.event.core.enums.StatusEventoEnum;
 import br.com.event.core.enums.TipoNotificacaoEnum;
 import br.com.event.core.services.LogNotificacaoService;
 import br.com.event.core.utils.ResourceUtils;
@@ -61,6 +59,8 @@ public class NotificacoesEnviadasController implements Initializable {
   @Autowired
   private LogNotificacaoService logNotificacaoService;
 
+  private List<CheckBox> checkBoxList;
+
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
     createTableColumns();
@@ -110,6 +110,15 @@ public class NotificacoesEnviadasController implements Initializable {
     filtroTodosCheckBox.selectedProperty().addListener(this::filtroTodosAction);
 
     filterIcon.setImage(ResourceUtils.getIcon("/icons/filter.png", 20, 20).getImage());
+
+    checkBoxList = List.of(
+      filtroConfirmacaoInscricaoCheckBox,
+      filtroCancelamentoInscricaoCheckBox,
+      filtroAlteracaoDataCheckBox,
+      filtroInicioEventoCheckBox,
+      filtroFimEventoCheckBox,
+      filtroCancelamentoEventoCheckBox
+    );
   }
 
   private void createTableColumns() {
@@ -182,15 +191,6 @@ public class NotificacoesEnviadasController implements Initializable {
   private void filtrosAction(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
     List<TipoNotificacaoEnum> tipoNotificacaoList = new ArrayList<>();
 
-    List<CheckBox> checkBoxList = List.of(
-      filtroConfirmacaoInscricaoCheckBox,
-      filtroCancelamentoInscricaoCheckBox,
-      filtroAlteracaoDataCheckBox,
-      filtroInicioEventoCheckBox,
-      filtroFimEventoCheckBox,
-      filtroCancelamentoEventoCheckBox
-    );
-
     for (CheckBox checkBox : checkBoxList) {
       if (checkBox.isSelected()) {
         String name = checkBox.getText();
@@ -211,19 +211,8 @@ public class NotificacoesEnviadasController implements Initializable {
   }
 
   private void filtroTodosAction(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-    List<CheckBox> checkBoxList = List.of(
-      filtroConfirmacaoInscricaoCheckBox,
-      filtroCancelamentoInscricaoCheckBox,
-      filtroAlteracaoDataCheckBox,
-      filtroInicioEventoCheckBox,
-      filtroFimEventoCheckBox,
-      filtroCancelamentoEventoCheckBox
-    );
-
     if (newValue) {
       checkBoxList.forEach(checkBox -> checkBox.setSelected(true));
-
-      filtroTodosCheckBox.setSelected(true);
 
       List<TipoNotificacaoEnum> tipoNotificacaoList = Arrays.stream(TipoNotificacaoEnum.values()).toList();
 

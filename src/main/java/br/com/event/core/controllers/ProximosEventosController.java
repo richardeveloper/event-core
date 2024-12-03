@@ -1,10 +1,8 @@
 package br.com.event.core.controllers;
 
 import br.com.event.core.entities.Evento;
-import br.com.event.core.entities.LogNotificacao;
 import br.com.event.core.enums.PrioridadeEventoEnum;
 import br.com.event.core.enums.StatusEventoEnum;
-import br.com.event.core.enums.TipoNotificacaoEnum;
 import br.com.event.core.exceptions.ServiceException;
 import br.com.event.core.services.EventoService;
 import br.com.event.core.services.EventosUsuarioService;
@@ -73,6 +71,8 @@ public class ProximosEventosController implements Initializable {
   @Autowired
   private EventosUsuarioService eventosUsuarioService;
 
+  private List<CheckBox> checkBoxList;
+
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
     fillContentCards();
@@ -120,12 +120,20 @@ public class ProximosEventosController implements Initializable {
     filtroSomenteAlunosCheckBox.setText(PrioridadeEventoEnum.SOMENTE_ALUNOS.getDescricao());
     filtroSomenteAlunosCheckBox.selectedProperty().addListener(this::filtrosAction);
 
-    filtroSomenteProfessoresCheckBox.setText(PrioridadeEventoEnum.OBRIGATORIO_PROFESSORES.getDescricao());
+    filtroSomenteProfessoresCheckBox.setText(PrioridadeEventoEnum.SOMENTE_PROFESSORES.getDescricao());
     filtroSomenteProfessoresCheckBox.selectedProperty().addListener(this::filtrosAction);
 
     filtroTodosCheckBox.selectedProperty().addListener(this::filtroTodosAction);
 
     filterIcon.setImage(ResourceUtils.getIcon("/icons/filter.png", 20, 20).getImage());
+
+    checkBoxList = List.of(
+      filtroAbertoPublicoCheckBox,
+      filtroObrigatorioAlunoCheckBox,
+      filtroObrigatorioProfessorCheckBox,
+      filtroSomenteAlunosCheckBox,
+      filtroSomenteProfessoresCheckBox
+    );
   }
 
   private VBox createCard(Evento evento) {
@@ -428,14 +436,6 @@ public class ProximosEventosController implements Initializable {
   private void filtrosAction(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
     List<PrioridadeEventoEnum> prioridadeEventoList = new ArrayList<>();
 
-    List<CheckBox> checkBoxList = List.of(
-      filtroAbertoPublicoCheckBox,
-      filtroObrigatorioAlunoCheckBox,
-      filtroObrigatorioProfessorCheckBox,
-      filtroSomenteAlunosCheckBox,
-      filtroSomenteProfessoresCheckBox
-    );
-
     for (CheckBox checkBox : checkBoxList) {
       if (checkBox.isSelected()) {
         String name = checkBox.getText();
@@ -456,18 +456,8 @@ public class ProximosEventosController implements Initializable {
   }
 
   private void filtroTodosAction(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-    List<CheckBox> checkBoxList = List.of(
-      filtroAbertoPublicoCheckBox,
-      filtroObrigatorioAlunoCheckBox,
-      filtroObrigatorioProfessorCheckBox,
-      filtroSomenteAlunosCheckBox,
-      filtroSomenteProfessoresCheckBox
-    );
-
     if (newValue) {
       checkBoxList.forEach(checkBox -> checkBox.setSelected(true));
-
-      filtroTodosCheckBox.setSelected(true);
 
       List<PrioridadeEventoEnum> prioridadeEventoList = Arrays.stream(PrioridadeEventoEnum.values()).toList();
 

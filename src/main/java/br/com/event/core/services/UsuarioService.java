@@ -17,8 +17,6 @@ public interface UsuarioService {
 
   List<Usuario> buscarTodosUsuariosPorNome(String nome);
 
-  List<Usuario> buscarTodosUsuariosPorTipoUsuario(TipoUsuarioEnum tipoUsuario);
-
   List<Usuario> buscarTodosUsuariosPorTiposUsuarios(List<TipoUsuarioEnum> tipoUsuario);
 
   void apagarUsuario(Long id) throws ServiceException;
