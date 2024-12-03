@@ -120,7 +120,7 @@ public class EventosUsuarioServiceImpl implements EventosUsuarioService {
   }
 
   @Override
-  public int buscarParticipantesEvento(Long eventoId) {
+  public int buscarQuantidadeParticipantes(Long eventoId) {
     return eventosUsuarioRepository.countEventosUsuarioByEventoId(eventoId);
   }
 

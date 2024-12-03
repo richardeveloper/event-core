@@ -20,12 +20,15 @@ public interface EventoService {
 
   List<Evento> buscarTodosEventosPorStatus(StatusEventoEnum statusEvento);
 
+  List<Evento> buscarTodosEventosPorStatus(List<StatusEventoEnum> statusEvento);
+
   List<Evento> buscarTodosEventosPorPrioridade(PrioridadeEventoEnum prioridadeEvento);
+
+  List<Evento> buscarTodosEventosPorPrioridades(List<PrioridadeEventoEnum> prioridades);
 
   List<Evento> buscarEventosMaisProximos();
 
   List<Evento> buscarEventosAgendados();
 
   void apagarEvento(Long id) throws ServiceException;
-
 }

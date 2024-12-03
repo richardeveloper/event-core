@@ -40,9 +40,7 @@ public class EventScheduler {
   public void verificarEventosIniciados() {
     log.info("Iniciando verificação dos eventos agendados.");
 
-    LocalDateTime data = LocalDate.now()
-      .atTime(LocalDateTime.now().getHour(), LocalDateTime.now().getMinute(), 0)
-      .plusMinutes(1);
+    LocalDateTime data = LocalDate.now().atTime(LocalDateTime.now().getHour(), LocalDateTime.now().getMinute(), 59);
 
     List<Evento> eventos = eventoRepository.findAllByDataAndStatus(data , StatusEventoEnum.AGENDADO);
 
@@ -50,7 +48,7 @@ public class EventScheduler {
       evento.setStatus(StatusEventoEnum.EM_ANDAMENTO);
       eventoRepository.save(evento);
 
-      String message = "O evento %s começou, não perca !".formatted(evento.getNome());
+      String message = "O evento %s já vai começar, não perca !".formatted(evento.getNome());
 
       List<Usuario> usuarios = eventosUsuarioService.buscarTodosEventosUsuarioPorEventoId(evento.getId())
         .stream()
@@ -67,9 +65,7 @@ public class EventScheduler {
   public void verificarEventosFinalizados() {
     log.info("Iniciando verificação dos eventos finalizados.");
 
-    LocalDateTime data = LocalDate.now()
-      .atTime(LocalDateTime.now().getHour(), LocalDateTime.now().getMinute(), 0)
-      .plusMinutes(1);
+    LocalDateTime data = LocalDate.now().atTime(LocalDateTime.now().getHour(), LocalDateTime.now().getMinute(), 59);
 
     List<Evento> eventos = eventoRepository.findAllByDataAndStatus(data, StatusEventoEnum.EM_ANDAMENTO);
 

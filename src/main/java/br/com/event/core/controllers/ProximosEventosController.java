@@ -7,12 +7,13 @@ import br.com.event.core.exceptions.ServiceException;
 import br.com.event.core.services.EventoService;
 import br.com.event.core.services.EventosUsuarioService;
 import br.com.event.core.utils.AlertUtils;
-import br.com.event.core.utils.IconUtils;
 import br.com.event.core.utils.MaskUtils;
+import br.com.event.core.utils.ResourceUtils;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.value.ObservableValue;
@@ -69,16 +70,12 @@ public class ProximosEventosController implements Initializable {
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
     fillContentCards();
-    filterIcon.setImage(IconUtils.getIcon("/icons/filter.png", 20, 20).getImage());
-
-    filtroAbertoPublicoCheckBox.selectedProperty().addListener(this::filtroAbertoPublicAction);
-    filtroObrigatorioAlunoCheckBox.selectedProperty().addListener(this::filtroObrigatorioAlunoAction);
-    filtroObrigatorioProfessorCheckBox.selectedProperty().addListener(this::filtroObrigatorioProfessorAction);
-    filtroSomenteAlunosCheckBox.selectedProperty().addListener(this::filtroSomenteAlunosAction);
-    filtroSomenteProfessoresCheckBox.selectedProperty().addListener(this::filtroSomenteProfessoresAction);
+    setUpFilters();
   }
 
   private void fillContentCards() {
+    cardsContent.getChildren().clear();
+
     List<Evento> eventos = eventoService.buscarEventosMaisProximos();
 
     if (eventos.isEmpty()) {
@@ -102,6 +99,25 @@ public class ProximosEventosController implements Initializable {
       VBox card = createCard(evento);
       cardsContent.getChildren().add(card);
     }
+  }
+
+  private void setUpFilters() {
+    filtroAbertoPublicoCheckBox.setText(PrioridadeEventoEnum.ABERTO.getDescricao());
+    filtroAbertoPublicoCheckBox.selectedProperty().addListener(this::filtrosAction);
+
+    filtroObrigatorioAlunoCheckBox.setText(PrioridadeEventoEnum.OBRIGATORIO_ALUNOS.getDescricao());
+    filtroObrigatorioAlunoCheckBox.selectedProperty().addListener(this::filtrosAction);
+
+    filtroObrigatorioProfessorCheckBox.setText(PrioridadeEventoEnum.OBRIGATORIO_PROFESSORES.getDescricao());
+    filtroObrigatorioProfessorCheckBox.selectedProperty().addListener(this::filtrosAction);
+
+    filtroSomenteAlunosCheckBox.setText(PrioridadeEventoEnum.SOMENTE_ALUNOS.getDescricao());
+    filtroSomenteAlunosCheckBox.selectedProperty().addListener(this::filtrosAction);
+
+    filtroSomenteProfessoresCheckBox.setText(PrioridadeEventoEnum.OBRIGATORIO_PROFESSORES.getDescricao());
+    filtroSomenteProfessoresCheckBox.selectedProperty().addListener(this::filtrosAction);
+
+    filterIcon.setImage(ResourceUtils.getIcon("/icons/filter.png", 20, 20).getImage());
   }
 
   private VBox createCard(Evento evento) {
@@ -146,8 +162,10 @@ public class ProximosEventosController implements Initializable {
 
     Label participantesLabel = new Label("Participantes");
 
+    int participantes = eventosUsuarioService.buscarQuantidadeParticipantes(evento.getId());
+
     TextField participantesTextField = new TextField();
-    participantesTextField.setText(String.valueOf(eventosUsuarioService.buscarParticipantesEvento(evento.getId())));
+    participantesTextField.setText(String.valueOf(participantes));
     participantesTextField.setEditable(false);
     participantesTextField.setAlignment(Pos.CENTER);
 
@@ -169,7 +187,7 @@ public class ProximosEventosController implements Initializable {
     cancelButton.getStyleClass().add("edit-button");
     cancelButton.setDisable(true);
 
-    ImageView icon = IconUtils.getIcon("/icons/close.png", 25, 25);
+    ImageView icon = ResourceUtils.getIcon("/icons/close.png", 25, 25);
 
     cancelButton.setGraphic(icon);
     cancelButton.setGraphicTextGap(7.5);
@@ -184,7 +202,6 @@ public class ProximosEventosController implements Initializable {
         duracaoButton.setDisable(false);
         cancelButton.setDisable(false);
         cancelButton.setOnAction(event -> cancelEventAction(evento));
-
         statusTextField.getStyleClass().add("success-card");
       }
       case FINALIZADO -> statusTextField.getStyleClass().add("warning-card");
@@ -234,7 +251,7 @@ public class ProximosEventosController implements Initializable {
     dialog.setOnShown(event -> AlertUtils.positionDialog(dialog));
     dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
     dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
-    dialog.getDialogPane().getStylesheets().add(getClass().getResource("/pages/Style.css").toExternalForm());
+    dialog.getDialogPane().getStylesheets().add(ResourceUtils.getStyle());
 
     Label dataAtualLabel = new Label("Data atual");
 
@@ -247,7 +264,8 @@ public class ProximosEventosController implements Initializable {
 
     TextField novaDataTextField = new TextField();
     novaDataTextField.setAlignment(Pos.CENTER);
-    novaDataTextField.textProperty().addListener((observableValue, oldValue, newValue) -> {
+    novaDataTextField.textProperty().addListener(
+      (observableValue, oldValue, newValue) -> {
       String value = MaskUtils.applyMaskDate(newValue);
 
       if (!newValue.equals(value)) {
@@ -304,7 +322,7 @@ public class ProximosEventosController implements Initializable {
     dialog.setOnShown(event -> AlertUtils.positionDialog(dialog));
     dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
     dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
-    dialog.getDialogPane().getStylesheets().add(getClass().getResource("/pages/Style.css").toExternalForm());
+    dialog.getDialogPane().getStylesheets().add(ResourceUtils.getStyle());
 
     Label duracaoAtualLabel = new Label("Duração atual");
 
@@ -317,7 +335,8 @@ public class ProximosEventosController implements Initializable {
 
     TextField novaDuracaoTextField = new TextField();
     novaDuracaoTextField.setAlignment(Pos.CENTER);
-    novaDuracaoTextField.textProperty().addListener((observableValue, oldValue, newValue) -> {
+    novaDuracaoTextField.textProperty().addListener(
+      (observableValue, oldValue, newValue) -> {
       String value = MaskUtils.applyMaskTime(newValue);
 
       if (!newValue.equals(value)) {
@@ -398,104 +417,34 @@ public class ProximosEventosController implements Initializable {
     });
   }
 
-  private void filtroAbertoPublicAction(ObservableValue<? extends Boolean> observable,
-    Boolean oldValue, Boolean newValue) {
+  private void filtrosAction(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+    List<PrioridadeEventoEnum> prioridadeEventoList = new ArrayList<>();
 
-    if (newValue) {
-      filtroObrigatorioAlunoCheckBox.setSelected(false);
-      filtroObrigatorioProfessorCheckBox.setSelected(false);
-      filtroSomenteAlunosCheckBox.setSelected(false);
-      filtroSomenteProfessoresCheckBox.setSelected(false);
+    List<CheckBox> checkBoxList = List.of(
+      filtroAbertoPublicoCheckBox,
+      filtroObrigatorioAlunoCheckBox,
+      filtroObrigatorioProfessorCheckBox,
+      filtroSomenteAlunosCheckBox,
+      filtroSomenteProfessoresCheckBox
+    );
 
-      filtroAbertoPublicoCheckBox.setSelected(true);
+    for (CheckBox checkBox : checkBoxList) {
+      if (checkBox.isSelected()) {
+        String name = checkBox.getText();
 
-      List<Evento> eventos = eventoService.buscarTodosEventosPorPrioridade(PrioridadeEventoEnum.ABERTO);
-
-      fillContentCards(eventos);
+        PrioridadeEventoEnum prioridadeEventoEnum = PrioridadeEventoEnum.parse(name);
+        prioridadeEventoList.add(prioridadeEventoEnum);
+      }
     }
-    else {
+
+    if (prioridadeEventoList.isEmpty()) {
       fillContentCards();
+      return;
     }
-  }
 
-  private void filtroObrigatorioAlunoAction(ObservableValue<? extends Boolean> observable, Boolean oldValue,
-    Boolean newValue) {
-    if (newValue) {
-      filtroAbertoPublicoCheckBox.setSelected(false);
-      filtroObrigatorioProfessorCheckBox.setSelected(false);
-      filtroSomenteAlunosCheckBox.setSelected(false);
-      filtroSomenteProfessoresCheckBox.setSelected(false);
+    List<Evento> proximosEventos = eventoService.buscarTodosEventosPorPrioridades(prioridadeEventoList);
 
-      filtroObrigatorioAlunoCheckBox.setSelected(true);
-
-      List<Evento> eventos = eventoService.buscarTodosEventosPorPrioridade(
-        PrioridadeEventoEnum.OBRIGATORIO_ALUNOS);
-
-      fillContentCards(eventos);
-    }
-    else {
-      fillContentCards();
-    }
-  }
-
-  private void filtroObrigatorioProfessorAction(ObservableValue<? extends Boolean> observable, Boolean oldValue,
-    Boolean newValue) {
-    if (newValue) {
-      filtroAbertoPublicoCheckBox.setSelected(false);
-      filtroObrigatorioAlunoCheckBox.setSelected(false);
-      filtroSomenteAlunosCheckBox.setSelected(false);
-      filtroSomenteProfessoresCheckBox.setSelected(false);
-
-      filtroObrigatorioProfessorCheckBox.setSelected(true);
-
-      List<Evento> eventos = eventoService.buscarTodosEventosPorPrioridade(
-        PrioridadeEventoEnum.OBRIGATORIO_PROFESSORES);
-
-      fillContentCards(eventos);
-    }
-    else {
-      fillContentCards();
-    }
-  }
-
-  private void filtroSomenteAlunosAction(ObservableValue<? extends Boolean> observable, Boolean oldValue,
-    Boolean newValue) {
-    if (newValue) {
-      filtroAbertoPublicoCheckBox.setSelected(false);
-      filtroObrigatorioAlunoCheckBox.setSelected(false);
-      filtroObrigatorioProfessorCheckBox.setSelected(false);
-      filtroSomenteProfessoresCheckBox.setSelected(false);
-
-      filtroSomenteAlunosCheckBox.setSelected(true);
-
-      List<Evento> eventos = eventoService.buscarTodosEventosPorPrioridade(
-        PrioridadeEventoEnum.SOMENTE_ALUNOS);
-
-      fillContentCards(eventos);
-    }
-    else {
-      fillContentCards();
-    }
-  }
-
-  private void filtroSomenteProfessoresAction(ObservableValue<? extends Boolean> observable, Boolean oldValue,
-    Boolean newValue) {
-    if (newValue) {
-      filtroAbertoPublicoCheckBox.setSelected(false);
-      filtroObrigatorioAlunoCheckBox.setSelected(false);
-      filtroObrigatorioProfessorCheckBox.setSelected(false);
-      filtroSomenteAlunosCheckBox.setSelected(false);
-
-      filtroSomenteProfessoresCheckBox.setSelected(true);
-
-      List<Evento> eventos = eventoService.buscarTodosEventosPorPrioridade(
-        PrioridadeEventoEnum.SOMENTE_PROFESSORES);
-
-      fillContentCards(eventos);
-    }
-    else {
-      fillContentCards();
-    }
+    fillContentCards(proximosEventos);
   }
 
 }

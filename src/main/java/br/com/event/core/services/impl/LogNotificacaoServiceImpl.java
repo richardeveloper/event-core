@@ -13,8 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class LogNotificacaoServiceImpl implements LogNotificacaoService {
 
-  @Autowired
-  private LogNotificacaoRepository logNotificacaoRepository;
+  private final LogNotificacaoRepository logNotificacaoRepository;
+
+  public LogNotificacaoServiceImpl(LogNotificacaoRepository logNotificacaoRepository) {
+    this.logNotificacaoRepository = logNotificacaoRepository;
+  }
 
   @Override
   public List<LogNotificacao> buscarLogNotificacoesMaisRecentes() {
@@ -24,5 +27,10 @@ public class LogNotificacaoServiceImpl implements LogNotificacaoService {
   @Override
   public List<LogNotificacao> buscarTodosPorTipoNotificacao(TipoNotificacaoEnum tipoNotificacao) {
     return logNotificacaoRepository.findAllByTipoNotificacaoOrderByDataEnvioDesc(tipoNotificacao);
+  }
+
+  @Override
+  public List<LogNotificacao> buscarTodosPorTiposNotificacoes(List<TipoNotificacaoEnum> tiposNotificacoes) {
+    return logNotificacaoRepository.findAllByTiposNotificacoesOrderByDataEnvioDesc(tiposNotificacoes);
   }
 }

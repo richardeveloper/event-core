@@ -34,15 +34,15 @@ public class GeradorMatriculaServiceImpl implements GeradorMatriculaService {
 
     String segundaParte = cpf.substring(START_INDEX, END_INDEX);
 
-    Long nextCode = usuarioRepository.generateNextUserCode();
+    Long codigoUsuario = usuarioRepository.generateNextUserCode();
 
     StringBuilder terceiraParte = new StringBuilder();
 
-    String code = String.valueOf(nextCode);
-    int diff = DEFAULT_CODE_LENGTH - code.length();
+    String codigo = String.valueOf(codigoUsuario);
+    int diff = DEFAULT_CODE_LENGTH - codigo.length();
 
     terceiraParte.append(FILL_CHARACTER_CODE.repeat(diff));
-    terceiraParte = new StringBuilder(terceiraParte.toString().concat(code));
+    terceiraParte = new StringBuilder(terceiraParte.toString().concat(codigo));
 
     return primeiraParte + segundaParte + terceiraParte;
   }

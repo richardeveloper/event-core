@@ -8,7 +8,7 @@ import br.com.event.core.exceptions.ServiceException;
 import br.com.event.core.services.EventosUsuarioService;
 import br.com.event.core.services.UsuarioService;
 import br.com.event.core.utils.AlertUtils;
-import br.com.event.core.utils.IconUtils;
+import br.com.event.core.utils.ResourceUtils;
 import br.com.event.core.utils.MaskUtils;
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
@@ -188,7 +188,7 @@ public class ConsultaInscricoesController implements Initializable {
       case CANCELADO -> statusTextField.getStyleClass().add("error-card");
     }
 
-    ImageView icon = IconUtils.getIcon("/icons/close.png", 25, 25);
+    ImageView icon = ResourceUtils.getIcon("/icons/close.png", 25, 25);
 
     deleteButton.setGraphic(icon);
     deleteButton.setGraphicTextGap(7.5);

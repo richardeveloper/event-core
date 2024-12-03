@@ -6,10 +6,11 @@ import br.com.event.core.exceptions.ServiceException;
 import br.com.event.core.services.EventoService;
 import br.com.event.core.services.EventosUsuarioService;
 import br.com.event.core.utils.AlertUtils;
-import br.com.event.core.utils.IconUtils;
 import br.com.event.core.utils.MaskUtils;
+import br.com.event.core.utils.ResourceUtils;
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.value.ObservableValue;
@@ -63,12 +64,7 @@ public class ConsultaEventosController implements Initializable {
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
     fillContentCards();
-    filterIcon.setImage(IconUtils.getIcon("/icons/filter.png", 20, 20).getImage());
-
-    filtroEmAndamentoCheckBox.selectedProperty().addListener(this::filtroEmAndamentoAction);
-    filtroAgendadosCheckBox.selectedProperty().addListener(this::filtroAgendadosAction);
-    filtroCanceladosCheckBox.selectedProperty().addListener(this::filtroCanceladosAction);
-    filtroFinalizadosCheckBox.selectedProperty().addListener(this::filtroFinalizadosAction);
+    setUpFilters();
   }
 
   private void fillContentCards() {
@@ -97,6 +93,22 @@ public class ConsultaEventosController implements Initializable {
       VBox card = createCard(evento);
       cardsContent.getChildren().add(card);
     }
+  }
+
+  private void setUpFilters() {
+    filtroEmAndamentoCheckBox.setText(StatusEventoEnum.EM_ANDAMENTO.getDescricao());
+    filtroEmAndamentoCheckBox.selectedProperty().addListener(this::filtrosAction);
+
+    filtroAgendadosCheckBox.setText(StatusEventoEnum.AGENDADO.getDescricao());
+    filtroAgendadosCheckBox.selectedProperty().addListener(this::filtrosAction);
+
+    filtroCanceladosCheckBox.setText(StatusEventoEnum.CANCELADO.getDescricao());
+    filtroCanceladosCheckBox.selectedProperty().addListener(this::filtrosAction);
+
+    filtroFinalizadosCheckBox.setText(StatusEventoEnum.FINALIZADO.getDescricao());
+    filtroFinalizadosCheckBox.selectedProperty().addListener(this::filtrosAction);
+
+    filterIcon.setImage(ResourceUtils.getIcon("/icons/filter.png", 20, 20).getImage());
   }
 
   private VBox createCard(Evento evento) {
@@ -132,8 +144,10 @@ public class ConsultaEventosController implements Initializable {
 
     Label participantesLabel = new Label("Participantes");
 
+    int participantes = eventosUsuarioService.buscarQuantidadeParticipantes(evento.getId());
+
     TextField participantesTextField = new TextField();
-    participantesTextField.setText(String.valueOf(eventosUsuarioService.buscarParticipantesEvento(evento.getId())));
+    participantesTextField.setText(String.valueOf(participantes));
     participantesTextField.setEditable(false);
     participantesTextField.setAlignment(Pos.CENTER);
 
@@ -158,7 +172,7 @@ public class ConsultaEventosController implements Initializable {
     Button deleteButton = new Button("Apagar evento");
     deleteButton.getStyleClass().add("delete-button");
 
-    ImageView icon = IconUtils.getIcon("/icons/trash.png", 25, 25);
+    ImageView icon = ResourceUtils.getIcon("/icons/trash.png", 25, 25);
 
     deleteButton.setGraphic(icon);
     deleteButton.setGraphicTextGap(7.5);
@@ -241,73 +255,33 @@ public class ConsultaEventosController implements Initializable {
     return space;
   }
 
-  private void filtroEmAndamentoAction(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-    if (newValue) {
-      filtroAgendadosCheckBox.setSelected(false);
-      filtroCanceladosCheckBox.setSelected(false);
-      filtroFinalizadosCheckBox.setSelected(false);
+  private void filtrosAction(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+    List<StatusEventoEnum> statusEventoList = new ArrayList<>();
 
-      filtroEmAndamentoCheckBox.setSelected(true);
+    List<CheckBox> checkBoxList = List.of(
+      filtroEmAndamentoCheckBox,
+      filtroAgendadosCheckBox,
+      filtroCanceladosCheckBox,
+      filtroFinalizadosCheckBox
+    );
 
-      List<Evento> eventos = eventoService.buscarTodosEventosPorStatus(StatusEventoEnum.EM_ANDAMENTO);
+    for (CheckBox checkBox : checkBoxList) {
+      if (checkBox.isSelected()) {
+        String statusEvento = checkBox.getText();
 
-      fillContentCards(eventos);
+        StatusEventoEnum statusEventoEnum = StatusEventoEnum.parse(statusEvento);
+        statusEventoList.add(statusEventoEnum);
+      }
     }
-    else {
+
+    if (statusEventoList.isEmpty()) {
       fillContentCards();
+      return;
     }
-  }
 
+    List<Evento> eventos = eventoService.buscarTodosEventosPorStatus(statusEventoList);
 
-  private void filtroAgendadosAction(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-    if (newValue) {
-      filtroEmAndamentoCheckBox.setSelected(false);
-      filtroCanceladosCheckBox.setSelected(false);
-      filtroFinalizadosCheckBox.setSelected(false);
-
-      filtroAgendadosCheckBox.setSelected(true);
-
-      List<Evento> eventos = eventoService.buscarTodosEventosPorStatus(StatusEventoEnum.AGENDADO);
-
-      fillContentCards(eventos);
-    }
-    else {
-      fillContentCards();
-    }
-  }
-
-  private void filtroCanceladosAction(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-    if (newValue) {
-      filtroEmAndamentoCheckBox.setSelected(false);
-      filtroAgendadosCheckBox.setSelected(false);
-      filtroFinalizadosCheckBox.setSelected(false);
-
-      filtroCanceladosCheckBox.setSelected(true);
-
-      List<Evento> eventos = eventoService.buscarTodosEventosPorStatus(StatusEventoEnum.CANCELADO);
-
-      fillContentCards(eventos);
-    }
-    else {
-      fillContentCards();
-    }
-  }
-
-  private void filtroFinalizadosAction(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-    if (newValue) {
-      filtroEmAndamentoCheckBox.setSelected(false);
-      filtroAgendadosCheckBox.setSelected(false);
-      filtroCanceladosCheckBox.setSelected(false);
-
-      filtroFinalizadosCheckBox.setSelected(true);
-
-      List<Evento> eventos = eventoService.buscarTodosEventosPorStatus(StatusEventoEnum.FINALIZADO);
-
-      fillContentCards(eventos);
-    }
-    else {
-      fillContentCards();
-    }
+    fillContentCards(eventos);
   }
 
 }

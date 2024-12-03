@@ -7,10 +7,10 @@
 <AnchorPane prefHeight="834.0" prefWidth="1600.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.event.core.controllers.ConsultaEventosController">
    <Label layoutY="14.0" prefHeight="38.0" prefWidth="1600.0" styleClass="title-page" text="EVENTOS" />
    <Pane layoutX="467.0" layoutY="89.0" prefHeight="125.0" prefWidth="704.0" styleClass="fill-content">
-      <CheckBox fx:id="filtroEmAndamentoCheckBox" layoutX="43.0" layoutY="75.0" mnemonicParsing="false" text="Em andamento" />
-      <CheckBox fx:id="filtroAgendadosCheckBox" layoutX="225.0" layoutY="75.0" mnemonicParsing="false" text="Agendado" />
-      <CheckBox fx:id="filtroCanceladosCheckBox" layoutX="394.0" layoutY="75.0" mnemonicParsing="false" text="Cancelado" />
-      <CheckBox fx:id="filtroFinalizadosCheckBox" layoutX="562.0" layoutY="75.0" mnemonicParsing="false" text="Finalizado" />
+      <CheckBox fx:id="filtroEmAndamentoCheckBox" layoutX="43.0" layoutY="75.0" mnemonicParsing="false" />
+      <CheckBox fx:id="filtroAgendadosCheckBox" layoutX="225.0" layoutY="75.0" mnemonicParsing="false" />
+      <CheckBox fx:id="filtroCanceladosCheckBox" layoutX="394.0" layoutY="75.0" mnemonicParsing="false" />
+      <CheckBox fx:id="filtroFinalizadosCheckBox" layoutX="562.0" layoutY="75.0" mnemonicParsing="false" />
       <Label layoutX="335.0" layoutY="27.0" style="-fx-font-weight: bold; -fx-font-size: 20px;" text="Filtros" />
       <ImageView fx:id="filterIcon" fitHeight="20.0" fitWidth="20.0" layoutX="304.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true" />
    </Pane>

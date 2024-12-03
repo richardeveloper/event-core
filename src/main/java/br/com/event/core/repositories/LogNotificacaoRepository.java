@@ -16,4 +16,7 @@ public interface LogNotificacaoRepository extends JpaRepository<LogNotificacao, 
   @Query(value = "SELECT notificacao FROM LogNotificacao notificacao WHERE notificacao.tipoNotificacao = :tipoNotificacao ORDER BY notificacao.dataEnvio DESC")
   List<LogNotificacao> findAllByTipoNotificacaoOrderByDataEnvioDesc(TipoNotificacaoEnum tipoNotificacao);
 
+  @Query(value = "SELECT notificacao FROM LogNotificacao notificacao WHERE notificacao.tipoNotificacao IN (:tiposNotificacoes) ORDER BY notificacao.dataEnvio DESC")
+  List<LogNotificacao> findAllByTiposNotificacoesOrderByDataEnvioDesc(List<TipoNotificacaoEnum> tiposNotificacoes);
+
 }

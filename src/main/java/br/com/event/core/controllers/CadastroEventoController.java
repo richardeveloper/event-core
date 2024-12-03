@@ -6,7 +6,7 @@ import br.com.event.core.enums.StatusEventoEnum;
 import br.com.event.core.exceptions.ServiceException;
 import br.com.event.core.services.EventoService;
 import br.com.event.core.utils.AlertUtils;
-import br.com.event.core.utils.IconUtils;
+import br.com.event.core.utils.ResourceUtils;
 import br.com.event.core.utils.MaskUtils;
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -57,6 +57,7 @@ public class CadastroEventoController implements Initializable {
 
     dataTextField.textProperty().addListener(
       (observableValue, oldValue, newValue) -> {
+
       String value = MaskUtils.applyMaskDate(newValue);
 
       if (!newValue.equals(value)) {
@@ -67,6 +68,7 @@ public class CadastroEventoController implements Initializable {
 
     duracaoTextField.textProperty().addListener(
       (observableValue, oldValue, newValue) -> {
+
       String value = MaskUtils.applyMaskTime(newValue);
 
       if (!newValue.equals(value)) {
@@ -77,7 +79,7 @@ public class CadastroEventoController implements Initializable {
 
     saveButton.getStyleClass().add("edit-button");
 
-    ImageView icon = IconUtils.getIcon("/icons/save.png", 25, 25);
+    ImageView icon = ResourceUtils.getIcon("/icons/save.png", 25, 25);
 
     saveButton.setGraphic(icon);
     saveButton.setGraphicTextGap(7.5);
@@ -155,12 +157,12 @@ public class CadastroEventoController implements Initializable {
       return;
     }
 
-    limparFormulario();
+    clearForm();
 
     AlertUtils.showSuccessAlert("Evento cadastrado com sucesso.");
   }
 
-  private void limparFormulario() {
+  private void clearForm() {
     nomeTextField.clear();
     dataTextField.clear();
     duracaoTextField.clear();

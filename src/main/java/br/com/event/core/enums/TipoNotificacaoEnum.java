@@ -6,11 +6,11 @@ import lombok.Getter;
 public enum TipoNotificacaoEnum {
 
   INSCRICAO_CONFIRMADA("Confirmação de inscrição"),
-  INSCRICAO_CANCELADA("Confirmação de cancelamento"),
+  INSCRICAO_CANCELADA("Cancelamento de inscrição"),
   ALTERACAO_DATA_EVENTO("Alteração na data do evento"),
-  EVENTO_INICIADO("Evento iniciado"),
-  EVENTO_FINALIZADO("Evento finalizado"),
-  EVENTO_CANCELADO("Evento cancelado");
+  EVENTO_INICIADO("Início de evento"),
+  EVENTO_FINALIZADO("Fim do evento"),
+  EVENTO_CANCELADO("Cancelamento de evento");
 
   private final String descricao;
 

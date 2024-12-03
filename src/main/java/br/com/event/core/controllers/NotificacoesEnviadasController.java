@@ -3,9 +3,10 @@ package br.com.event.core.controllers;
 import br.com.event.core.entities.LogNotificacao;
 import br.com.event.core.enums.TipoNotificacaoEnum;
 import br.com.event.core.services.LogNotificacaoService;
-import br.com.event.core.utils.IconUtils;
+import br.com.event.core.utils.ResourceUtils;
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleStringProperty;
@@ -15,6 +16,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
@@ -57,14 +59,7 @@ public class NotificacoesEnviadasController implements Initializable {
   public void initialize(URL url, ResourceBundle resourceBundle) {
     createTableColumns();
     fillTableView();
-    filterIcon.setImage(IconUtils.getIcon("/icons/filter.png", 20, 20).getImage());
-
-    filtroConfirmacaoInscricaoCheckBox.selectedProperty().addListener(this::filtroConfirmacaoInscricaoAction);
-    filtroCancelamentoInscricaoCheckBox.selectedProperty().addListener(this::filtroCancelamentoInscricaoAction);
-    filtroAlteracaoDataCheckBox.selectedProperty().addListener(this::filtroAlteracaoDataAction);
-    filtroInicioEventoCheckBox.selectedProperty().addListener(this::filtroInicioEventoAction);
-    filtroFimEventoCheckBox.selectedProperty().addListener(this::filtroFimEventoAction);
-    filtroCancelamentoEventoCheckBox.selectedProperty().addListener(this::filtroCancelamentoEventoAction);
+    setUpFilters();
   }
 
   public void fillTableView() {
@@ -87,15 +82,32 @@ public class NotificacoesEnviadasController implements Initializable {
     notificacoesTableView.setItems(FXCollections.observableArrayList(notificacoes));
   }
 
+  private void setUpFilters() {
+    filtroConfirmacaoInscricaoCheckBox.setText(TipoNotificacaoEnum.INSCRICAO_CONFIRMADA.getDescricao());
+    filtroConfirmacaoInscricaoCheckBox.selectedProperty().addListener(this::filtrosAction);
+
+    filtroCancelamentoInscricaoCheckBox.setText(TipoNotificacaoEnum.INSCRICAO_CANCELADA.getDescricao());
+    filtroCancelamentoInscricaoCheckBox.selectedProperty().addListener(this::filtrosAction);
+
+    filtroAlteracaoDataCheckBox.setText(TipoNotificacaoEnum.ALTERACAO_DATA_EVENTO.getDescricao());
+    filtroAlteracaoDataCheckBox.selectedProperty().addListener(this::filtrosAction);
+
+    filtroInicioEventoCheckBox.setText(TipoNotificacaoEnum.EVENTO_INICIADO.getDescricao());
+    filtroInicioEventoCheckBox.selectedProperty().addListener(this::filtrosAction);
+
+    filtroFimEventoCheckBox.setText(TipoNotificacaoEnum.EVENTO_FINALIZADO.getDescricao());
+    filtroFimEventoCheckBox.selectedProperty().addListener(this::filtrosAction);
+
+    filtroCancelamentoEventoCheckBox.setText(TipoNotificacaoEnum.EVENTO_CANCELADO.getDescricao());
+    filtroCancelamentoEventoCheckBox.selectedProperty().addListener(this::filtrosAction);
+
+    filterIcon.setImage(ResourceUtils.getIcon("/icons/filter.png", 20, 20).getImage());
+  }
+
   private void createTableColumns() {
     TableColumn<LogNotificacao, String> colunaId = createColumn(
       "ID",
       data -> new SimpleStringProperty(data.getValue().getId().toString())
-    );
-
-    TableColumn<LogNotificacao, String> colunaNotificacao = createColumn(
-      "Notificação",
-      data -> new SimpleStringProperty(data.getValue().getNotificacao())
     );
 
     TableColumn<LogNotificacao, String> colunaTipoNotificacao = createColumn(
@@ -121,6 +133,11 @@ public class NotificacoesEnviadasController implements Initializable {
     );
     colunaCategoria.setMinWidth(110.0);
 
+    TableColumn<LogNotificacao, String> colunaNotificacao = createColumn(
+      "Notificação",
+      data -> new SimpleStringProperty(data.getValue().getNotificacao())
+    );
+
     TableColumn<LogNotificacao, String> colunaEvento = createColumn(
       "Evento",
       data -> new SimpleStringProperty(data.getValue().getNomeEvento())
@@ -134,11 +151,13 @@ public class NotificacoesEnviadasController implements Initializable {
     notificacoesTableView.getColumns().add(colunaId);
     notificacoesTableView.getColumns().add(colunaTipoNotificacao);
     notificacoesTableView.getColumns().add(colunaDataEnvio);
-    notificacoesTableView.getColumns().add(colunaNotificacao);
     notificacoesTableView.getColumns().add(colunaDestinatario);
     notificacoesTableView.getColumns().add(colunaCategoria);
+    notificacoesTableView.getColumns().add(colunaNotificacao);
     notificacoesTableView.getColumns().add(colunaEvento);
     notificacoesTableView.getColumns().add(colunaDataEvento);
+
+    notificacoesTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
   }
 
   private TableColumn<LogNotificacao, String> createColumn(String nomeColuna,
@@ -152,118 +171,35 @@ public class NotificacoesEnviadasController implements Initializable {
     return coluna;
   }
 
-  private void filtroConfirmacaoInscricaoAction(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-    if (newValue) {
-      filtroCancelamentoEventoCheckBox.setSelected(false);
-      filtroAlteracaoDataCheckBox.setSelected(false);
-      filtroInicioEventoCheckBox.setSelected(false);
-      filtroFimEventoCheckBox.setSelected(false);
-      filtroCancelamentoEventoCheckBox.setSelected(false);
+  private void filtrosAction(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+    List<TipoNotificacaoEnum> tipoNotificacaoList = new ArrayList<>();
 
-      filtroConfirmacaoInscricaoCheckBox.setSelected(true);
+    List<CheckBox> checkBoxList = List.of(
+      filtroConfirmacaoInscricaoCheckBox,
+      filtroCancelamentoInscricaoCheckBox,
+      filtroAlteracaoDataCheckBox,
+      filtroInicioEventoCheckBox,
+      filtroFimEventoCheckBox,
+      filtroCancelamentoEventoCheckBox
+    );
 
-      List<LogNotificacao> notificacoes = logNotificacaoService.buscarTodosPorTipoNotificacao(TipoNotificacaoEnum.INSCRICAO_CONFIRMADA);
+    for (CheckBox checkBox : checkBoxList) {
+      if (checkBox.isSelected()) {
+        String name = checkBox.getText();
 
-      fillTableView(notificacoes);
+        TipoNotificacaoEnum tipoNotificacaoEnum = TipoNotificacaoEnum.parse(name);
+        tipoNotificacaoList.add(tipoNotificacaoEnum);
+      }
     }
-    else {
+
+    if (tipoNotificacaoList.isEmpty()) {
       fillTableView();
+      return;
     }
-  }
 
-  private void filtroCancelamentoInscricaoAction(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-    if (newValue) {
-      filtroConfirmacaoInscricaoCheckBox.setSelected(false);
-      filtroAlteracaoDataCheckBox.setSelected(false);
-      filtroInicioEventoCheckBox.setSelected(false);
-      filtroFimEventoCheckBox.setSelected(false);
-      filtroCancelamentoEventoCheckBox.setSelected(false);
+    List<LogNotificacao> notificacoes = logNotificacaoService.buscarTodosPorTiposNotificacoes(tipoNotificacaoList);
 
-      filtroCancelamentoInscricaoCheckBox.setSelected(true);
-
-      List<LogNotificacao> notificacoes = logNotificacaoService.buscarTodosPorTipoNotificacao(TipoNotificacaoEnum.INSCRICAO_CANCELADA);
-
-      fillTableView(notificacoes);
-    }
-    else {
-      fillTableView();
-    }
-  }
-
-  private void filtroAlteracaoDataAction(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-    if (newValue) {
-      filtroConfirmacaoInscricaoCheckBox.setSelected(false);
-      filtroCancelamentoInscricaoCheckBox.setSelected(false);
-      filtroInicioEventoCheckBox.setSelected(false);
-      filtroFimEventoCheckBox.setSelected(false);
-      filtroCancelamentoEventoCheckBox.setSelected(false);
-
-      filtroAlteracaoDataCheckBox.setSelected(true);
-
-      List<LogNotificacao> notificacoes = logNotificacaoService.buscarTodosPorTipoNotificacao(TipoNotificacaoEnum.ALTERACAO_DATA_EVENTO);
-
-      fillTableView(notificacoes);
-    }
-    else {
-      fillTableView();
-    }
-  }
-
-  private void filtroInicioEventoAction(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-    if (newValue) {
-      filtroConfirmacaoInscricaoCheckBox.setSelected(false);
-      filtroCancelamentoInscricaoCheckBox.setSelected(false);
-      filtroAlteracaoDataCheckBox.setSelected(false);
-      filtroFimEventoCheckBox.setSelected(false);
-      filtroCancelamentoEventoCheckBox.setSelected(false);
-
-      filtroInicioEventoCheckBox.setSelected(true);
-
-      List<LogNotificacao> notificacoes = logNotificacaoService.buscarTodosPorTipoNotificacao(TipoNotificacaoEnum.EVENTO_INICIADO);
-
-      fillTableView(notificacoes);
-    }
-    else {
-      fillTableView();
-    }
-  }
-
-  private void filtroFimEventoAction(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-    if (newValue) {
-      filtroConfirmacaoInscricaoCheckBox.setSelected(false);
-      filtroCancelamentoInscricaoCheckBox.setSelected(false);
-      filtroAlteracaoDataCheckBox.setSelected(false);
-      filtroInicioEventoCheckBox.setSelected(false);
-      filtroCancelamentoEventoCheckBox.setSelected(false);
-
-      filtroFimEventoCheckBox.setSelected(true);
-
-      List<LogNotificacao> notificacoes = logNotificacaoService.buscarTodosPorTipoNotificacao(TipoNotificacaoEnum.EVENTO_FINALIZADO);
-
-      fillTableView(notificacoes);
-    }
-    else {
-      fillTableView();
-    }
-  }
-
-  private void filtroCancelamentoEventoAction(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-    if (newValue) {
-      filtroConfirmacaoInscricaoCheckBox.setSelected(false);
-      filtroCancelamentoInscricaoCheckBox.setSelected(false);
-      filtroAlteracaoDataCheckBox.setSelected(false);
-      filtroInicioEventoCheckBox.setSelected(false);
-      filtroFimEventoCheckBox.setSelected(false);
-
-      filtroCancelamentoEventoCheckBox.setSelected(true);
-
-      List<LogNotificacao> notificacoes = logNotificacaoService.buscarTodosPorTipoNotificacao(TipoNotificacaoEnum.EVENTO_CANCELADO);
-
-      fillTableView(notificacoes);
-    }
-    else {
-      fillTableView();
-    }
+    fillTableView(notificacoes);
   }
   
 }

@@ -8,7 +8,7 @@ import br.com.event.core.services.EventoService;
 import br.com.event.core.services.EventosUsuarioService;
 import br.com.event.core.services.UsuarioService;
 import br.com.event.core.utils.AlertUtils;
-import br.com.event.core.utils.IconUtils;
+import br.com.event.core.utils.ResourceUtils;
 import br.com.event.core.utils.MaskUtils;
 import java.net.URL;
 import java.util.List;
@@ -80,7 +80,7 @@ public class RealizaInscricaoController implements Initializable {
     usuariosSemInscricao.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     usuariosInscritos.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-    configSaveButton();
+    setUpSaveButton();
   }
 
   @FXML
@@ -117,45 +117,8 @@ public class RealizaInscricaoController implements Initializable {
     if (eventoEncontrado.isPresent()) {
       Evento evento = eventoEncontrado.get();
 
-      List<String> inscritos = usuariosInscritos.getItems().stream().toList();
-
-      for (String item : inscritos) {
-        item = MaskUtils.removeInfoUserMask(item);
-        Usuario usuario = usuarioService.buscarUsuarioPorNome(item);
-
-        try {
-          eventosUsuarioService.realizarInscricao(usuario.getId(), evento.getId());
-        }
-        catch (ServiceException e) {
-          AlertUtils.showWarningAlert(e.getMessage());
-          return;
-        }
-        catch (Exception e) {
-          log.error(e.getMessage(), e);
-          AlertUtils.showErrorAlert("Ocorreu um erro durante o processamento.");
-          return;
-        }
-      }
-
-      List<String> naoInscritos = usuariosSemInscricao.getItems().stream().toList();
-
-      for (String item : naoInscritos) {
-        item = MaskUtils.removeInfoUserMask(item);
-        Usuario usuario = usuarioService.buscarUsuarioPorNome(item);
-
-        try {
-          eventosUsuarioService.cancelarInscricao(usuario.getId(), evento.getId());
-        }
-        catch (ServiceException e) {
-          AlertUtils.showWarningAlert(e.getMessage());
-          return;
-        }
-        catch (Exception e) {
-          log.error(e.getMessage(), e);
-          AlertUtils.showErrorAlert("Ocorreu um erro durante o processamento.");
-          return;
-        }
-      }
+      realizarInscricoes(evento);
+      cancelarInscricoes(evento);
 
       usuariosSemInscricao.getItems().clear();
       usuariosInscritos.getItems().clear();
@@ -164,6 +127,50 @@ public class RealizaInscricaoController implements Initializable {
       eventosComboBox.setPromptText("Selecione o evento");
 
       AlertUtils.showSuccessAlert("Inscrições atualizadas com sucesso.");
+    }
+  }
+
+  private void realizarInscricoes(Evento evento) {
+    List<String> inscritos = usuariosInscritos.getItems().stream().toList();
+
+    for (String item : inscritos) {
+      item = MaskUtils.removeInfoUserMask(item);
+      Usuario usuario = usuarioService.buscarUsuarioPorNome(item);
+
+      try {
+        eventosUsuarioService.realizarInscricao(usuario.getId(), evento.getId());
+      }
+      catch (ServiceException e) {
+        AlertUtils.showWarningAlert(e.getMessage());
+        return;
+      }
+      catch (Exception e) {
+        log.error(e.getMessage(), e);
+        AlertUtils.showErrorAlert("Ocorreu um erro durante o processamento.");
+        return;
+      }
+    }
+  }
+
+  private void cancelarInscricoes(Evento evento) {
+    List<String> naoInscritos = usuariosSemInscricao.getItems().stream().toList();
+
+    for (String item : naoInscritos) {
+      item = MaskUtils.removeInfoUserMask(item);
+      Usuario usuario = usuarioService.buscarUsuarioPorNome(item);
+
+      try {
+        eventosUsuarioService.cancelarInscricao(usuario.getId(), evento.getId());
+      }
+      catch (ServiceException e) {
+        AlertUtils.showWarningAlert(e.getMessage());
+        return;
+      }
+      catch (Exception e) {
+        log.error(e.getMessage(), e);
+        AlertUtils.showErrorAlert("Ocorreu um erro durante o processamento.");
+        return;
+      }
     }
   }
 
@@ -203,10 +210,10 @@ public class RealizaInscricaoController implements Initializable {
     }
   }
 
-  private void configSaveButton() {
+  private void setUpSaveButton() {
     saveButton.getStyleClass().add("edit-button");
 
-    ImageView icon = IconUtils.getIcon("/icons/save.png", 25, 25);
+    ImageView icon = ResourceUtils.getIcon("/icons/save.png", 25, 25);
 
     saveButton.setGraphic(icon);
     saveButton.setGraphicTextGap(7.5);

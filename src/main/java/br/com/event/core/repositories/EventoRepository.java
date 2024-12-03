@@ -3,8 +3,8 @@ package br.com.event.core.repositories;
 import br.com.event.core.entities.Evento;
 import br.com.event.core.enums.PrioridadeEventoEnum;
 import br.com.event.core.enums.StatusEventoEnum;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,7 +17,11 @@ public interface EventoRepository extends JpaRepository<Evento, Long> {
 
   List<Evento> findAllByStatus(StatusEventoEnum status);
 
+  List<Evento> findAllByStatusIn(Collection<StatusEventoEnum> statuses);
+
   List<Evento> findAllByPrioridade(PrioridadeEventoEnum prioridadeEvento);
+
+  List<Evento> findAllByPrioridadeIn(List<PrioridadeEventoEnum> prioridades);
 
   @Query(value =
     "SELECT evento FROM Evento evento " +
@@ -45,4 +49,5 @@ public interface EventoRepository extends JpaRepository<Evento, Long> {
     "evento.data"
   )
   List<Evento> findAllByDataAndStatus(LocalDateTime data, StatusEventoEnum statusEvento);
+
 }

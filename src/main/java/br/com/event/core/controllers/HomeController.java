@@ -1,6 +1,6 @@
 package br.com.event.core.controllers;
 
-import br.com.event.core.utils.IconUtils;
+import br.com.event.core.utils.ResourceUtils;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -63,7 +63,7 @@ public class HomeController implements Initializable {
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
-    setupIcons();
+    setUpIcons();
     redirectProximosEventosPage();
   }
 
@@ -211,11 +211,11 @@ public class HomeController implements Initializable {
     }
   }
 
-  private void setupIcons() {
-    inscricoesIcon.setImage(IconUtils.getIcon("/icons/subscribe.png", 26, 26).getImage());
-    usuariosIcon.setImage(IconUtils.getIcon("/icons/user.png", 27, 27).getImage());
-    eventosIcon.setImage(IconUtils.getIcon("/icons/event.png", 26, 26).getImage());
-    logsIcons.setImage(IconUtils.getIcon("/icons/dashboard.png", 25, 25).getImage());
+  private void setUpIcons() {
+    inscricoesIcon.setImage(ResourceUtils.getIcon("/icons/subscribe.png", 26, 26).getImage());
+    usuariosIcon.setImage(ResourceUtils.getIcon("/icons/user.png", 27, 27).getImage());
+    eventosIcon.setImage(ResourceUtils.getIcon("/icons/event.png", 26, 26).getImage());
+    logsIcons.setImage(ResourceUtils.getIcon("/icons/dashboard.png", 25, 25).getImage());
   }
 
   private void disableAllButtons() {

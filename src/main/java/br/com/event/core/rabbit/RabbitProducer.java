@@ -15,12 +15,12 @@ public class RabbitProducer {
 
   private static final String LOGS_EXCHANGE = "logs_exchange";
 
-  private static final String CONFIRMACAO_INSCRICAO = "confirmacao_inscricao";
-  private static final String CANCELAMENTO_INSCRICAO = "cancelamento_inscricao";
-  private static final String ALTERACAO_DATA_EVENTO = "alteracao_data_evento";
-  private static final String INICIO_EVENTO = "inicio_evento";
-  private static final String FIM_EVENTO = "fim_evento";
-  private static final String CANCELAMENTO_EVENTO = "cancelamento_evento";
+  private static final String CONFIRMACAO_INSCRICAO_QUEUE = "confirmacao_inscricao";
+  private static final String CANCELAMENTO_INSCRICAO_QUEUE = "cancelamento_inscricao";
+  private static final String ALTERACAO_DATA_EVENTO_QUEUE = "alteracao_data_evento";
+  private static final String INICIO_EVENTO_QUEUE = "inicio_evento";
+  private static final String FIM_EVENTO_QUEUE = "fim_evento";
+  private static final String CANCELAMENTO_EVENTO_QUEUE = "cancelamento_evento";
 
   private final RabbitTemplate rabbitTemplate;
 
@@ -51,12 +51,12 @@ public class RabbitProducer {
     String routingKey;
 
     switch (tipoNotificacao) {
-      case INSCRICAO_CONFIRMADA -> routingKey = CONFIRMACAO_INSCRICAO;
-      case INSCRICAO_CANCELADA -> routingKey = CANCELAMENTO_INSCRICAO;
-      case ALTERACAO_DATA_EVENTO -> routingKey =  ALTERACAO_DATA_EVENTO;
-      case EVENTO_INICIADO -> routingKey = INICIO_EVENTO;
-      case EVENTO_FINALIZADO -> routingKey = FIM_EVENTO;
-      case EVENTO_CANCELADO -> routingKey = CANCELAMENTO_EVENTO;
+      case INSCRICAO_CONFIRMADA -> routingKey = CONFIRMACAO_INSCRICAO_QUEUE;
+      case INSCRICAO_CANCELADA -> routingKey = CANCELAMENTO_INSCRICAO_QUEUE;
+      case ALTERACAO_DATA_EVENTO -> routingKey = ALTERACAO_DATA_EVENTO_QUEUE;
+      case EVENTO_INICIADO -> routingKey = INICIO_EVENTO_QUEUE;
+      case EVENTO_FINALIZADO -> routingKey = FIM_EVENTO_QUEUE;
+      case EVENTO_CANCELADO -> routingKey = CANCELAMENTO_EVENTO_QUEUE;
       default -> throw new ServiceException("Não foi possível identificar o tipo de notificação a ser enviada.");
     }
 

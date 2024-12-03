@@ -14,7 +14,7 @@ public interface EventosUsuarioService {
 
   List<EventosUsuario> buscarTodosEventosUsuarioPorUsuarioId(Long usuarioId);
 
-  int buscarParticipantesEvento(Long eventoId);
+  int buscarQuantidadeParticipantes(Long eventoId);
 
   void apagarTodosUsuariosEvento(List<EventosUsuario> eventosUsuarios);
 

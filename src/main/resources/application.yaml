@@ -17,13 +17,6 @@ spring:
     host: localhost
     username: guest
     password: guest
-    queues:
-      confirmacao-inscricao: confirmacao_inscricao
-      cancelamento-inscricao: cancelamento_inscricao
-      alteracao-data-evento: alteracao_data_evento
-      inicio-evento: inicio_evento
-      fim-evento: fim_evento
-      cancelamento-evento: cancelamento_evento
 # OTHER CONFIGURATIONS
 server:
   port: 8080

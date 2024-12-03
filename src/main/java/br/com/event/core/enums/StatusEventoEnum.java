@@ -5,10 +5,10 @@ import lombok.Getter;
 @Getter
 public enum StatusEventoEnum {
 
-  AGENDADO("AGENDADO"),
-  CANCELADO("CANCELADO"),
-  FINALIZADO("FINALIZADO"),
-  EM_ANDAMENTO("EM ANDAMENTO");
+  AGENDADO("Agendado"),
+  CANCELADO("Cancelado"),
+  FINALIZADO("Finalizado"),
+  EM_ANDAMENTO("Em andamento");
 
   private final String descricao;
 

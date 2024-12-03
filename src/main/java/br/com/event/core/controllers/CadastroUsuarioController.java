@@ -1,12 +1,11 @@
 package br.com.event.core.controllers;
 
 import br.com.event.core.entities.Usuario;
-import br.com.event.core.entities.Usuario.UsuarioBuilder;
 import br.com.event.core.enums.TipoUsuarioEnum;
 import br.com.event.core.exceptions.ServiceException;
 import br.com.event.core.services.UsuarioService;
 import br.com.event.core.utils.AlertUtils;
-import br.com.event.core.utils.IconUtils;
+import br.com.event.core.utils.ResourceUtils;
 import br.com.event.core.utils.MaskUtils;
 import java.net.URL;
 import java.util.Arrays;
@@ -76,7 +75,7 @@ public class CadastroUsuarioController implements Initializable {
 
     saveButton.getStyleClass().add("edit-button");
 
-    ImageView icon = IconUtils.getIcon("/icons/save.png", 25, 25);
+    ImageView icon = ResourceUtils.getIcon("/icons/save.png", 25, 25);
 
     saveButton.setGraphic(icon);
     saveButton.setGraphicTextGap(7.5);
@@ -113,7 +112,7 @@ public class CadastroUsuarioController implements Initializable {
       return;
     }
 
-    String telefone = MaskUtils.removeMask(cpfTextField.getText());
+    String telefone = MaskUtils.removeMask(telefoneTextField.getText());
 
     if (telefone.length() != 11) {
       AlertUtils.showValidateAlert("O campo telefone deve ter 11 dígitos.");
@@ -146,12 +145,12 @@ public class CadastroUsuarioController implements Initializable {
       return;
     }
 
-    limparFormulario();
+    clearForm();
 
     AlertUtils.showSuccessAlert("Usuário cadastrado com sucesso.");
   }
 
-  private void limparFormulario() {
+  private void clearForm() {
     nomeTextField.clear();
     cpfTextField.clear();
     emailTextField.clear();

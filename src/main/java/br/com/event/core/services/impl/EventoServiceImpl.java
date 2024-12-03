@@ -145,8 +145,18 @@ public class EventoServiceImpl implements EventoService {
   }
 
   @Override
+  public List<Evento> buscarTodosEventosPorStatus(List<StatusEventoEnum> statusEvento) {
+    return eventoRepository.findAllByStatusIn(statusEvento);
+  }
+
+  @Override
   public List<Evento> buscarTodosEventosPorPrioridade(PrioridadeEventoEnum prioridadeEvento) {
     return eventoRepository.findAllByPrioridade(prioridadeEvento);
+  }
+
+  @Override
+  public List<Evento> buscarTodosEventosPorPrioridades(List<PrioridadeEventoEnum> prioridades) {
+    return eventoRepository.findAllByPrioridadeIn(prioridades);
   }
 
   @Override
