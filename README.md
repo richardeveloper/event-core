@@ -36,7 +36,7 @@ Alterações no banco de dados (inserção, exclusão, atualização) deverão s
 >
 > **Tecnologias:**
 > - [Java 17](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html)
-> - [Java FX 17.0.13](http://localhost:8080/api-docs)
+> - [Java FX 17.0.13]([http://localhost:8080/api-docs](https://gluonhq.com/products/javafx/))
 > - [PostgreSQL](https://www.postgresql.org/)
 > - [Docker](https://www.docker.com/)
 >
