@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 
 <AnchorPane prefHeight="795.0" prefWidth="1265.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.event.core.controllers.ProximosEventosController">
-   <Label layoutY="1.0" prefHeight="38.0" prefWidth="1265.0" styleClass="title-page" text="PRÓXIMOS EVENTOS" />
+   <Label layoutY="15.0" prefHeight="38.0" prefWidth="1265.0" styleClass="title-page" text="PRÓXIMOS EVENTOS" />
    <Pane layoutX="83.0" layoutY="86.0" prefHeight="150.0" prefWidth="1099.0" styleClass="fill-content">
 
          <CheckBox fx:id="filtroAbertoPublicoCheckBox" layoutX="36.0" layoutY="60.0" mnemonicParsing="false" />

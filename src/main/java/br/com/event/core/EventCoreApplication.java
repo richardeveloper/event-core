@@ -34,7 +34,6 @@ public class EventCoreApplication extends Application {
 
     Scene scene = new Scene(fxmlLoader.load(), WIDTH_SCREEN, HEIGHT_SCREEN);
     stage.setTitle(TITLE);
-    stage.setResizable(false);
     stage.setScene(scene);
     stage.show();
   }

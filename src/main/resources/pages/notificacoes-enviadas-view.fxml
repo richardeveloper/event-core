@@ -5,9 +5,9 @@
 <?import javafx.scene.layout.*?>
 
 <AnchorPane prefHeight="795.0" prefWidth="1265.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.event.core.controllers.NotificacoesEnviadasController">
-  <Label prefHeight="38.0" prefWidth="1265.0" styleClass="title-page" text="NOTIFICAÇÕES ENVIADAS" />
+  <Label layoutY="13.0" prefHeight="38.0" prefWidth="1265.0" styleClass="title-page" text="NOTIFICAÇÕES ENVIADAS" />
 
-  <Pane layoutX="105.0" layoutY="68.0" prefHeight="150.0" prefWidth="1056.0" styleClass="fill-content">
+  <Pane layoutX="105.0" layoutY="84.0" prefHeight="150.0" prefWidth="1056.0" styleClass="fill-content">
 
     <CheckBox fx:id="filtroConfirmacaoInscricaoCheckBox" layoutX="37.0" layoutY="60.0" mnemonicParsing="false" />
     <CheckBox fx:id="filtroCancelamentoInscricaoCheckBox" layoutX="291.0" layoutY="60.0" mnemonicParsing="false" />
@@ -20,5 +20,5 @@
     <ImageView fx:id="filterIcon" fitHeight="20.0" fitWidth="20.0" layoutX="477.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" />
   </Pane>
 
-  <TableView fx:id="notificacoesTableView" layoutX="46.0" layoutY="260.0" prefHeight="487.0" prefWidth="1170.0" />
+  <TableView fx:id="notificacoesTableView" layoutX="46.0" layoutY="277.0" prefHeight="470.0" prefWidth="1170.0" />
 </AnchorPane>

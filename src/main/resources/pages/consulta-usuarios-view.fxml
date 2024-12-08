@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 
 <AnchorPane prefHeight="795.0" prefWidth="1265.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.event.core.controllers.ConsultaUsuariosController">
-   <Label layoutX="1.0" prefHeight="38.0" prefWidth="1265.0" styleClass="title-page" text="USUÁRIOS" />
+   <Label layoutX="1.0" layoutY="15.0" prefHeight="38.0" prefWidth="1265.0" styleClass="title-page" text="USUÁRIOS" />
    <ScrollPane hbarPolicy="NEVER" layoutY="235.0" prefHeight="600.0" prefWidth="1265.0">
       <FlowPane fx:id="cardsContent" alignment="TOP_CENTER" columnHalignment="CENTER" hgap="15.0" prefHeight="599.0" prefWidth="1264.0" vgap="15.0" />
    </ScrollPane>

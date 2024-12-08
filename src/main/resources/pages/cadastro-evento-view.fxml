@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 
 <AnchorPane prefHeight="795.0" prefWidth="1265.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.event.core.controllers.CadastroEventoController">
-   <Label layoutX="1.0" prefHeight="38.0" prefWidth="1266.0" styleClass="title-page" text="CADASTRO DE EVENTO" />
+   <Label layoutX="1.0" layoutY="14.0" prefHeight="38.0" prefWidth="1266.0" styleClass="title-page" text="CADASTRO DE EVENTO" />
 
    <Label layoutX="271.0" layoutY="81.0" text="Nome do Evento" />
    <TextField fx:id="nomeTextField" alignment="CENTER" layoutX="270.0" layoutY="112.0" prefHeight="29.0" prefWidth="725.0" promptText="Nome do evento" />
