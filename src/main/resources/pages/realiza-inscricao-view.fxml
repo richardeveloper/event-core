@@ -4,14 +4,14 @@
 <?import javafx.scene.layout.*?>
 
 <AnchorPane prefHeight="795.0" prefWidth="1265.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.event.core.controllers.RealizaInscricaoController">
-  <Label layoutX="-1.0" prefHeight="38.0" prefWidth="1265.0" styleClass="title-page" text="REALIZAR INSCRIÇÃO" />
+  <Label layoutX="1.0" prefHeight="38.0" prefWidth="1265.0" styleClass="title-page" text="REALIZAR INSCRIÇÃO" />
   <ComboBox fx:id="eventosComboBox" layoutX="219.0" layoutY="84.0" prefHeight="35.0" prefWidth="861.0" promptText="Selecione o evento" />
   <Label layoutX="219.0" layoutY="54.0" text="Evento" />
   <Label layoutX="229.0" layoutY="185.0" text="Usuários sem inscrição" />
-  <ListView fx:id="usuariosSemInscricao" layoutX="29.0" layoutY="214.0" prefHeight="430.0" prefWidth="540.0" />
-  <ListView fx:id="usuariosInscritos" layoutX="697.0" layoutY="214.0" prefHeight="430.0" prefWidth="540.0" />
-  <Button layoutX="613.0" layoutY="374.0" mnemonicParsing="false" onAction="#addButtonAction" prefHeight="38.0" prefWidth="40.0" styleClass="edit-button" text="&gt;" />
-  <Button layoutX="613.0" layoutY="447.0" mnemonicParsing="false" onAction="#removeButtonAction" prefHeight="38.0" prefWidth="40.0" styleClass="edit-button" text="&lt;" />
+  <ListView fx:id="usuariosSemInscricao" layoutX="29.0" layoutY="214.0" prefHeight="460.0" prefWidth="549.0" />
+  <ListView fx:id="usuariosInscritos" layoutX="689.0" layoutY="214.0" prefHeight="460.0" prefWidth="549.0" />
+  <Button layoutX="613.0" layoutY="389.0" mnemonicParsing="false" onAction="#addButtonAction" prefHeight="38.0" prefWidth="40.0" styleClass="edit-button" text="&gt;" />
+  <Button layoutX="613.0" layoutY="462.0" mnemonicParsing="false" onAction="#removeButtonAction" prefHeight="38.0" prefWidth="40.0" styleClass="edit-button" text="&lt;" />
   <Label layoutX="886.0" layoutY="185.0" text="Usuários para inscrição" />
-  <Button fx:id="saveButton" layoutX="542.0" layoutY="685.0" mnemonicParsing="false" onAction="#finalizarInscricoes" text="Finalizar inscrições" />
+  <Button fx:id="saveButton" layoutX="541.0" layoutY="721.0" mnemonicParsing="false" onAction="#finalizarInscricoes" text="Finalizar inscrições" />
 </AnchorPane>

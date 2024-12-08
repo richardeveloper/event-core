@@ -38,12 +38,12 @@
    </AnchorPane>
 
    <!--   CONTEÚDO   -->
-   <StackPane layoutX="270.0" layoutY="70.0" prefHeight="795.0" prefWidth="1267.0">
-      <VBox alignment="TOP_CENTER" prefHeight="1011.0" prefWidth="1573.0">
-         <Canvas height="37.0" width="200.0" />
+   <StackPane layoutX="270.0" layoutY="70.0" prefHeight="795.0" prefWidth="1268.0">
+      <VBox alignment="TOP_CENTER">
          <HBox alignment="CENTER">
             <AnchorPane fx:id="content" />
          </HBox>
+         <Canvas height="37.0" width="200.0" />
       </VBox>
    </StackPane>
 </AnchorPane>

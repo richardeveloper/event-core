@@ -14,7 +14,7 @@
       <font>
          <Font size="18.0" />
       </font></Label>
-   <ScrollPane hbarPolicy="NEVER" layoutY="406.0" prefHeight="428.0" prefWidth="1266.0">
-      <FlowPane fx:id="cardsContent" alignment="TOP_CENTER" columnHalignment="CENTER" hgap="15.0 " prefHeight="427.0" prefWidth="1265.0" vgap="15.0" />
+   <ScrollPane hbarPolicy="NEVER" layoutY="406.0" prefHeight="421.0" prefWidth="1266.0">
+      <FlowPane fx:id="cardsContent" alignment="TOP_CENTER" columnHalignment="CENTER" hgap="15.0 " prefHeight="428.0" prefWidth="1265.0" vgap="15.0" />
    </ScrollPane>
 </AnchorPane>

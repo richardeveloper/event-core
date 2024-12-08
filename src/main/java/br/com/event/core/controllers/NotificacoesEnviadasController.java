@@ -148,7 +148,7 @@ public class NotificacoesEnviadasController implements Initializable {
       "Categoria",
       data -> new SimpleStringProperty(data.getValue().getTipoUsuario())
     );
-    colunaCategoria.setMinWidth(110.0);
+//    colunaCategoria.setMinWidth(110.0);
 
     TableColumn<LogNotificacao, String> colunaNotificacao = createColumn(
       "Notificação",

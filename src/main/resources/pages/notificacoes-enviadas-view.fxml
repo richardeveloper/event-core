@@ -20,5 +20,5 @@
     <ImageView fx:id="filterIcon" fitHeight="20.0" fitWidth="20.0" layoutX="477.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" />
   </Pane>
 
-  <TableView fx:id="notificacoesTableView" layoutX="21.0" layoutY="260.0" prefHeight="478.0" prefWidth="1223.0" />
+  <TableView fx:id="notificacoesTableView" layoutX="46.0" layoutY="260.0" prefHeight="487.0" prefWidth="1170.0" />
 </AnchorPane>
