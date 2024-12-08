@@ -11,19 +11,19 @@
 }
 
 .label {
-  -fx-font-size: 18px;
+  -fx-font-size: 16px;
 }
 
 .text-field {
-  -fx-font-size: 18px;
+  -fx-font-size: 16px;
 }
 
 .button {
-  -fx-font-size: 18px;
+  -fx-font-size: 16px;
 }
 
 .list-view {
-  -fx-font-size: 18px;
+  -fx-font-size: 16px;
 }
 
 .check-box {
@@ -31,7 +31,7 @@
 }
 
 .table-view {
-  -fx-font-size: 17px;
+  -fx-font-size: 16px;
 }
 
 .button:hover {
@@ -39,7 +39,7 @@
 }
 
 .combo-box {
-  -fx-font-size: 18px;
+  -fx-font-size: 16px;
   -fx-min-height: 35px;
 }
 
@@ -84,19 +84,19 @@
     CUSTOM STYLES
 */
 .title-header {
-  -fx-font-size: 32px;
+  -fx-font-size: 30px;
   -fx-text-fill: white;
 }
 
 .title-page {
   -fx-alignment: center;
-  -fx-font-size: 30px;
+  -fx-font-size: 26px;
 }
 
 .main-menu-title {
   -fx-background-color: #393E46;
   -fx-text-fill: white;
-  -fx-font-size: 26px;
+  -fx-font-size: 22px;
   -fx-border-width: 0 0 3px 0;
   -fx-border-color: #F0F3F6;
   -fx-border-style: solid;
@@ -109,7 +109,7 @@
 .menu-item {
   -fx-background-color: #393E46;
   -fx-text-fill: white;
-  -fx-font-size: 24px;
+  -fx-font-size: 20px;
   -fx-padding: 10px 0px 10px 50px;
 }
 
